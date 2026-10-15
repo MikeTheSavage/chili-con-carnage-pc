@@ -108,7 +108,9 @@ namespace ChiliSetup
             bool music = w.M.DiscOk && HasMusic();
             if (music)
             {
-                yield return Until(() => w.Music.Playing, 30, "the music plays");
+                // The window learns that the music plays a moment after the player starts (Music.Changed is
+                // posted to the window's thread); M does nothing before that, so wait for the window too.
+                yield return Until(() => w.Music.Playing && m.MusicOn, 30, "the music plays");
                 Key(System.Windows.Input.Key.M);
                 yield return Pause(0.4);
                 Check(Remembered.Get("Muted", 0) == 1 && m.Muted, "M mutes, and it is remembered");
