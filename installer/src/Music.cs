@@ -166,10 +166,14 @@ namespace ChiliSetup
         }
     }
 
-    /// <summary>The fade and volume: gain = (volume/100)^2 x fade, the fade moving linearly towards its target.</summary>
+    /// <summary>
+    /// The fade and volume: gain = (volume/100)^2 x fade x duck, the fade and the duck each moving linearly
+    /// towards their targets (the duck lowers the music while Setup's window is not in front).
+    /// </summary>
     public sealed class Gain
     {
         public double Fade, Target, PerSecond = 1;
+        public double Duck = 1, DuckTarget = 1, DuckPerSecond = 1;
         public int Volume = 60;
         public bool Muted;
         readonly object gate = new object();
@@ -178,19 +182,25 @@ namespace ChiliSetup
         {
             lock (gate) { Target = target; PerSecond = seconds <= 0 ? 1e9 : Math.Abs(target - Fade) / seconds; if (PerSecond == 0) PerSecond = 1e9; }
         }
-        /// <summary>Scales a buffer in place, moving the fade by its length.</summary>
+        public void DuckTo(double target, double seconds)
+        {
+            lock (gate) { DuckTarget = target; DuckPerSecond = seconds <= 0 ? 1e9 : Math.Abs(target - Duck) / seconds; if (DuckPerSecond == 0) DuckPerSecond = 1e9; }
+        }
+        /// <summary>Scales a buffer in place, moving the fade and the duck by its length.</summary>
         public void Apply(short[] buffer, int frames, int channels, int rate)
         {
-            double fade, target, step;
+            double fade, target, step, duck, duckTarget, duckStep;
             int volume;
-            lock (gate) { fade = Fade; target = Target; step = PerSecond / rate; volume = Muted ? 0 : Volume; }
+            lock (gate) { fade = Fade; target = Target; step = PerSecond / rate; duck = Duck; duckTarget = DuckTarget; duckStep = DuckPerSecond / rate; volume = Muted ? 0 : Volume; }
             double v = volume / 100.0;
             v *= v;
             for (int i = 0; i < frames; i++)
             {
                 if (fade < target) fade = Math.Min(target, fade + step);
                 else if (fade > target) fade = Math.Max(target, fade - step);
-                double g = v * fade;
+                if (duck < duckTarget) duck = Math.Min(duckTarget, duck + duckStep);
+                else if (duck > duckTarget) duck = Math.Max(duckTarget, duck - duckStep);
+                double g = v * fade * duck;
                 for (int c = 0; c < channels; c++)
                 {
                     int k = i * channels + c;
@@ -198,7 +208,7 @@ namespace ChiliSetup
                     buffer[k] = (short)(s > 32767 ? 32767 : s < -32768 ? -32768 : Math.Round(s));
                 }
             }
-            lock (gate) Fade = fade;
+            lock (gate) { Fade = fade; Duck = duck; }
         }
     }
 
@@ -359,6 +369,17 @@ namespace ChiliSetup
             Remembered.Set("Volume", v);
             Changed();
         }
+        /// <summary>Half the level (about -6 dB) while Setup's window is not in front, over 0.3 s each way.</summary>
+        public const double DuckLevel = 0.5;
+        bool ducked;
+        public bool Ducked { get { return ducked; } }
+        public void SetDucked(bool on)
+        {
+            Player p;
+            lock (this) { ducked = on; p = player; }
+            if (p != null) p.Gain.DuckTo(on ? DuckLevel : 1, 0.3);
+        }
+
         public void ToggleMute()
         {
             Muted = !Muted;
@@ -388,6 +409,7 @@ namespace ChiliSetup
                 lock (this)
                 {
                     if (mine != generation) return;
+                    p.Gain.Duck = p.Gain.DuckTarget = ducked ? DuckLevel : 1;
                     if (!p.Start(Volume, Muted, 2.5)) { p.Dispose(); return; }
                     if (Muted) p.Gain.FadeTo(0, 0);
                     player = p;

@@ -258,6 +258,15 @@ namespace ChiliSetup
             for (int i = 0; i < ones.Length; i++) ones[i] = 10000;
             g.Apply(ones, 1000, 1, 1000);
             Check("a fade-out over 0.3 s reaches silence and stays there", ones[299] <= 40 && ones.Skip(300).All(x => x == 0) && ones[0] > 9900, ones[0] + " " + ones[299]);
+            var duck = new Gain { Volume = 100, Fade = 1, Target = 1 };
+            duck.DuckTo(Music.DuckLevel, 0.3);
+            for (int i = 0; i < ones.Length; i++) ones[i] = 10000;
+            duck.Apply(ones, 1000, 1, 1000);
+            bool down = ones[0] > 9900 && Math.Abs(ones[149] - 7500) <= 40 && ones.Skip(300).All(x => x == 5000);
+            duck.DuckTo(1, 0.3);
+            for (int i = 0; i < ones.Length; i++) ones[i] = 10000;
+            duck.Apply(ones, 1000, 1, 1000);
+            Check("behind another window the music steps back to half over 0.3 s, and up again", down && ones.Skip(300).All(x => x == 10000), ones[0] + " " + ones[999]);
             long ls, le, n;
             Check("the music tool's line is read", TrackFile.ParseResult("decoding\nok channels=2 rate=44100 samples=1366238 loop=0,1366238\n", out ls, out le, out n) && ls == 0 && le == 1366238 && n == 1366238);
             Check("loop=none means no loop points", TrackFile.ParseResult("ok channels=2 rate=44100 samples=9 loop=none", out ls, out le, out n) && le == 0 && n == 9);
@@ -428,10 +437,16 @@ namespace ChiliSetup
         {
             Faces.Load();
             var all = new List<string>();
+            SetupView.Overflow = new List<string>();
             foreach (var s in Shots.All(null)) Shots.Render(s, 1, all);
+            var cut = SetupView.Overflow.Distinct().ToList();
+            SetupView.Overflow = null;
             var bad = all.Where(t => t.Contains("\n") || Regex.IsMatch(t, @"\b(emulator|emulation|port|ported|wizard|click here|simply|please)\b", RegexOptions.IgnoreCase) ||
                 (t.Contains("(") && !t.Contains("(USA"))).Distinct().ToList();
             Check("every text is one line, with no forbidden word and no bracketed explanation (" + all.Distinct().Count() + " texts)", bad.Count == 0, string.Join(" | ", bad));
+            Check("every instruction and verdict line fits its width, nothing is cut short", cut.Count == 0, string.Join(" | ", cut));
+            Check("the refusals a player can meet fit too", new[] { Disc.TextOtherProgram, Disc.TextCso, Disc.TextNotIso, Disc.TextNotPspFile, Disc.TextNotPspFolder, Disc.TextWrong, "This is the disc ULES-00629, not Chili Con Carnage (USA, ULUS-10216).",
+                Folder.TextNotEmpty, Folder.TextNotWritable, Folder.TextNoSpace, Folder.TextDrive, Folder.TextUpdate }.All(x => ChiliLauncher.Tx.Width(x, Faces.Label, 16) <= 674 - 28));
             Check("the uninstaller's switch is off by default", !new SetupModel().RemoveAll);
             Check("the HD loading pictures are on by default", new SetupModel().HdLoading && new InstallOptions().HdLoading);
         }

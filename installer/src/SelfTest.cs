@@ -2,7 +2,7 @@
 // keys and a made-up controller through the same entry points as the player's (the keys the window gets,
 // the controller state it polls, a dropped file). It goes from page 1 to page 6 with the given disc and
 // installs into the test home; every check is a line of the log, and the exit code is the number of failed
-// checks. "Start the game when done" is switched off on the way, so nothing is started. With a disc that is
+// checks. "Open the launcher when done" is switched off on the way, so nothing is started. With a disc that is
 // refused it stops on page 2 after checking that no music starts (the refusal is its one failed check).
 using System;
 using System.Collections.Generic;
@@ -126,6 +126,19 @@ namespace ChiliSetup
                 Key(System.Windows.Input.Key.Left);
                 Key(System.Windows.Input.Key.Left);
                 yield return Pause(0.2);
+                // This window is never in front, so the music has stepped back to half.
+                Check(w.Music.Ducked, "behind another window the music steps back");
+                // The right stick moves the volume from wherever the focus is.
+                w.FakePad = new PadState { Connected = true, Kind = PadKind.Xbox, RX = 30000 };
+                yield return Pause(0.1);
+                w.FakePad = new PadState { Connected = true, Kind = PadKind.Xbox };
+                yield return Pause(0.15);
+                Check(Remembered.Get("Volume", 0) == 65 && m.Volume == 65, "the right stick, right: volume 65, remembered");
+                w.FakePad = new PadState { Connected = true, Kind = PadKind.Xbox, RX = -30000 };
+                yield return Pause(0.1);
+                w.FakePad = new PadState { Connected = true, Kind = PadKind.Xbox };
+                yield return Pause(0.15);
+                Check(Remembered.Get("Volume", 0) == 60 && m.Volume == 60, "the right stick, left: volume 60 again");
             }
             else Log.Line("selftest: the payload has no music tool; the music checks are skipped");
             foreach (var x in PadPress(0x10)) yield return x;               // Start
@@ -135,7 +148,7 @@ namespace ChiliSetup
             yield return Until(() => m.Page == Page.Options, 3, "Start again: page 4");
             for (int i = 0; i < 12 && w.View.FocusId != "toggle_launch"; i++)
                 foreach (var x in PadPress(0x2)) yield return x;            // D-pad down
-            Check(w.View.FocusId == "toggle_launch", "the D-pad reaches 'Start the game when done'");
+            Check(w.View.FocusId == "toggle_launch", "the D-pad reaches 'Open the launcher when done'");
             foreach (var x in PadPress(0x1000)) yield return x;             // A
             Check(!m.Launch && m.HdLoading && m.Desktop && m.StartMenu, "A switches it off; the other three stay on");
             Key(System.Windows.Input.Key.Enter);

@@ -44,7 +44,8 @@ namespace ChiliSetup
         public const string TextNotPspFile = "This file is not a PSP game disc.";
         public const string TextNotPspFolder = "This folder is not a PSP game disc.";
         public const string TextWrong = "This is not Chili Con Carnage (USA, ULUS-10216).";
-        public const string TextOtherProgram = "This copy's game program differs from the one this program was built from.";
+        // The player sees what to do; the log line of the check keeps the reason (BOOT.BIN's size and hash).
+        public const string TextOtherProgram = "This copy of the game is modified; an unmodified USA disc is needed.";
 
         /// <summary>A disc's files, whichever kind it is.</summary>
         interface ISource

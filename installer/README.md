@@ -14,12 +14,12 @@ launcher's source files unchanged (`profiles/chili/launcher/src/Theme.cs`, `Pads
 
 | Page | Shows | Does |
 |---|---|---|
-| Welcome | the version, the disk space needed | |
+| Welcome | the disk space needed, the Windows versions | |
 | Your disc | a drop area, the path, Browse…, Browse folder… | checks the `.iso` (or an unpacked disc folder) exactly as the game does: disc id `ULUS-10216`, `PSP_GAME/SYSDIR/BOOT.BIN` of 8,616,992 bytes with FNV-1a 64 `a18a6d5249286c4a`, `assets00.naz`, `configpsp.txt` and `module/psmf.prx` present; a `.cso` is refused. Once the disc is accepted, its own `ICON0.PNG` and `PIC1.PNG` are shown (read into memory only) and the music starts |
 | Folder | the path, Browse…, the space needed and free | default `%LOCALAPPDATA%\Programs\Chili Con Carnage PC`; refuses a drive, a folder that is not empty, one that cannot be written, too little space, a folder the game or the launcher runs from. A folder with an earlier installation (or what an uninstall kept) is an update |
-| Options | HD loading pictures (on), Desktop shortcut (on), Start menu shortcut (on), Start the game when done (on) | |
+| Options | HD loading pictures (on), Desktop shortcut (on), Start menu shortcut (on), Open the launcher when done (on) | |
 | Install | the progress, the file being written | everything goes into a hidden `.setup-stage` folder first, then is moved into place; Cancel before the move leaves an earlier installation as it was and removes a new folder |
-| Done | the folder, the first keys (F11, F1, Esc) | Play starts the launcher; on a failure, the reason and Show log |
+| Done | the folder, the first keys (F11, F1, Esc) | Open launcher starts the launcher (Finish when that option is off); on a failure, the reason and Show log |
 
 The uninstaller has one page: Remove, with "Delete saves, settings and mods too" off. With it on, a second
 question comes; a disc image in the folder is never deleted.

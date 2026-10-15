@@ -307,10 +307,15 @@ namespace ChiliSetup
             double k = Math.Min(1, (t - railAt) / 0.15);
             k = k * k * (3 - 2 * k);
             double pointerStep = railFrom + (current - railFrom) * k;
+            // A step is checked once it is behind the player; after an install all six are, after a failed one
+            // the Install step is not (nothing was installed) and the pointer stays on Done.
+            bool finished = M.Page == Page.Done && !M.Failed;
+            bool failed = M.Page == Page.Done && M.Failed;
+            int last = SetupModel.Steps.Length - 1;
             for (int i = 0; i < SetupModel.Steps.Length; i++)
             {
                 double y = 140 + i * 56;
-                bool done = i < current || (M.Page == Page.Done && !M.Failed && i == 5);
+                bool done = (i < current && !(failed && i == last - 1)) || (finished && i == last);
                 bool reachable = !locked && i < current && i <= M.Furthest;
                 Color c = i == current ? Pal.Gold : done ? Pal.HotOrange : Pal.A(Pal.Cream, 0.42);
                 var r = new Rect(24, y - 6, 226, 44);
@@ -320,11 +325,11 @@ namespace ChiliSetup
                     if (IsHover(hot.Id)) dc.DrawRoundedRectangle(Pal.B(Pal.Cream, 0.07), null, r, 8, 8);
                     if (IsFocus(hot.Id)) FocusRing(dc, r, 8, t);
                 }
-                if (done && i != current) Art.Check(dc, 30, y + 7, 18, Pal.ChalkGreen);
+                if (done && (i != current || finished)) Art.Check(dc, 30, y + 7, 18, Pal.ChalkGreen);
                 Tx.Outlined(dc, SetupModel.Steps[i], Faces.Display, 20, 60, y, Pal.B(c), 2.5, 1.5, 2, 0.45);
             }
             double py = 140 + pointerStep * 56 + 7;
-            if (!(M.Page == Page.Done && !M.Failed)) Art.Pointer(dc, 32, py, 18, Pal.Gold);
+            if (!finished) Art.Pointer(dc, 32, py, 18, Pal.Gold);
         }
 
         void Card(DrawingContext dc, double t)
@@ -338,9 +343,13 @@ namespace ChiliSetup
                 dc.PushClip(card);
                 var r = new Rect(1000 - 444, 540 - 252, 444, 252);
                 bool soft = Tx.PixelsPerDip * scale * r.Width / M.Pic1.PixelWidth > 1.5;
-                var left = new LinearGradientBrush { MappingMode = BrushMappingMode.Absolute, StartPoint = new Point(r.X, 0), EndPoint = new Point(r.X + 140, 0) };
+                // Faded in from the left over 140 units and out at the card's right edge over 40, so that the
+                // picture never looks cut off by the card.
+                var left = new LinearGradientBrush { MappingMode = BrushMappingMode.Absolute, StartPoint = new Point(r.X, 0), EndPoint = new Point(r.Right, 0) };
                 left.GradientStops.Add(new GradientStop(Colors.Transparent, 0));
-                left.GradientStops.Add(new GradientStop(Colors.Black, 1));
+                left.GradientStops.Add(new GradientStop(Colors.Black, 140 / r.Width));
+                left.GradientStops.Add(new GradientStop(Colors.Black, 1 - 40 / r.Width));
+                left.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
                 left.Freeze();
                 var top = new LinearGradientBrush { MappingMode = BrushMappingMode.Absolute, StartPoint = new Point(0, r.Y), EndPoint = new Point(0, r.Y + 130) };
                 top.GradientStops.Add(new GradientStop(Colors.Transparent, 0));
@@ -348,7 +357,8 @@ namespace ChiliSetup
                 top.Freeze();
                 dc.PushOpacityMask(left);
                 dc.PushOpacityMask(top);
-                dc.PushOpacity(0.32);
+                // The blurred version for high scales reads as a smear when strong: it is drawn fainter.
+                dc.PushOpacity(soft && M.Pic1Soft != null ? 0.2 : 0.32);
                 var g = new DrawingGroup();
                 RenderOptions.SetBitmapScalingMode(g, BitmapScalingMode.HighQuality);
                 g.Children.Add(new ImageDrawing(soft && M.Pic1Soft != null ? M.Pic1Soft : M.Pic1, r));
@@ -377,30 +387,38 @@ namespace ChiliSetup
         {
             Tx.Outlined(dc, s, Faces.Display, 30, X0, 128, Pal.B(Pal.Gold), 3, 2, 3, 0.5);
         }
+        /// <summary>Tests and screenshots: while this is a list, every line that would be cut short to fit is noted in it.</summary>
+        public static List<string> Overflow;
+        static void Fits(string s, Typeface face, double size, double maxWidth)
+        {
+            if (Overflow != null && !string.IsNullOrEmpty(s) && Tx.Width(s, face, size) > maxWidth) Overflow.Add(s);
+        }
+
         void Line(DrawingContext dc, string s, double y, Color? c = null, double size = 17)
         {
+            Fits(s, Faces.Line, size, Right - X0);
             Tx.Draw(dc, s, Faces.Line, size, Pal.B(c ?? Pal.Cream), X0, y, Right - X0, 1);
         }
         void Problem(DrawingContext dc, string s, double x, double y, double maxWidth)
         {
             Art.Warning(dc, x, y + 2, 18, Pal.Flame);
+            Fits(s, Faces.Label, 16, maxWidth - 28);
             Tx.Draw(dc, s, Faces.Label, 16, Pal.B(Pal.Problem), x + 28, y, maxWidth - 28, 1);
         }
         void Good(DrawingContext dc, string s, double x, double y, double maxWidth, Typeface face = null)
         {
             Art.Check(dc, x, y + 3, 17, Pal.ChalkGreen);
+            Fits(s, face ?? Faces.Label, 16, maxWidth - 28);
             Tx.Draw(dc, s, face ?? Faces.Label, 16, Pal.B(Pal.ChalkGreen), x + 28, y, maxWidth - 28, 1);
         }
 
         void Welcome(DrawingContext dc, double t)
         {
             Title(dc, "Welcome");
-            Line(dc, "This installs the PC version of Chili Con Carnage.", 192);
-            Line(dc, "It needs your own copy of the PSP game as an .iso file.", 220);
-            double y = 284;
-            Fact(dc, "Version", M.Version, y);
-            Fact(dc, "Disk space", Util.Mb(M.Need), y + 40);
-            Fact(dc, "Windows", "10, 11", y + 80);
+            Line(dc, "You need your own copy of the PSP game as an .iso file.", 192);
+            double y = 256;
+            Fact(dc, "Disk space", Util.Mb(M.Need), y);
+            Fact(dc, "Windows", "10, 11", y + 40);
             Art.Emblem(dc, 862, 372, 86);
             if (M.Damaged != null) Problem(dc, M.Damaged, X0, 450, 520);
         }
@@ -447,7 +465,7 @@ namespace ChiliSetup
             // The verdict.
             double vy = 436;
             if (M.Checking) { }
-            else if (M.DiscOk) Good(dc, M.Disc.Summary, X0, vy, Right - X0);
+            else if (M.DiscOk) Good(dc, "Disc accepted", X0, vy, Right - X0);   // what it is, the drop area shows
             else if (M.Disc != null && M.Disc.Message.Length > 0) Problem(dc, M.Disc.Message, X0, vy, Right - X0);
         }
 
@@ -500,7 +518,7 @@ namespace ChiliSetup
             OptionRow(dc, "toggle_hd", "HD loading pictures", M.HdLoading && M.HasHd, M.HasHd, Util.Mb(M.HdBytes), y, 100, t);
             OptionRow(dc, "toggle_desktop", "Desktop shortcut", M.Desktop, true, null, y + 64, 101, t);
             OptionRow(dc, "toggle_startmenu", "Start menu shortcut", M.StartMenu, true, null, y + 128, 102, t);
-            OptionRow(dc, "toggle_launch", "Start the game when done", M.Launch, true, null, y + 192, 103, t);
+            OptionRow(dc, "toggle_launch", "Open the launcher when done", M.Launch, true, null, y + 192, 103, t);
         }
 
         void OptionRow(DrawingContext dc, string id, string name, bool on, bool enabled, string value, double y, int order, double t)
@@ -512,27 +530,32 @@ namespace ChiliSetup
             double cy = y + 26;
             Tx.Draw(dc, name, Faces.Label, 19, Pal.B(enabled ? Pal.White : Pal.Locked(Pal.Cream)), X0, cy - 14);
             if (!enabled) Art.Padlock(dc, X0 + Tx.Width(name, Faces.Label, 19) + 12, cy - 11, 16);
-            var sw = new Rect(Right - 66, cy - 14, 64, 28);
-            Switch(dc, sw, on, enabled, IsHover(id), IsPressed(id));
+            // The launcher's switch with its value after it, at the right of the row.
+            var sw = new Rect(Right - 64 - 12 - 30, cy - 14, 64, 28);
+            Switch(dc, sw, on, enabled, enabled && IsHover(id), enabled && IsPressed(id));
+            var state = enabled ? (on ? Pal.B(Pal.PaleYellow) : Pal.B(Pal.Cream, 0.7)) : Pal.B(Pal.Locked(Pal.Cream), 0.7);
+            Tx.Draw(dc, on ? "On" : "Off", Faces.Label, 15, state, sw.Right + 12, sw.Y + 3);
             if (value != null) Tx.DrawRight(dc, value, Faces.Numbers, 16, Pal.B(enabled ? Pal.Gold : Pal.Locked(Pal.Gold)), sw.X - 16, cy - 11);
         }
 
-        /// <summary>The on/off switch: a capsule that fills with ember when on, a cream knob that slides.</summary>
+        /// <summary>
+        /// The on/off switch, drawn as the launcher draws it (launcher/src/Controls.cs, Toggle.DrawSwitch): a dark
+        /// capsule; when on, filled with the health bar's red inside a flame ring; a cream knob that slides.
+        /// </summary>
         static void Switch(DrawingContext dc, Rect r, bool on, bool enabled, bool hover, bool pressed)
         {
-            Brush face;
+            double fade = enabled ? 1 : 0.45;
+            dc.PushOpacity(fade);
+            Art.Capsule(dc, r, Pal.B(Pal.Ink, hover ? 0.62 : 0.5), Pal.P(Pal.Ink, 2));
             if (on)
             {
-                var g = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(0, 1) };
-                g.GradientStops.Add(new GradientStop(enabled ? Pal.Flame : Pal.Locked(Pal.Flame), 0));
-                g.GradientStops.Add(new GradientStop(enabled ? Pal.Ember : Pal.Locked(Pal.Ember), 1));
-                g.Freeze();
-                face = g;
+                Art.Capsule(dc, r, Pal.B(hover ? Pal.Lighten(Pal.HealthRed, 0.12) : Pal.HealthRed), Pal.P(Pal.Ink, 2));
+                var inner = new Rect(r.X + 2.5, r.Y + 2.5, r.Width - 5, r.Height - 5);
+                Art.Capsule(dc, inner, null, Pal.P(Pal.Flame, 3));
             }
-            else face = Pal.B(pressed ? Pal.RustDark : Pal.Ink, 0.85);
-            Art.Capsule(dc, r, face, Pal.P(on ? Pal.Gold : Pal.Cream, 1.6, on ? (enabled ? 0.9 : 0.4) : (hover ? 0.75 : 0.45)));
-            double kx = on ? r.Right - r.Height / 2 : r.X + r.Height / 2;
-            dc.DrawEllipse(Pal.B(enabled ? (hover ? Pal.White : Pal.Cream) : Pal.Locked(Pal.Cream)), Pal.P(Pal.Ink, 2), new Point(kx, r.Y + r.Height / 2), r.Height / 2 - 4, r.Height / 2 - 4);
+            double kx = r.X + 14 + (r.Width - 28) * (on ? 1 : 0);
+            dc.DrawEllipse(Pal.B(pressed ? Pal.PaleYellow : Pal.Cream), Pal.P(Pal.Ink, 2), new Point(kx, r.Y + r.Height / 2), 12, 12);
+            dc.Pop();
         }
 
         void InstallPage(DrawingContext dc, double t)
@@ -630,15 +653,17 @@ namespace ChiliSetup
                     if (M.RolledBack) next = "Close";
                     else { back = "Cancel"; backOn = M.Installing; }
                     break;
-                case Page.Done: next = M.Failed ? "Close" : (M.Launch ? "Play" : "Finish"); break;
+                case Page.Done: next = M.Failed ? "Close" : (M.Launch ? "Open launcher" : "Finish"); break;
                 case Page.Uninstall:
                     if (M.Removing == 0) { back = "Close"; next = "Remove"; }
                     else if (M.Removing == 1) { }
                     else next = "Close";
                     break;
             }
-            if (back != null) Button(dc, "back", new Rect(720, 567, 120, 42), back, false, backOn, 300, t);
-            if (next != null) Button(dc, "next", new Rect(860, 562, 140, 52), next, true, nextOn, 310, t);
+            // The primary button grows to the left for a longer word; Back keeps its distance.
+            double nw = next != null ? Math.Max(140, Math.Ceiling(Tx.Shape(next, Faces.Display, 26).Bounds.Width) + 48) : 140;
+            if (back != null) Button(dc, "back", new Rect(1000 - nw - 20 - 120, 567, 120, 42), back, false, backOn, 300, t);
+            if (next != null) Button(dc, "next", new Rect(1000 - nw, 562, nw, 52), next, true, nextOn, 310, t);
         }
 
         void MusicControl(DrawingContext dc, double t)
@@ -650,7 +675,8 @@ namespace ChiliSetup
             dc.PushOpacity(alpha);
             Art.Capsule(dc, speaker, Pal.B(IsPressed("mute") ? Pal.RustDark : Pal.Ink, 0.75), Pal.P(Pal.Cream, 1.5, IsHover("mute") ? 0.8 : 0.45));
             if (IsFocus("mute")) FocusRing(dc, speaker, 21, t);
-            SpeakerGlyph(dc, speaker.X + 21, speaker.Y + 21, M.Muted || !on);
+            // Before any music: the plain horn, dimmed; the red cross only for the player's own mute.
+            SpeakerGlyph(dc, speaker.X + 21, speaker.Y + 21, M.Muted ? 2 : on ? 1 : 0);
             var track = new Rect(78, 584, 120, 10);
             Add("volume", new Rect(track.X - 6, 572, track.Width + 12, 34), HotKind.Slider, 201, on);
             if (IsFocus("volume")) FocusRing(dc, new Rect(track.X - 8, 576, track.Width + 16, 26), 13, t);
@@ -664,8 +690,10 @@ namespace ChiliSetup
             dc.Pop();
         }
 
-        static void SpeakerGlyph(DrawingContext dc, double cx, double cy, bool muted)
+        /// <summary>The speaker: 0 the horn alone, 1 with its sound waves, 2 with the red cross of mute.</summary>
+        static void SpeakerGlyph(DrawingContext dc, double cx, double cy, int state)
         {
+            bool muted = state == 2;
             var horn = new StreamGeometry();
             using (var c = horn.Open())
             {
@@ -684,6 +712,7 @@ namespace ChiliSetup
                 dc.DrawLine(Pal.P(Pal.Problem, 2.4), new Point(cx + 13, cy - 6), new Point(cx + 5, cy + 6));
                 return;
             }
+            if (state == 0) return;
             for (int i = 1; i <= 2; i++)
             {
                 double r = 4.5 * i + 1;
@@ -741,18 +770,38 @@ namespace ChiliSetup
         void Dialog(DrawingContext dc, double t)
         {
             dc.DrawRectangle(Pal.B(Pal.Ink, 0.62), null, new Rect(-ox / scale - 1, -oy / scale - 1, W + 2 * ox / scale + 2, H + 2 * oy / scale + 2));
-            var r = new Rect(312, 214, 400, 196);
-            var card = Backdrop.Card(r, 8);
-            dc.DrawGeometry(Pal.B(Pal.Soot, 0.96), Pal.P(Pal.Gold, 2, 0.7), card);
-            Tx.Outlined(dc, M.Ask.Text, Faces.Display, 24, r.X + 28, r.Y + 34, Pal.B(Pal.Gold), 2.5, 1.5, 2, 0.45);
+            // The launcher's question box (launcher/src/Surface.cs, DrawDialog) at this window's scale: a quiet
+            // box, the question, two capsules. The answer that does the thing is red when it deletes or stops
+            // something; the answer that keeps things as they are has the focus, for Enter and the A button.
+            var r = new Rect(312, 236, 400, 158);
+            dc.DrawRoundedRectangle(Pal.B(Pal.Ink, 0.6), null, new Rect(r.X + 5, r.Y + 7, r.Width, r.Height), 10, 10);
+            dc.DrawRoundedRectangle(Pal.B(Pal.Soot, 0.97), Pal.P(Pal.Cream, 1.5, 0.4), r, 10, 10);
+            dc.DrawRoundedRectangle(null, Pal.P(Pal.Ember, 2, 0.8), new Rect(r.X + 5, r.Y + 5, r.Width - 10, r.Height - 10), 7, 7);
+            Tx.Outlined(dc, M.Ask.Text, Faces.Display, 24, r.X + 28, r.Y + 26, Pal.B(Pal.PaleYellow), 2.5, 1.5, 2, 0.45);
             double bx = r.Right - 28;
             for (int i = M.Ask.Buttons.Length - 1; i >= 0; i--)
             {
-                bool primary = i == 0;
-                double bw = primary ? 130 : Math.Max(120, Tx.Width(M.Ask.Buttons[i], Faces.Label, 17) + 40);
-                var br = new Rect(bx - bw, r.Bottom - 30 - (primary ? 50 : 44) + (primary ? 0 : -3), bw, primary ? 50 : 44);
-                Button(dc, "q" + i, br, M.Ask.Buttons[i], primary, true, 500 + i, t, HotKind.Choice);
-                bx -= bw + 14;
+                string label = M.Ask.Buttons[i];
+                double bw = Math.Max(100, Math.Ceiling(Tx.Width(label, Faces.Label, 16)) + 44);
+                var br = new Rect(bx - bw, r.Bottom - 26 - 38, bw, 38);
+                bx -= bw + 12;
+                string id = "q" + i;
+                Add(id, br, HotKind.Choice, 500 + i);
+                bool hover = IsHover(id), pressed = IsPressed(id);
+                var face = br;
+                if (pressed) face.Offset(1, 1);
+                if (i == 0)
+                {
+                    Color fill = M.Ask.Danger ? Pal.Chili : Pal.Flame;
+                    Art.Capsule(dc, face, Pal.B(pressed ? Pal.RustDark : hover ? Pal.Lighten(fill, 0.12) : fill), Pal.P(Pal.Ink, 2));
+                    Tx.DrawCentered(dc, label, Faces.Label, 16, Pal.B(pressed ? Pal.Cream : M.Ask.Danger ? Pal.White : Pal.Ink), face, -1);
+                }
+                else
+                {
+                    Art.Capsule(dc, face, Pal.B(pressed ? Pal.RustDark : Pal.Ink, hover ? 0.6 : 0.45), Pal.P(Pal.Cream, 2, hover ? 0.8 : 0.5));
+                    Tx.DrawCentered(dc, label, Faces.Label, 16, Pal.B(hover ? Pal.PaleYellow : Pal.Cream), face, -1);
+                }
+                if (IsFocus(id)) FocusRing(dc, br, br.Height / 2, t);
             }
         }
 

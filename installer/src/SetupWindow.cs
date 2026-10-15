@@ -109,6 +109,8 @@ namespace ChiliSetup
         {
             bool front = InFront();
             if (front != View.WindowActive) { View.WindowActive = front; View.InvalidateVisual(); }
+            // The music steps back while another window (Explorer, a file picker) is in front.
+            if (front == Music.Ducked) Music.SetDucked(!front);
             double now = clock.Elapsed.TotalSeconds;
             PadState pad;
             if (FakePad.HasValue) pad = FakePad.Value;
@@ -144,8 +146,21 @@ namespace ChiliSetup
             if (dir == 0) repeatDir = 0;
             else if (dir != repeatDir) { repeatDir = dir; nextRepeat = now + 0.4; Direction(dir); }
             else if (now >= nextRepeat) { nextRepeat = now + 0.12; Direction(dir); }
+            // The right stick, left and right: the music's volume, from any control.
+            int vol = s.RX > 16000 ? 1 : s.RX < -16000 ? -1 : 0;
+            if (vol == 0 || M.Ask != null || !M.MusicOn) volumeDir = 0;
+            else if (vol != volumeDir || now >= nextVolume)
+            {
+                nextVolume = now + (vol != volumeDir ? 0.4 : 0.12);
+                volumeDir = vol;
+                M.Device = Device.Pad;
+                M.PadLook = s.Kind;
+                Music.SetVolume(Music.Volume + 5 * vol);
+            }
             if (pressed != 0) View.InvalidateVisual();
         }
+        int volumeDir;
+        double nextVolume;
 
         void Direction(int dir)
         {
@@ -232,9 +247,9 @@ namespace ChiliSetup
         }
         void Mute() { if (M.MusicOn) Music.ToggleMute(); }
 
-        void Ask(string text, string[] buttons, int cancel, Action<int> answer)
+        void Ask(string text, string[] buttons, int cancel, Action<int> answer, bool danger = false)
         {
-            M.Ask = new Question { Text = text, Buttons = buttons, Cancel = cancel, Focus = cancel, Answer = answer };
+            M.Ask = new Question { Text = text, Buttons = buttons, Cancel = cancel, Focus = cancel, Answer = answer, Danger = danger };
             View.FocusId = "q" + cancel;
             View.InvalidateVisual();
         }
@@ -339,7 +354,7 @@ namespace ChiliSetup
                 case Page.Uninstall:
                     if (M.Removing == 0)
                     {
-                        if (M.RemoveAll) Ask("Delete the saves too?", new[] { "Delete", "Keep" }, 1, a => { if (a == 0) StartRemove(); else { M.RemoveAll = false; View.InvalidateVisual(); } });
+                        if (M.RemoveAll) Ask("Delete the saves too?", new[] { "Delete", "Keep" }, 1, a => { if (a == 0) StartRemove(); else { M.RemoveAll = false; View.InvalidateVisual(); } }, true);
                         else StartRemove();
                     }
                     else if (M.Removing >= 2) Close();
@@ -356,7 +371,7 @@ namespace ChiliSetup
                 case Page.Folder: Go(Page.Disc); break;
                 case Page.Options: Go(Page.Folder); break;
                 case Page.Install:
-                    if (M.Installing) Ask("Stop the installation?", new[] { "Stop", "Keep going" }, 1, a => { if (a == 0 && installer != null) installer.Cancel = true; });
+                    if (M.Installing) Ask("Stop the installation?", new[] { "Stop", "Keep going" }, 1, a => { if (a == 0 && installer != null) installer.Cancel = true; }, true);
                     break;
                 case Page.Uninstall: if (M.Removing != 1) Close(); break;
             }

@@ -77,8 +77,9 @@ namespace ChiliSetup
     public sealed class Question
     {
         public string Text;
-        public string[] Buttons;       // the first is the primary
+        public string[] Buttons;       // the first does the thing asked about, the Cancel one keeps things as they are
         public int Focus, Cancel;
+        public bool Danger;            // the first button deletes or stops something: drawn in chili red
         public Action<int> Answer;
     }
 
@@ -102,7 +103,7 @@ namespace ChiliSetup
         // Options
         public bool HdLoading = true, Desktop = true, StartMenu = true, Launch = true;
         public bool HasHd = true;
-        public long ProgramBytes = 110500000, HdBytes = 173000000;
+        public long ProgramBytes = 110171811, HdBytes = 180534644;  // the 0.9.0 payload's parts; Setup reads its own
         // Install
         public long Done, Total = 1;
         public string Current = "";

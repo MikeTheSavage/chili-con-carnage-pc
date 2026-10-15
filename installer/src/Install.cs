@@ -53,7 +53,7 @@ namespace ChiliSetup
 
     public static class Folder
     {
-        public const string TextNotEmpty = "This folder is not empty.";
+        public const string TextNotEmpty = "This folder is not empty; choose an empty one.";
         public const string TextNotWritable = "This folder cannot be written.";
         public const string TextNoSpace = "Not enough free space.";
         public const string TextDrive = "Choose a folder, not a drive.";
