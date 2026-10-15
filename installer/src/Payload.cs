@@ -244,7 +244,7 @@ namespace ChiliSetup
             public int Jobs = 3;
         }
 
-        // Never in a release: the game's files, a player's own data, notes for the user.
+        // Never in a release: the game's files, a player's own data, private notes.
         static readonly string[] gameNames = { "boot.bin", "eboot.bin", "umd_data.bin", "icon0.png", "icon1.pmf", "pic0.png", "pic1.png", "snd0.at3", "param.sfo", "configpsp.txt" };
         static readonly string[] gameExtensions = { ".iso", ".cso", ".naz", ".at3", ".pmf", ".prx", ".sfo", ".texture_psp", ".wav" };
         static readonly string[] playerFolders = { "saves", "art", "textures", "texture_dump", "logs", "captures" };
@@ -265,7 +265,7 @@ namespace ChiliSetup
                 if (Array.IndexOf(gameNames, name) >= 0 || Array.IndexOf(gameExtensions, Path.GetExtension(name)) >= 0) { problems.Add("A file of the game is in the staging folder: " + rel); continue; }
                 if (name == "chilinative.gpucache" || name == "launcher_error.log" || name.EndsWith(".log")) { problems.Add("A file of a player's run is in the staging folder: " + rel); continue; }
                 if (name.EndsWith(".previous.exe")) { problems.Add("An earlier program is in the staging folder: " + rel); continue; }
-                if (lower == "what_changed.txt") { notes.Add("skipped WHAT_CHANGED.txt (notes for the user; CHANGELOG.md is the public one)"); continue; }
+                if (lower == "what_changed.txt") { notes.Add("skipped WHAT_CHANGED.txt (private notes; CHANGELOG.md is the public one)"); continue; }
                 if (name.EndsWith(".lnk")) { notes.Add("skipped " + rel + " (Setup makes the shortcuts itself)"); continue; }
                 if (lower == "chilinative.ini")
                 {
