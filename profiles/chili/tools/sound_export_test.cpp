@@ -208,6 +208,10 @@ void test_tool(const std::filesystem::path &scratch, const std::filesystem::path
     // The right id, but no archive and a wrong title clip: made up, no game data.
     write_file(scratch / L"made up" / L"UMD_DATA.BIN", "ULUS-10216|0000000000000000|0001|G");
     check(run(exe, {(scratch / L"made up").wstring(), out.wstring()}).code == exit_track_missing && nothing_left(), "no assets00.naz");
+    // A path that is not ASCII reaches the disc (no archive there, so 4 and not 2).
+    const auto accents = scratch / L"Caf\u00e9 \u00f1 \u65e5\u672c";
+    write_file(accents / L"UMD_DATA.BIN", "ULUS-10216|0000000000000000|0001|G");
+    check(run(exe, {accents.wstring(), (accents / L"m\u00fasica.wav").wstring()}).code == exit_track_missing, "a disc folder whose name is not ASCII");
     write_file(scratch / L"made up" / L"PSP_GAME" / L"USRDIR" / L"assets00.naz", std::string(4096u, '\0'));
     check(run(exe, {(scratch / L"made up").wstring(), out.wstring()}).code == exit_disc_unreadable && nothing_left(), "a damaged assets00.naz");
     const auto clip = stream(100u, 376u, 100u * 2048u - 3506u - 368u, 3506u, -1, -1, 1u);
