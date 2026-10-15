@@ -616,7 +616,7 @@ namespace ChiliSetup
         void BottomBar(DrawingContext dc, double t)
         {
             dc.DrawLine(Pal.P(Pal.Cream, 1, 0.18), new Point(24, 552.5), new Point(1000, 552.5));
-            MusicControl(dc, t);
+            if (!M.Uninstaller) MusicControl(dc, t);
             if (!string.IsNullOrEmpty(M.Message)) Problem(dc, M.Message, 280, 576, 420);
             string back = null, next = null;
             bool nextOn = true, backOn = true;
