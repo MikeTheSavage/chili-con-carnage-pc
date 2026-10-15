@@ -66,11 +66,31 @@ if ($Icon) {
 $icon = (Resolve-Path -LiteralPath $iconFile).Path
 Write-Host "icon  $icon"
 
+# The version, the publisher and the notice of the file (Explorer's Details): the game program's own, from
+# host\version.hpp and resources\ChiliConCarnage.rc, written into a temporary source file for this build.
+$version = '0.0.0'
+$hpp = Join-Path $here '..\host\version.hpp'
+if ((Test-Path -LiteralPath $hpp) -and [IO.File]::ReadAllText($hpp) -match '#define\s+CHILI_VERSION_TEXT\s+"(\d+\.\d+\.\d+)"') { $version = $Matches[1] }
+$company = ''; $copyright = ''
+$rc = Join-Path $here '..\resources\ChiliConCarnage.rc'
+if (Test-Path -LiteralPath $rc) {
+    $rcText = [IO.File]::ReadAllText($rc)
+    if ($rcText -match 'VALUE "CompanyName", "([^"\\]*)"') { $company = $Matches[1] }
+    if ($rcText -match 'VALUE "LegalCopyright", "([^"\\]*)"') { $copyright = $Matches[1] }
+}
+$versionFile = Join-Path ([IO.Path]::GetTempPath()) ('chili_launcher_version_' + [guid]::NewGuid().ToString('N') + '.cs')
+[IO.File]::WriteAllText($versionFile, ("[assembly: System.Reflection.AssemblyVersion(`"$version.0`")]`r`n" +
+    "[assembly: System.Reflection.AssemblyFileVersion(`"$version.0`")]`r`n[assembly: System.Reflection.AssemblyInformationalVersion(`"$version`")]`r`n" +
+    "[assembly: System.Reflection.AssemblyCompany(`"$company`")]`r`n[assembly: System.Reflection.AssemblyCopyright(`"$copyright`")]`r`n"))
+Write-Host "version $version"
+
 $exe = Join-Path $Out 'ChiliConCarnageLauncher.exe'
-$sources = Get-ChildItem (Join-Path $here 'src') -Filter *.cs | ForEach-Object { $_.FullName }
+$sources = @(Get-ChildItem (Join-Path $here 'src') -Filter *.cs | ForEach-Object { $_.FullName }) + $versionFile
 $common = @('/nologo', '/noconfig', '/nostdlib+', '/codepage:65001', '/optimize+', '/debug-', '/deterministic+', '/langversion:7.3', '/warn:4', '/nowarn:1591')
-& $csc @cscArgs @common '/target:winexe' '/platform:anycpu' "/out:$exe" "/win32icon:$icon" "/win32manifest:$(Join-Path $here 'app.manifest')" `
-    "/resource:$icon,icon" @references @sources
+try {
+    & $csc @cscArgs @common '/target:winexe' '/platform:anycpu' "/out:$exe" "/win32icon:$icon" "/win32manifest:$(Join-Path $here 'app.manifest')" `
+        "/resource:$icon,icon" @references @sources
+} finally { [IO.File]::Delete($versionFile) }
 if ($LASTEXITCODE -ne 0) { throw "The launcher did not compile (exit code $LASTEXITCODE)." }
 Write-Host "built $exe ($((Get-Item $exe).Length) bytes)"
 

@@ -70,8 +70,17 @@ if (-not $Version) {
     if (-not $Version) { $Version = '0.9.0' }
 }
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw "-Version must be like 0.9.0, not $Version" }
+# The publisher and the notice of the file (Explorer's Details): the game program's own (resources\ChiliConCarnage.rc).
+$company = ''; $copyright = ''
+$rc = Join-Path $repo 'profiles\chili\resources\ChiliConCarnage.rc'
+if (Test-Path -LiteralPath $rc) {
+    $rcText = [IO.File]::ReadAllText($rc)
+    if ($rcText -match 'VALUE "CompanyName", "([^"\\]*)"') { $company = $Matches[1] }
+    if ($rcText -match 'VALUE "LegalCopyright", "([^"\\]*)"') { $copyright = $Matches[1] }
+}
 $versionFile = Join-Path $obj 'Version.cs'
-[IO.File]::WriteAllText($versionFile, "[assembly: System.Reflection.AssemblyVersion(`"$Version.0`")]`r`n[assembly: System.Reflection.AssemblyFileVersion(`"$Version.0`")]`r`n[assembly: System.Reflection.AssemblyInformationalVersion(`"$Version`")]`r`n")
+[IO.File]::WriteAllText($versionFile, "[assembly: System.Reflection.AssemblyVersion(`"$Version.0`")]`r`n[assembly: System.Reflection.AssemblyFileVersion(`"$Version.0`")]`r`n[assembly: System.Reflection.AssemblyInformationalVersion(`"$Version`")]`r`n" +
+    "[assembly: System.Reflection.AssemblyCompany(`"$company`")]`r`n[assembly: System.Reflection.AssemblyCopyright(`"$copyright`")]`r`n")
 Write-Host "version $Version"
 
 # The icon: the program's own (original, drawn by code); made here when the repository does not have it yet.

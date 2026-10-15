@@ -14,8 +14,7 @@ using System.Windows.Media.Imaging;
 [assembly: AssemblyTitle("Chili Con Carnage launcher")]
 [assembly: AssemblyProduct("Chili Con Carnage PC")]
 [assembly: AssemblyDescription("Settings and start for the native PC build of Chili Con Carnage")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+// The version, the publisher and the notice come from launcher\build.ps1 (the game program's own).
 [assembly: System.Runtime.Versioning.TargetFramework(".NETFramework,Version=v4.8", FrameworkDisplayName = ".NET Framework 4.8")]
 
 namespace ChiliLauncher
