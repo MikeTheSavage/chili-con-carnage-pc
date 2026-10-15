@@ -1,0 +1,6 @@
+# Build output and the optional game pictures (from the player's own disc, never committed).
+/bin/
+/obj/
+/art/
+/shots/
+launcher.ini

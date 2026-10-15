@@ -1,0 +1,20 @@
+# chili input v1: sample buttons x y
+# Boot to Story 1-1 like mission1_baseline, but the in-engine intro cutscene is left to play (no input after sample 183).
+# The cutscene starts at game frame 227 and hands over to gameplay between frames 720 and 730. See README.md.
+40 0x4000 128 128
+43 0x0 128 128
+60 0x4000 128 128
+63 0x0 128 128
+80 0x4000 128 128
+83 0x0 128 128
+100 0x4000 128 128
+103 0x0 128 128
+120 0x4000 128 128
+123 0x0 128 128
+140 0x4000 128 128
+143 0x0 128 128
+160 0x4000 128 128
+163 0x0 128 128
+180 0x4000 128 128
+183 0x0 128 128
+end 184

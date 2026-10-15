@@ -1,0 +1,29 @@
+# Story 1-1, a dive to the right with the mouse turning 3 degrees per sample from sample 250 to 399:
+# run from 240, Cross at 262, the stick let go at 300. Take-off 262-268, in the air to about 363, on the ground to
+# about 382 (the samples differ a little by direction). Stop at frame 450. 30 game frames per second.
+scheme dual_analog
+40 0x4000 128 128
+43 0x0 128 128
+60 0x4000 128 128
+63 0x0 128 128
+80 0x4000 128 128
+83 0x0 128 128
+100 0x4000 128 128
+103 0x0 128 128
+120 0x4000 128 128
+123 0x0 128 128
+140 0x4000 128 128
+143 0x0 128 128
+160 0x4000 128 128
+163 0x0 128 128
+180 0x4000 128 128
+183 0x0 128 128
+200 0x4000 128 128
+203 0x0 128 128
+240 0x0 255 128 128 128
+250 0x0 255 128 128 128 3 0
+262 0x4000 255 128 128 128 3 0
+264 0x0 255 128 128 128 3 0
+300 0x0 128 128 128 128 3 0
+400 0x0 128 128 128 128
+end 410

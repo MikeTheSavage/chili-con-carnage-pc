@@ -1,0 +1,13 @@
+# chili input v1: sample buttons x y
+# Boot, skip the intros, load profile DATA00 and stay in the main menu. For listening tests and audio measurements.
+40 0x4000 128 128
+43 0x0 128 128
+60 0x4000 128 128
+63 0x0 128 128
+80 0x4000 128 128
+83 0x0 128 128
+100 0x4000 128 128
+103 0x0 128 128
+120 0x4000 128 128
+123 0x0 128 128
+end 1000000

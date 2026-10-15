@@ -1,0 +1,37 @@
+// Icon and version information of the program; profiles/chili/CMakeLists.txt adds this file to
+// chili_recomp. The numbers come from host/version.hpp.
+#include <winver.h>
+#include "version.hpp"
+
+// Icon 1 is the one Explorer shows for the file and the one the game window loads (host/pc_window.hpp).
+// The picture is original (app_icon.png, drawn by code); nothing of the game's art is used.
+1 ICON "app_icon.ico"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION CHILI_VERSION_MAJOR, CHILI_VERSION_MINOR, CHILI_VERSION_PATCH, 0
+ PRODUCTVERSION CHILI_VERSION_MAJOR, CHILI_VERSION_MINOR, CHILI_VERSION_PATCH, 0
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+ FILEFLAGS 0x0L
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Chili Con Carnage PC project"
+            VALUE "FileDescription", "Chili Con Carnage (native PC port)"
+            VALUE "FileVersion", CHILI_VERSION_TEXT
+            VALUE "InternalName", "chili_recomp"
+            VALUE "LegalCopyright", "Chili Con Carnage belongs to its rights holders. This program is an unofficial build for owners of the game."
+            VALUE "OriginalFilename", "ChiliConCarnage.exe"
+            VALUE "ProductName", "Chili Con Carnage PC"
+            VALUE "ProductVersion", CHILI_VERSION_TEXT
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

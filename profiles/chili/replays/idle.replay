@@ -1,0 +1,4 @@
+# chili input v1: sample buttons x y
+# No input at all: the intro movies play through and the front end waits. For listening tests and audio measurements.
+1 0x0 128 128
+end 1000000

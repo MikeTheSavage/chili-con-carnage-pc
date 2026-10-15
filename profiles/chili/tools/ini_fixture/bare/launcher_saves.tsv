@@ -1,0 +1,3323 @@
+# The saves of the launcher's --every-value run (launcher/src/EveryValue.cs), for tools/ini_document_test.cpp:
+# the game's writer (host/ini_document.hpp) must make the launcher's bytes from the same file and changes.
+# Written by: chili_ini_document_test --make-fixture <the folder --every-value wrote into> <this folder>.
+#   S <length> <hash> <second hash>                    start.ini, the file the launcher began with
+#   T <save> <the save its file came from, 0 = start.ini> <changes> <length> <hash> <second hash>   what the launcher wrote
+#   C <section> <key> <set|raw|unset> <value>          one change of the save, in the order made (\t \r \n \\ escaped)
+#   K <file> <save>                                    a settings file the run kept: the file that save left
+# The two [Disc] Path values of the run were replaced by neutral paths afterwards; the rows of those saves
+# were then written from the game's writer.
+S	18	f52a969172825a49	e2fc804ce44a30e6
+T	1	0	2	75	9551ddcc366ed28e	48feded2d821a6f0
+C	Rendering	Fullscreen	set	true
+C	Game	FrameLock	set	1
+T	2	1	1	76	1cd76c2e029706ff	be7acc227e1776a2
+C	Rendering	Fullscreen	set	false
+K	001.ini	2
+T	3	0	2	75	9551ddcc366ed28e	48feded2d821a6f0
+C	Rendering	Fullscreen	set	true
+C	Game	FrameLock	set	1
+K	002.ini	3
+T	4	0	2	75	2494ad29e4e304ff	99f4a966d3159aee
+C	Rendering	InternalScale	set	1
+C	Game	FrameLock	set	1
+T	5	4	1	78	e959a53fd61f438b	64ff7b1b75863573
+C	Rendering	InternalScale	set	auto
+K	003.ini	5
+T	6	0	2	75	2494ad29e4e304ff	99f4a966d3159aee
+C	Rendering	InternalScale	set	1
+C	Game	FrameLock	set	1
+K	004.ini	6
+T	7	0	2	75	7549f1c1275c76d8	8acde3c6ba70970a
+C	Rendering	InternalScale	set	2
+C	Game	FrameLock	set	1
+K	005.ini	7
+T	8	0	2	75	f8b6bf68af67d921	df3580c66080c5c8
+C	Rendering	InternalScale	set	3
+C	Game	FrameLock	set	1
+K	006.ini	8
+T	9	0	2	75	5379275f3f7836aa	2f9c97a27b681c61
+C	Rendering	InternalScale	set	4
+C	Game	FrameLock	set	1
+K	007.ini	9
+T	10	0	2	75	3c8ba66d9f3234ec	027e7ff6cccd2098
+C	Rendering	InternalScale	set	6
+C	Game	FrameLock	set	1
+K	008.ini	10
+T	11	0	2	75	e055c8b1f1f742ae	f27be2a0483e78a4
+C	Rendering	InternalScale	set	8
+C	Game	FrameLock	set	1
+K	009.ini	11
+T	12	0	1	43	e44088d4456bf5fa	0994eac3d5d6dba6
+C	Game	FrameLock	set	2
+K	010.ini	12
+T	13	0	1	43	e44088d4456bf5fa	0994eac3d5d6dba6
+C	Game	FrameLock	set	2
+T	14	13	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	011.ini	14
+T	15	0	2	78	368a10446065d90a	fde00cd20222bc38
+C	Rendering	EarlyPresent	set	false
+C	Game	FrameLock	set	1
+K	012.ini	15
+T	16	0	2	78	368a10446065d90a	fde00cd20222bc38
+C	Rendering	EarlyPresent	set	false
+C	Game	FrameLock	set	1
+T	17	16	1	77	6dd762e82327e665	a249bbc36f0b632d
+C	Rendering	EarlyPresent	set	true
+K	013.ini	17
+T	18	0	2	73	0f168acce788fa95	7812e9e9259f48e0
+C	Rendering	Preset	set	medium
+C	Game	FrameLock	set	1
+T	19	18	1	71	faa517e759806d8c	6a7390d1120ad491
+C	Rendering	Preset	set	high
+K	014.ini	19
+T	20	0	2	73	0f168acce788fa95	7812e9e9259f48e0
+C	Rendering	Preset	set	medium
+C	Game	FrameLock	set	1
+K	015.ini	20
+T	21	0	2	70	708dbe3cf1757f4a	2978cc8fa55b3d97
+C	Rendering	Preset	set	low
+C	Game	FrameLock	set	1
+K	016.ini	21
+T	22	0	3	90	c946b73154caeae9	86107237f0c037aa
+C	Rendering	AntiAliasing	set	off
+C	Rendering	Anisotropy	set	1
+C	Game	FrameLock	set	1
+K	017.ini	22
+T	23	0	2	72	c16266316ab68221	8ce2d1c665fa7b4c
+C	Rendering	Anisotropy	set	4
+C	Game	FrameLock	set	1
+K	018.ini	23
+T	24	0	3	90	c946b73154caeae9	86107237f0c037aa
+C	Rendering	AntiAliasing	set	off
+C	Rendering	Anisotropy	set	1
+C	Game	FrameLock	set	1
+T	25	24	2	92	a3beaaed4aa277c6	2fab159d8fdcafaa
+C	Rendering	AntiAliasing	set	fxaa
+C	Rendering	Anisotropy	set	16
+K	019.ini	25
+T	26	0	3	89	1af8ec9606e0ebd9	2bd4058693312711
+C	Rendering	AntiAliasing	set	msaa4
+C	Rendering	SSAO	set	high
+C	Game	FrameLock	set	1
+K	020.ini	26
+T	27	0	2	76	b2b37b53fdea88c2	68c2aab2fa6c4c9c
+C	Rendering	AntiAliasing	set	off
+C	Game	FrameLock	set	1
+K	021.ini	27
+T	28	0	2	76	b2b37b53fdea88c2	68c2aab2fa6c4c9c
+C	Rendering	AntiAliasing	set	off
+C	Game	FrameLock	set	1
+T	29	28	1	77	6278a9f627fe8643	76ad05b61eddf366
+C	Rendering	AntiAliasing	set	fxaa
+K	022.ini	29
+T	30	0	2	78	465be321c8b0c8e1	b07357f594f2ea84
+C	Rendering	AntiAliasing	set	msaa2
+C	Game	FrameLock	set	1
+K	023.ini	30
+T	31	0	2	78	f1c0fbfc6286a063	190e8d3422d04b3e
+C	Rendering	AntiAliasing	set	msaa4
+C	Game	FrameLock	set	1
+K	024.ini	31
+T	32	0	2	78	5b8b400f5be103c7	ff76b6f2d1733971
+C	Rendering	AntiAliasing	set	msaa8
+C	Game	FrameLock	set	1
+K	025.ini	32
+T	33	0	2	80	005f29d19233dd49	351f58da9d1e1757
+C	Rendering	TextureFilter	set	linear
+C	Game	FrameLock	set	1
+T	34	33	1	78	b30c9025f8c2d280	649086b80d2f2cad
+C	Rendering	TextureFilter	set	game
+K	026.ini	34
+T	35	0	2	80	005f29d19233dd49	351f58da9d1e1757
+C	Rendering	TextureFilter	set	linear
+C	Game	FrameLock	set	1
+K	027.ini	35
+T	36	0	2	81	13903871aefc6d2c	d83feb40a6088d61
+C	Rendering	TextureFilter	set	nearest
+C	Game	FrameLock	set	1
+K	028.ini	36
+T	37	0	2	72	05374d365a80ddec	4974146b3b1baa93
+C	Rendering	Anisotropy	set	1
+C	Game	FrameLock	set	1
+K	029.ini	37
+T	38	0	2	72	79775dbe30237da3	eb6de46b034d9788
+C	Rendering	Anisotropy	set	2
+C	Game	FrameLock	set	1
+K	030.ini	38
+T	39	0	2	72	c16266316ab68221	8ce2d1c665fa7b4c
+C	Rendering	Anisotropy	set	4
+C	Game	FrameLock	set	1
+K	031.ini	39
+T	40	0	2	72	34f06dda955a145d	efe306c7a6d0e222
+C	Rendering	Anisotropy	set	8
+C	Game	FrameLock	set	1
+K	032.ini	40
+T	41	0	2	72	05374d365a80ddec	4974146b3b1baa93
+C	Rendering	Anisotropy	set	1
+C	Game	FrameLock	set	1
+T	42	41	1	73	2c966fa14b15d7be	442426cae6bc8898
+C	Rendering	Anisotropy	set	16
+K	033.ini	42
+T	43	0	2	68	aff170e465e25fb5	47a95e8c2904bfa6
+C	Rendering	SSAO	set	low
+C	Game	FrameLock	set	1
+T	44	43	1	68	f85e2362a8a1918c	ead5c819bd6bb9f5
+C	Rendering	SSAO	set	off
+K	034.ini	44
+T	45	0	2	68	aff170e465e25fb5	47a95e8c2904bfa6
+C	Rendering	SSAO	set	low
+C	Game	FrameLock	set	1
+K	035.ini	45
+T	46	0	2	69	e76e6f585a38fd81	4dd59861f43123ec
+C	Rendering	SSAO	set	high
+C	Game	FrameLock	set	1
+K	036.ini	46
+T	47	0	2	76	72c21db35a27d9c0	415c533964722be6
+C	Rendering	Backend	set	software
+C	Game	FrameLock	set	1
+T	48	47	1	73	12461eb9d41f8abd	0e29f99c3671f367
+C	Rendering	Backend	set	d3d12
+K	037.ini	48
+T	49	0	2	76	72c21db35a27d9c0	415c533964722be6
+C	Rendering	Backend	set	software
+C	Game	FrameLock	set	1
+K	038.ini	49
+T	50	0	2	74	af2da77f362799cc	458d36fdd49d767d
+C	Rendering	GeThread	set	false
+C	Game	FrameLock	set	1
+K	039.ini	50
+T	51	0	2	74	af2da77f362799cc	458d36fdd49d767d
+C	Rendering	GeThread	set	false
+C	Game	FrameLock	set	1
+T	52	51	1	73	771550a60aea7c67	380fd012037d9a1a
+C	Rendering	GeThread	set	true
+K	040.ini	52
+T	53	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+T	54	53	1	74	c5d7f6822db2a195	ceb29308081e36d3
+C	Input	Scheme	set	dual_analog
+K	041.ini	54
+T	55	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+T	56	55	1	74	c5d7f6822db2a195	ceb29308081e36d3
+C	Input	Scheme	set	dual_analog
+K	042.ini	56
+T	57	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+K	043.ini	57
+T	58	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+K	044.ini	58
+T	59	0	2	79	c61a2783456f8ba2	a555e30e9d8c4f6a
+C	Input.Mouse	SensitivityX	set	0.01
+C	Game	FrameLock	set	1
+K	045.ini	59
+T	60	0	2	79	c2ded5148e9e3b1e	c0f4a7fc166493ec
+C	Input.Mouse	SensitivityX	set	0.05
+C	Game	FrameLock	set	1
+K	046.ini	60
+T	61	0	2	79	ec3209fac0f29bee	dfa1ce0952eca2be
+C	Input.Mouse	SensitivityX	set	0.16
+C	Game	FrameLock	set	1
+K	047.ini	61
+T	62	0	2	79	348ff421c970b191	c71316fe3cb9a085
+C	Input.Mouse	SensitivityX	set	0.42
+C	Game	FrameLock	set	1
+K	048.ini	62
+T	63	0	2	76	4bfe16b47e8e5276	90980cc26acfd77c
+C	Input.Mouse	SensitivityX	set	1
+C	Game	FrameLock	set	1
+K	049.ini	63
+T	64	0	2	79	5a24564bc1d55130	7adc47183de8c27f
+C	Input.Mouse	SensitivityX	set	0.07
+C	Game	FrameLock	set	1
+K	050.ini	64
+T	65	0	2	79	3c2f93d8c89328da	31c12d038c997f7f
+C	Input.Mouse	SensitivityX	set	0.09
+C	Game	FrameLock	set	1
+K	051.ini	65
+T	66	0	2	79	22574b12e0e9825d	b2f03a097a89f06e
+C	Input.Mouse	SensitivityY	set	0.01
+C	Game	FrameLock	set	1
+K	052.ini	66
+T	67	0	2	79	341516b1a1b28d69	7d1f08bd41826f6c
+C	Input.Mouse	SensitivityY	set	0.05
+C	Game	FrameLock	set	1
+K	053.ini	67
+T	68	0	2	79	26c8115f61fd7599	32203af33f64a204
+C	Input.Mouse	SensitivityY	set	0.16
+C	Game	FrameLock	set	1
+K	054.ini	68
+T	69	0	2	79	58f893db01560c86	8e70daeaf4cb2841
+C	Input.Mouse	SensitivityY	set	0.42
+C	Game	FrameLock	set	1
+K	055.ini	69
+T	70	0	2	76	34d7ff15caf21833	a305ec33ef4e135b
+C	Input.Mouse	SensitivityY	set	1
+C	Game	FrameLock	set	1
+K	056.ini	70
+T	71	0	2	79	4f5a36f288862d07	ca7236dc44b6a184
+C	Input.Mouse	SensitivityY	set	0.07
+C	Game	FrameLock	set	1
+K	057.ini	71
+T	72	0	2	79	4efe66b9545fb755	c7216cf7c5d83e89
+C	Input.Mouse	SensitivityY	set	0.09
+C	Game	FrameLock	set	1
+K	058.ini	72
+T	73	0	2	74	600598a318a7ac3e	d0258660051c5e15
+C	Input.Mouse	InvertX	set	true
+C	Game	FrameLock	set	1
+K	059.ini	73
+T	74	0	2	74	600598a318a7ac3e	d0258660051c5e15
+C	Input.Mouse	InvertX	set	true
+C	Game	FrameLock	set	1
+T	75	74	1	75	d54be9e7c5c6e4cf	6c18379b42db493c
+C	Input.Mouse	InvertX	set	false
+K	060.ini	75
+T	76	0	2	74	d0213085e9eba0a1	c218ba59d124e24f
+C	Input.Mouse	InvertY	set	true
+C	Game	FrameLock	set	1
+K	061.ini	76
+T	77	0	2	74	d0213085e9eba0a1	c218ba59d124e24f
+C	Input.Mouse	InvertY	set	true
+C	Game	FrameLock	set	1
+T	78	77	1	75	a3d123c415fce7ae	7902bda195f32dd8
+C	Input.Mouse	InvertY	set	false
+K	062.ini	78
+T	79	0	2	77	96103018db09764c	c79c2dbd84753fca
+C	Input.Mouse	HoldPitch	set	false
+C	Game	FrameLock	set	1
+K	063.ini	79
+T	80	0	2	77	96103018db09764c	c79c2dbd84753fca
+C	Input.Mouse	HoldPitch	set	false
+C	Game	FrameLock	set	1
+T	81	80	1	76	5b7325b51bc5ede7	22e3ca8094ef9332
+C	Input.Mouse	HoldPitch	set	true
+K	064.ini	81
+T	82	0	2	60	a305558476eb8d69	d90043eb2a7f2e4d
+C	Game	Camera	set	original
+C	Game	FrameLock	set	1
+T	83	82	1	57	db2dc8ceb1c2adb0	63d1d32dd1c1f282
+C	Game	Camera	set	tight
+K	065.ini	83
+T	84	0	2	60	a305558476eb8d69	d90043eb2a7f2e4d
+C	Game	Camera	set	original
+C	Game	FrameLock	set	1
+K	066.ini	84
+T	85	0	2	73	401cd0779765a7c2	e70abd72c6ff268e
+C	Input.Mouse	Exact	set	false
+C	Game	FrameLock	set	1
+K	067.ini	85
+T	86	0	2	73	401cd0779765a7c2	e70abd72c6ff268e
+C	Input.Mouse	Exact	set	false
+C	Game	FrameLock	set	1
+T	87	86	1	72	34b776ea1ea0b6fd	b24311d8a606783c
+C	Input.Mouse	Exact	set	true
+K	068.ini	87
+T	88	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	069.ini	88
+T	89	0	2	76	7d752b2c6b0619c1	0179db025eb401c4
+C	Input.Mouse	Smoothing	set	0.25
+C	Game	FrameLock	set	1
+K	070.ini	89
+T	90	0	2	76	80f6f7b93fc53477	6662bc32eb4698c9
+C	Input.Mouse	Smoothing	set	0.45
+C	Game	FrameLock	set	1
+K	071.ini	90
+T	91	0	2	75	ea6ee9bcb34c9719	7a5860214a9fc6a9
+C	Input.Mouse	Smoothing	set	0.7
+C	Game	FrameLock	set	1
+K	072.ini	91
+T	92	0	2	76	a00c4c33770b5278	332ec7dc59bf88b2
+C	Input.Mouse	Smoothing	set	0.95
+C	Game	FrameLock	set	1
+K	073.ini	92
+T	93	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	074.ini	93
+T	94	0	2	76	5f4425dac819236b	fbbef256e4b1d4e4
+C	Input.Mouse	Smoothing	set	0.05
+C	Game	FrameLock	set	1
+K	075.ini	94
+T	95	0	2	75	a690356c5c241c86	d0c0d75fa22d10db
+C	Input.Mouse	Capture	set	never
+C	Game	FrameLock	set	1
+T	96	95	1	75	0aee2e61d6f5fb1c	5d67f2924f3d76f9
+C	Input.Mouse	Capture	set	click
+K	076.ini	96
+T	97	0	2	75	a690356c5c241c86	d0c0d75fa22d10db
+C	Input.Mouse	Capture	set	never
+C	Game	FrameLock	set	1
+K	077.ini	97
+T	98	0	2	78	fb1d03542fc5295f	836a8c8c262e0e1e
+C	Input.Mouse	MenuClicks	set	false
+C	Game	FrameLock	set	1
+K	078.ini	98
+T	99	0	2	78	fb1d03542fc5295f	836a8c8c262e0e1e
+C	Input.Mouse	MenuClicks	set	false
+C	Game	FrameLock	set	1
+T	100	99	1	77	ef296d31642cd66e	804dee423450f490
+C	Input.Mouse	MenuClicks	set	true
+K	079.ini	100
+T	101	0	2	75	d87f797681249a8c	44c03239e0d73c5f
+C	Input.Mouse	Enabled	set	false
+C	Game	FrameLock	set	1
+K	080.ini	101
+T	102	0	2	75	d87f797681249a8c	44c03239e0d73c5f
+C	Input.Mouse	Enabled	set	false
+C	Game	FrameLock	set	1
+T	103	102	1	74	cc129b02ed85c927	9ac2f8495c177cce
+C	Input.Mouse	Enabled	set	true
+K	081.ini	103
+T	104	0	2	79	c7ed43d065687f4b	b3574226ba3eeada
+C	Input.Keyboard	WalkScale	set	0.31
+C	Game	FrameLock	set	1
+K	082.ini	104
+T	105	0	2	79	0a5bbd396b056b2b	e40a0698953e4cab
+C	Input.Keyboard	WalkScale	set	0.48
+C	Game	FrameLock	set	1
+K	083.ini	105
+T	106	0	2	79	efd9c2508f1784a7	db1224958aa654f2
+C	Input.Keyboard	WalkScale	set	0.66
+C	Game	FrameLock	set	1
+K	084.ini	106
+T	107	0	2	79	a1348e367c03d8b8	60d75d3905b27a7d
+C	Input.Keyboard	WalkScale	set	0.83
+C	Game	FrameLock	set	1
+K	085.ini	107
+T	108	0	2	76	80aafe4d256e1402	ac9e49eef0e079b1
+C	Input.Keyboard	WalkScale	set	1
+C	Game	FrameLock	set	1
+K	086.ini	108
+T	109	0	2	79	0a2e9015f228766d	531963f15881d44b
+C	Input.Keyboard	WalkScale	set	0.59
+C	Game	FrameLock	set	1
+K	087.ini	109
+T	110	0	2	79	089b624607d58e34	9255dcbf353d2bf7
+C	Input.Keyboard	WalkScale	set	0.61
+C	Game	FrameLock	set	1
+K	088.ini	110
+T	111	0	2	82	c91f5dcec344e3b8	beb91e9d17976f80
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Game	FrameLock	set	1
+K	089.ini	111
+T	112	0	2	81	8d43da7f3bd42edc	b52a76a52afd496f
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Game	FrameLock	set	1
+K	090.ini	112
+T	113	0	2	81	7d735696754d00f6	6ad54db197a7fb8a
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Game	FrameLock	set	1
+K	091.ini	113
+T	114	0	2	82	fd1013c461ce5115	e8518d47b10455b3
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Game	FrameLock	set	1
+K	092.ini	114
+T	115	0	2	79	adc0c66e11ecc498	0c856cdc897ff763
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Game	FrameLock	set	1
+K	093.ini	115
+T	116	0	2	82	72a1f5facb44315a	4673d212ed96cf28
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Game	FrameLock	set	1
+K	094.ini	116
+T	117	0	2	82	fd1013c461ce5115	e8518d47b10455b3
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Game	FrameLock	set	1
+K	095.ini	117
+T	118	0	2	72	4c5c80d118db31a7	b9493b3a473e9536
+C	Input	Prompts	set	keyboard
+C	Game	FrameLock	set	1
+T	119	118	1	68	6e73072455965bf9	eb3af5e8b3db7996
+C	Input	Prompts	set	auto
+K	096.ini	119
+T	120	0	2	72	4c5c80d118db31a7	b9493b3a473e9536
+C	Input	Prompts	set	keyboard
+C	Game	FrameLock	set	1
+K	097.ini	120
+T	121	0	2	71	bb4e890f037459ed	cc662163ddd6c9bf
+C	Input	Prompts	set	gamepad
+C	Game	FrameLock	set	1
+K	098.ini	121
+T	122	0	2	67	1ce6d212662e2945	b20d86ee58893798
+C	Input	Prompts	set	psp
+C	Game	FrameLock	set	1
+K	099.ini	122
+T	123	0	2	75	30384abf31565ad0	70070b6252400541
+C	Input.Gamepad	Glyphs	set	xbox
+C	Game	FrameLock	set	1
+T	124	123	1	75	b5327188cddc1946	5640b3558633fff6
+C	Input.Gamepad	Glyphs	set	auto
+K	100.ini	124
+T	125	0	2	75	30384abf31565ad0	70070b6252400541
+C	Input.Gamepad	Glyphs	set	xbox
+C	Game	FrameLock	set	1
+K	101.ini	125
+T	126	0	2	82	8c67565a356f044f	61f420cbc77271f7
+C	Input.Gamepad	Glyphs	set	playstation
+C	Game	FrameLock	set	1
+K	102.ini	126
+T	127	0	2	71	8c73d28c742dee30	7d78b7ab573e53ba
+C	Input	ExactTurn	set	false
+C	Game	FrameLock	set	1
+K	103.ini	127
+T	128	0	2	71	8c73d28c742dee30	7d78b7ab573e53ba
+C	Input	ExactTurn	set	false
+C	Game	FrameLock	set	1
+T	129	128	1	70	1fe722fec6b720f3	63b250bba8c7d927
+C	Input	ExactTurn	set	true
+K	104.ini	129
+T	130	0	2	76	7709f086bc04d17f	fa7cf0107f3ecbde
+C	Input	BackgroundInput	set	true
+C	Game	FrameLock	set	1
+K	105.ini	130
+T	131	0	2	76	7709f086bc04d17f	fa7cf0107f3ecbde
+C	Input	BackgroundInput	set	true
+C	Game	FrameLock	set	1
+T	132	131	1	77	a745b72617c48c04	7bf3212211be51af
+C	Input	BackgroundInput	set	false
+K	106.ini	132
+T	133	0	2	70	c6f0199d04053308	0915bccb0a80bf17
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+K	107.ini	133
+T	134	0	2	70	c6f0199d04053308	0915bccb0a80bf17
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+T	135	134	1	71	eaa614cebe4c8e69	d6172bee6fb0f09e
+C	Input	ShowInput	set	false
+K	108.ini	135
+T	136	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+T	137	136	1	74	c5d7f6822db2a195	ceb29308081e36d3
+C	Input	Scheme	set	dual_analog
+K	109.ini	137
+T	138	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+T	139	138	1	74	c5d7f6822db2a195	ceb29308081e36d3
+C	Input	Scheme	set	dual_analog
+K	110.ini	139
+T	140	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+K	111.ini	140
+T	141	0	2	66	a1febf4f8a5f5fcd	d3719f3ca9b37117
+C	Input	Scheme	set	psp
+C	Game	FrameLock	set	1
+K	112.ini	141
+T	142	0	2	81	b5b27963e8a29bd4	29000c3e109c7523
+C	Input.Gamepad	TurnSensitivity	set	0
+C	Game	FrameLock	set	1
+K	113.ini	142
+T	143	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	114.ini	143
+T	144	0	2	81	1409774a43b155b2	99210a4f0f272cae
+C	Input.Gamepad	TurnSensitivity	set	2
+C	Game	FrameLock	set	1
+K	115.ini	144
+T	145	0	2	81	77f32d213a297deb	f326acd36d4e8aa2
+C	Input.Gamepad	TurnSensitivity	set	3
+C	Game	FrameLock	set	1
+K	116.ini	145
+T	146	0	2	81	d3afce194822af80	0fc55b25efd86603
+C	Input.Gamepad	TurnSensitivity	set	4
+C	Game	FrameLock	set	1
+K	117.ini	146
+T	147	0	2	84	844a32945dde1fe8	935a82c514969e7a
+C	Input.Gamepad	TurnSensitivity	set	0.95
+C	Game	FrameLock	set	1
+K	118.ini	147
+T	148	0	2	84	793eea28e9564fac	acdbe10ecd85527c
+C	Input.Gamepad	TurnSensitivity	set	1.05
+C	Game	FrameLock	set	1
+K	119.ini	148
+T	149	0	2	81	ed4a42f9ce664310	40b948453de01af4
+C	Input.Gamepad	LookSensitivity	set	0
+C	Game	FrameLock	set	1
+K	120.ini	149
+T	150	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	121.ini	150
+T	151	0	2	81	d7887c51774841fe	a26efe1640dabb57
+C	Input.Gamepad	LookSensitivity	set	2
+C	Game	FrameLock	set	1
+K	122.ini	151
+T	152	0	2	81	78c23bf25f20a757	981a44fccc681634
+C	Input.Gamepad	LookSensitivity	set	3
+C	Game	FrameLock	set	1
+K	123.ini	152
+T	153	0	2	81	627716e180808c24	8519ddb8a714a18f
+C	Input.Gamepad	LookSensitivity	set	4
+C	Game	FrameLock	set	1
+K	124.ini	153
+T	154	0	2	84	884ff9cb5230ee8c	45568e3e581c326f
+C	Input.Gamepad	LookSensitivity	set	0.95
+C	Game	FrameLock	set	1
+K	125.ini	154
+T	155	0	2	84	bbc50b920f4f9cf0	1b2fb3d76f3a6830
+C	Input.Gamepad	LookSensitivity	set	1.05
+C	Game	FrameLock	set	1
+K	126.ini	155
+T	156	0	2	76	991ee32951211179	6f51980fe00a7ddc
+C	Input.Gamepad	InvertY	set	true
+C	Game	FrameLock	set	1
+K	127.ini	156
+T	157	0	2	76	991ee32951211179	6f51980fe00a7ddc
+C	Input.Gamepad	InvertY	set	true
+C	Game	FrameLock	set	1
+T	158	157	1	77	495368ba6c7169a6	81a454ef315ba284
+C	Input.Gamepad	InvertY	set	false
+K	128.ini	158
+T	159	0	2	60	a305558476eb8d69	d90043eb2a7f2e4d
+C	Game	Camera	set	original
+C	Game	FrameLock	set	1
+T	160	159	1	57	db2dc8ceb1c2adb0	63d1d32dd1c1f282
+C	Game	Camera	set	tight
+K	129.ini	160
+T	161	0	2	60	a305558476eb8d69	d90043eb2a7f2e4d
+C	Game	Camera	set	original
+C	Game	FrameLock	set	1
+K	130.ini	161
+T	162	0	2	78	e0eda4096e44ed5b	080977e1d30e9a7e
+C	Input.Gamepad	DeadzoneLeft	set	0
+C	Game	FrameLock	set	1
+K	131.ini	162
+T	163	0	2	81	ff6dd176c0160e7f	130e9f25dc021376
+C	Input.Gamepad	DeadzoneLeft	set	0.22
+C	Game	FrameLock	set	1
+K	132.ini	163
+T	164	0	2	81	c40d196014a19a66	3c34b6a25822ad17
+C	Input.Gamepad	DeadzoneLeft	set	0.45
+C	Game	FrameLock	set	1
+K	133.ini	164
+T	165	0	2	81	61c17864643c7a15	7c06c41b12d9a12b
+C	Input.Gamepad	DeadzoneLeft	set	0.68
+C	Game	FrameLock	set	1
+K	134.ini	165
+T	166	0	2	80	e275f878dcb49318	544d3ef44c7659d3
+C	Input.Gamepad	DeadzoneLeft	set	0.9
+C	Game	FrameLock	set	1
+K	135.ini	166
+T	167	0	2	81	6a8fcf58e4b62246	cc98176e86940fb4
+C	Input.Gamepad	DeadzoneLeft	set	0.23
+C	Game	FrameLock	set	1
+K	136.ini	167
+T	168	0	2	81	1764caba7a653e6c	7e35131df32a918d
+C	Input.Gamepad	DeadzoneLeft	set	0.25
+C	Game	FrameLock	set	1
+K	137.ini	168
+T	169	0	2	79	24dd14cc7c03a188	065a119df109097a
+C	Input.Gamepad	DeadzoneRight	set	0
+C	Game	FrameLock	set	1
+K	138.ini	169
+T	170	0	2	82	b5816f97b844c8ae	14ac335bb91cc34e
+C	Input.Gamepad	DeadzoneRight	set	0.22
+C	Game	FrameLock	set	1
+K	139.ini	170
+T	171	0	2	82	dfcb9b003f57461b	affa1b0a78bf2f68
+C	Input.Gamepad	DeadzoneRight	set	0.45
+C	Game	FrameLock	set	1
+K	140.ini	171
+T	172	0	2	82	cf9d35863565f664	00191b2992e61feb
+C	Input.Gamepad	DeadzoneRight	set	0.68
+C	Game	FrameLock	set	1
+K	141.ini	172
+T	173	0	2	81	4699e46d7083b99f	71610cea91ba66cc
+C	Input.Gamepad	DeadzoneRight	set	0.9
+C	Game	FrameLock	set	1
+K	142.ini	173
+T	174	0	2	82	6e7359d747f59c07	c2ecc7beaa5b3206
+C	Input.Gamepad	DeadzoneRight	set	0.23
+C	Game	FrameLock	set	1
+K	143.ini	174
+T	175	0	2	82	41706df7a058f15d	abbc5c446c43cb0f
+C	Input.Gamepad	DeadzoneRight	set	0.25
+C	Game	FrameLock	set	1
+K	144.ini	175
+T	176	0	2	85	0c1e7ffc22996f2c	aed243c75d8a3a34
+C	Input.Gamepad	TriggerThreshold	set	0.01
+C	Game	FrameLock	set	1
+K	145.ini	176
+T	177	0	2	85	93e2821c34032479	b4603187f5992100
+C	Input.Gamepad	TriggerThreshold	set	0.26
+C	Game	FrameLock	set	1
+K	146.ini	177
+T	178	0	2	84	039596fd6be2dad6	5f1171191a1e77f3
+C	Input.Gamepad	TriggerThreshold	set	0.5
+C	Game	FrameLock	set	1
+K	147.ini	178
+T	179	0	2	85	d9f0c686039ebef5	bfa7691cdfe8f7b4
+C	Input.Gamepad	TriggerThreshold	set	0.75
+C	Game	FrameLock	set	1
+K	148.ini	179
+T	180	0	2	82	0af0fe0ace5ad678	b78058fa600805a6
+C	Input.Gamepad	TriggerThreshold	set	1
+C	Game	FrameLock	set	1
+K	149.ini	180
+T	181	0	2	85	8af6d1d22991378f	5aceb89aed26012f
+C	Input.Gamepad	TriggerThreshold	set	0.11
+C	Game	FrameLock	set	1
+K	150.ini	181
+T	182	0	2	85	494e4e54e35ae031	3e4db42971281fba
+C	Input.Gamepad	TriggerThreshold	set	0.13
+C	Game	FrameLock	set	1
+K	151.ini	182
+T	183	0	2	94	3b9d21cecb8e662e	4808d625cacb1ec0
+C	Input.Gamepad	CompensateEngineDeadzone	set	false
+C	Game	FrameLock	set	1
+K	152.ini	183
+T	184	0	2	94	3b9d21cecb8e662e	4808d625cacb1ec0
+C	Input.Gamepad	CompensateEngineDeadzone	set	false
+C	Game	FrameLock	set	1
+T	185	184	1	93	35636821e473e821	5fccf825027ba0f9
+C	Input.Gamepad	CompensateEngineDeadzone	set	true
+K	153.ini	185
+T	186	0	2	71	bd15de3131d1f9ae	d03bfc63c151af9a
+C	Input.Gamepad	Index	set	0
+C	Game	FrameLock	set	1
+T	187	186	1	74	44e5b3e667f0a9f3	d83ed8fc49e942aa
+C	Input.Gamepad	Index	set	auto
+K	154.ini	187
+T	188	0	2	71	bd15de3131d1f9ae	d03bfc63c151af9a
+C	Input.Gamepad	Index	set	0
+C	Game	FrameLock	set	1
+K	155.ini	188
+T	189	0	2	71	7607c870c182cd07	09fdfb0fc0d89f06
+C	Input.Gamepad	Index	set	1
+C	Game	FrameLock	set	1
+K	156.ini	189
+T	190	0	2	71	f23643f12af72440	486ec051b0af2460
+C	Input.Gamepad	Index	set	2
+C	Game	FrameLock	set	1
+K	157.ini	190
+T	191	0	2	71	5ac2a82fdaaf2d69	2e2e975098a8c8ee
+C	Input.Gamepad	Index	set	3
+C	Game	FrameLock	set	1
+K	158.ini	191
+T	192	0	2	85	2590880030735ddb	c0332b26960c078d
+C	Input.Gamepad	PlayStationPads	set	false
+C	Game	FrameLock	set	1
+K	159.ini	192
+T	193	0	2	85	2590880030735ddb	c0332b26960c078d
+C	Input.Gamepad	PlayStationPads	set	false
+C	Game	FrameLock	set	1
+T	194	193	1	84	0949d4be8051ac62	09e583d6cd0fb3f7
+C	Input.Gamepad	PlayStationPads	set	true
+K	160.ini	194
+T	195	0	2	72	482a51022af9a1af	7004ac18acb65ef1
+C	Input.Gamepad	Rumble	set	0
+C	Game	FrameLock	set	1
+K	161.ini	195
+T	196	0	2	75	307c9c10a21094f8	0facf6285b01a178
+C	Input.Gamepad	Rumble	set	0.25
+C	Game	FrameLock	set	1
+K	162.ini	196
+T	197	0	2	74	a483028d8f54bdc8	fae41bbf40464b87
+C	Input.Gamepad	Rumble	set	0.5
+C	Game	FrameLock	set	1
+K	163.ini	197
+T	198	0	2	75	f886c4c1dacd8d9f	83115c699472a2d1
+C	Input.Gamepad	Rumble	set	0.75
+C	Game	FrameLock	set	1
+K	164.ini	198
+T	199	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	165.ini	199
+T	200	0	2	75	0de57b09960b5c41	2da80ab539744579
+C	Input.Gamepad	Rumble	set	0.95
+C	Game	FrameLock	set	1
+K	166.ini	200
+T	201	0	1	43	ca146fd4368b6bbf	af212977bac01a03
+C	Game	FrameLock	set	1
+K	167.ini	201
+T	202	0	2	77	28cb97ede36d0d94	cd87394560bfe71c
+C	Input.Gamepad	Enabled	set	false
+C	Game	FrameLock	set	1
+K	168.ini	202
+T	203	0	2	77	28cb97ede36d0d94	cd87394560bfe71c
+C	Input.Gamepad	Enabled	set	false
+C	Game	FrameLock	set	1
+T	204	203	1	76	70721eff445137ef	6598fa38b8d86da3
+C	Input.Gamepad	Enabled	set	true
+K	169.ini	204
+T	205	0	2	72	4c5c80d118db31a7	b9493b3a473e9536
+C	Input	Prompts	set	keyboard
+C	Game	FrameLock	set	1
+T	206	205	1	68	6e73072455965bf9	eb3af5e8b3db7996
+C	Input	Prompts	set	auto
+K	170.ini	206
+T	207	0	2	72	4c5c80d118db31a7	b9493b3a473e9536
+C	Input	Prompts	set	keyboard
+C	Game	FrameLock	set	1
+K	171.ini	207
+T	208	0	2	71	bb4e890f037459ed	cc662163ddd6c9bf
+C	Input	Prompts	set	gamepad
+C	Game	FrameLock	set	1
+K	172.ini	208
+T	209	0	2	67	1ce6d212662e2945	b20d86ee58893798
+C	Input	Prompts	set	psp
+C	Game	FrameLock	set	1
+K	173.ini	209
+T	210	0	2	75	30384abf31565ad0	70070b6252400541
+C	Input.Gamepad	Glyphs	set	xbox
+C	Game	FrameLock	set	1
+T	211	210	1	75	b5327188cddc1946	5640b3558633fff6
+C	Input.Gamepad	Glyphs	set	auto
+K	174.ini	211
+T	212	0	2	75	30384abf31565ad0	70070b6252400541
+C	Input.Gamepad	Glyphs	set	xbox
+C	Game	FrameLock	set	1
+K	175.ini	212
+T	213	0	2	82	8c67565a356f044f	61f420cbc77271f7
+C	Input.Gamepad	Glyphs	set	playstation
+C	Game	FrameLock	set	1
+K	176.ini	213
+T	214	0	2	71	8c73d28c742dee30	7d78b7ab573e53ba
+C	Input	ExactTurn	set	false
+C	Game	FrameLock	set	1
+K	177.ini	214
+T	215	0	2	71	8c73d28c742dee30	7d78b7ab573e53ba
+C	Input	ExactTurn	set	false
+C	Game	FrameLock	set	1
+T	216	215	1	70	1fe722fec6b720f3	63b250bba8c7d927
+C	Input	ExactTurn	set	true
+K	178.ini	216
+T	217	0	2	76	7709f086bc04d17f	fa7cf0107f3ecbde
+C	Input	BackgroundInput	set	true
+C	Game	FrameLock	set	1
+K	179.ini	217
+T	218	0	2	76	7709f086bc04d17f	fa7cf0107f3ecbde
+C	Input	BackgroundInput	set	true
+C	Game	FrameLock	set	1
+T	219	218	1	77	a745b72617c48c04	7bf3212211be51af
+C	Input	BackgroundInput	set	false
+K	180.ini	219
+T	220	0	2	70	c6f0199d04053308	0915bccb0a80bf17
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+K	181.ini	220
+T	221	0	2	70	c6f0199d04053308	0915bccb0a80bf17
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+T	222	221	1	71	eaa614cebe4c8e69	d6172bee6fb0f09e
+C	Input	ShowInput	set	false
+K	182.ini	222
+T	223	0	2	83	c7b3f68866aa215d	eb1987e4314ba801
+C	Mods	Enabled	set	camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	183.ini	223
+T	224	0	2	83	c7b3f68866aa215d	eb1987e4314ba801
+C	Mods	Enabled	set	camera_mod,empty_mod
+C	Game	FrameLock	set	1
+T	225	224	1	93	4d40757aa560c63f	910900692b5c3093
+C	Mods	Enabled	set	beta_pack,camera_mod,empty_mod
+K	184.ini	225
+T	226	0	2	94	f19df912cfcc7e5b	f8d2d0b166ccf179
+C	Mods	Enabled	set	alpha_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	185.ini	226
+T	227	0	2	93	4d40757aa560c63f	910900692b5c3093
+C	Mods	Enabled	set	beta_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	186.ini	227
+T	228	0	2	93	4d40757aa560c63f	910900692b5c3093
+C	Mods	Enabled	set	beta_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	187.ini	228
+T	229	0	2	93	4d40757aa560c63f	910900692b5c3093
+C	Mods	Enabled	set	beta_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+T	230	229	1	95	c98012bbf88c4cd6	e76cd4ed0d8b8259
+C	Mods	Enabled	unset	
+K	188.ini	230
+T	231	0	2	104	534eee84af9c89e5	9ccbb66278d57148
+C	Mods	Enabled	set	beta_pack,alpha_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	189.ini	231
+T	232	0	2	94	f19df912cfcc7e5b	f8d2d0b166ccf179
+C	Mods	Enabled	set	alpha_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	190.ini	232
+T	233	0	2	94	f19df912cfcc7e5b	f8d2d0b166ccf179
+C	Mods	Enabled	set	alpha_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+T	234	233	1	96	5f234c6d797b8234	c75a41ad4b377e08
+C	Mods	Enabled	unset	
+K	191.ini	234
+T	235	0	2	104	534eee84af9c89e5	9ccbb66278d57148
+C	Mods	Enabled	set	beta_pack,alpha_pack,camera_mod,empty_mod
+C	Game	FrameLock	set	1
+K	192.ini	235
+T	236	0	2	104	0918662ee5706511	291fabda8b1d01aa
+C	Mods	Enabled	set	alpha_pack,camera_mod,beta_pack,empty_mod
+C	Game	FrameLock	set	1
+K	193.ini	236
+T	237	0	2	93	5cd539909a61337f	642b6e322dd5da68
+C	Mods	Enabled	set	alpha_pack,beta_pack,empty_mod
+C	Game	FrameLock	set	1
+K	194.ini	237
+T	238	0	2	93	5cd539909a61337f	642b6e322dd5da68
+C	Mods	Enabled	set	alpha_pack,beta_pack,empty_mod
+C	Game	FrameLock	set	1
+T	239	238	1	95	0e4ae77c4b44a8fe	33ed8a74b82b2378
+C	Mods	Enabled	unset	
+K	195.ini	239
+T	240	0	2	104	0918662ee5706511	291fabda8b1d01aa
+C	Mods	Enabled	set	alpha_pack,camera_mod,beta_pack,empty_mod
+C	Game	FrameLock	set	1
+K	196.ini	240
+T	241	0	2	104	ad5fb090868b0a79	d73be98f42556710
+C	Mods	Enabled	set	alpha_pack,beta_pack,empty_mod,camera_mod
+C	Game	FrameLock	set	1
+K	197.ini	241
+T	242	0	2	72	b2082c8d06725006	8d3d40cf20e53117
+C	Mods	DumpTextures	set	true
+C	Game	FrameLock	set	1
+K	198.ini	242
+T	243	0	2	72	b2082c8d06725006	8d3d40cf20e53117
+C	Mods	DumpTextures	set	true
+C	Game	FrameLock	set	1
+T	244	243	1	73	77ad51bc3d0c87b7	1d2b95f7f7fbf76a
+C	Mods	DumpTextures	set	false
+K	199.ini	244
+T	245	0	2	68	ccb72c3ce3c408d9	f5f9c08ea5836496
+C	Mods	LogFiles	set	true
+C	Game	FrameLock	set	1
+K	200.ini	245
+T	246	0	2	68	ccb72c3ce3c408d9	f5f9c08ea5836496
+C	Mods	LogFiles	set	true
+C	Game	FrameLock	set	1
+T	247	246	1	69	e55132a3b7d9ee06	d986ec96e4312d7f
+C	Mods	LogFiles	set	false
+K	201.ini	247
+T	248	0	2	67	dfbdd4ce8b2ee0f5	759b2133ecb75355
+C	Audio	BufferMs	set	20
+C	Game	FrameLock	set	1
+K	202.ini	248
+T	249	0	2	67	61bb8099b260a8ef	e171ecdaa177bee8
+C	Audio	BufferMs	set	40
+C	Game	FrameLock	set	1
+K	203.ini	249
+T	250	0	2	68	2243ea76f32d9b1c	0c1b60bc1c71eb5a
+C	Audio	BufferMs	set	100
+C	Game	FrameLock	set	1
+K	204.ini	250
+T	251	0	2	68	503155270e1314e5	fa59baef8708a44f
+C	Audio	BufferMs	set	220
+C	Game	FrameLock	set	1
+K	205.ini	251
+T	252	0	2	68	8639968bac009168	7be702919a1a2032
+C	Audio	BufferMs	set	500
+C	Game	FrameLock	set	1
+K	206.ini	252
+T	253	0	2	67	6360fb9dac2a84b9	9e2d3113a4691a6d
+C	Audio	BufferMs	set	60
+C	Game	FrameLock	set	1
+K	207.ini	253
+T	254	0	2	67	2dd1d8e9a912a733	b7dfe562e377174e
+C	Audio	BufferMs	set	80
+C	Game	FrameLock	set	1
+K	208.ini	254
+T	255	0	2	60	4a66740f38ae84ce	686ecb4cd01d43ca
+C	Game	Priority	set	normal
+C	Game	FrameLock	set	1
+K	209.ini	255
+T	256	0	2	60	4a66740f38ae84ce	686ecb4cd01d43ca
+C	Game	Priority	set	normal
+C	Game	FrameLock	set	1
+T	257	256	1	58	7ca99aece3ca867f	78df187fc1a322a6
+C	Game	Priority	set	high
+K	210.ini	257
+T	258	0	12	300	deb3f548733d0e74	a0228340b485d3ef
+C	Input.Mouse	SensitivityX	set	0.01
+C	Input.Mouse	SensitivityY	set	0.01
+C	Input.Keyboard	WalkScale	set	0.31
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Input.Gamepad	TurnSensitivity	set	0
+C	Input.Gamepad	LookSensitivity	set	0
+C	Input.Gamepad	DeadzoneLeft	set	0
+C	Input.Gamepad	DeadzoneRight	set	0
+C	Input.Gamepad	TriggerThreshold	set	0.01
+C	Input.Gamepad	Rumble	set	0
+C	Audio	BufferMs	set	20
+C	Game	FrameLock	set	1
+K	211.ini	258
+T	259	0	13	330	e947f49814348389	ce930928cc7b26de
+C	Input.Mouse	SensitivityX	set	0.02
+C	Input.Mouse	SensitivityY	set	0.02
+C	Input.Mouse	Smoothing	set	0.05
+C	Input.Keyboard	WalkScale	set	0.32
+C	Input.Keyboard	LookKeySpeed	set	0.1
+C	Input.Gamepad	TurnSensitivity	set	0.05
+C	Input.Gamepad	LookSensitivity	set	0.05
+C	Input.Gamepad	DeadzoneLeft	set	0.01
+C	Input.Gamepad	DeadzoneRight	set	0.01
+C	Input.Gamepad	TriggerThreshold	set	0.02
+C	Input.Gamepad	Rumble	set	0.05
+C	Audio	BufferMs	set	30
+C	Game	FrameLock	set	1
+K	212.ini	259
+T	260	0	13	327	9351e9c50a4d4649	f5b90e38264ced49
+C	Input.Mouse	SensitivityX	set	0.03
+C	Input.Mouse	SensitivityY	set	0.03
+C	Input.Mouse	Smoothing	set	0.1
+C	Input.Keyboard	WalkScale	set	0.33
+C	Input.Keyboard	LookKeySpeed	set	0.15
+C	Input.Gamepad	TurnSensitivity	set	0.1
+C	Input.Gamepad	LookSensitivity	set	0.1
+C	Input.Gamepad	DeadzoneLeft	set	0.02
+C	Input.Gamepad	DeadzoneRight	set	0.02
+C	Input.Gamepad	TriggerThreshold	set	0.03
+C	Input.Gamepad	Rumble	set	0.1
+C	Audio	BufferMs	set	40
+C	Game	FrameLock	set	1
+K	213.ini	260
+T	261	0	13	330	9c0657d4252f5a9c	7e611e3c3f9a935e
+C	Input.Mouse	SensitivityX	set	0.04
+C	Input.Mouse	SensitivityY	set	0.04
+C	Input.Mouse	Smoothing	set	0.15
+C	Input.Keyboard	WalkScale	set	0.34
+C	Input.Keyboard	LookKeySpeed	set	0.2
+C	Input.Gamepad	TurnSensitivity	set	0.15
+C	Input.Gamepad	LookSensitivity	set	0.15
+C	Input.Gamepad	DeadzoneLeft	set	0.03
+C	Input.Gamepad	DeadzoneRight	set	0.03
+C	Input.Gamepad	TriggerThreshold	set	0.04
+C	Input.Gamepad	Rumble	set	0.15
+C	Audio	BufferMs	set	50
+C	Game	FrameLock	set	1
+K	214.ini	261
+T	262	0	13	327	caf140c70ec45a06	16779a98932fc64c
+C	Input.Mouse	SensitivityX	set	0.05
+C	Input.Mouse	SensitivityY	set	0.05
+C	Input.Mouse	Smoothing	set	0.2
+C	Input.Keyboard	WalkScale	set	0.35
+C	Input.Keyboard	LookKeySpeed	set	0.25
+C	Input.Gamepad	TurnSensitivity	set	0.2
+C	Input.Gamepad	LookSensitivity	set	0.2
+C	Input.Gamepad	DeadzoneLeft	set	0.04
+C	Input.Gamepad	DeadzoneRight	set	0.04
+C	Input.Gamepad	TriggerThreshold	set	0.05
+C	Input.Gamepad	Rumble	set	0.2
+C	Audio	BufferMs	set	60
+C	Game	FrameLock	set	1
+K	215.ini	262
+T	263	0	12	306	7ad1b8904f4a569e	274eb2822b8b6b3c
+C	Input.Mouse	SensitivityX	set	0.06
+C	Input.Mouse	SensitivityY	set	0.06
+C	Input.Mouse	Smoothing	set	0.25
+C	Input.Keyboard	WalkScale	set	0.36
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Input.Gamepad	TurnSensitivity	set	0.25
+C	Input.Gamepad	LookSensitivity	set	0.25
+C	Input.Gamepad	DeadzoneLeft	set	0.05
+C	Input.Gamepad	DeadzoneRight	set	0.05
+C	Input.Gamepad	TriggerThreshold	set	0.06
+C	Input.Gamepad	Rumble	set	0.25
+C	Game	FrameLock	set	1
+K	216.ini	263
+T	264	0	13	327	f6bc6e273688775f	fec01c0808defe86
+C	Input.Mouse	SensitivityX	set	0.07
+C	Input.Mouse	SensitivityY	set	0.07
+C	Input.Mouse	Smoothing	set	0.3
+C	Input.Keyboard	WalkScale	set	0.37
+C	Input.Keyboard	LookKeySpeed	set	0.35
+C	Input.Gamepad	TurnSensitivity	set	0.3
+C	Input.Gamepad	LookSensitivity	set	0.3
+C	Input.Gamepad	DeadzoneLeft	set	0.06
+C	Input.Gamepad	DeadzoneRight	set	0.06
+C	Input.Gamepad	TriggerThreshold	set	0.07
+C	Input.Gamepad	Rumble	set	0.3
+C	Audio	BufferMs	set	80
+C	Game	FrameLock	set	1
+K	217.ini	264
+T	265	0	11	292	74ea7d0d86fbd357	33141944bccfdba7
+C	Input.Mouse	Smoothing	set	0.35
+C	Input.Keyboard	WalkScale	set	0.38
+C	Input.Keyboard	LookKeySpeed	set	0.4
+C	Input.Gamepad	TurnSensitivity	set	0.35
+C	Input.Gamepad	LookSensitivity	set	0.35
+C	Input.Gamepad	DeadzoneLeft	set	0.07
+C	Input.Gamepad	DeadzoneRight	set	0.07
+C	Input.Gamepad	TriggerThreshold	set	0.08
+C	Input.Gamepad	Rumble	set	0.35
+C	Audio	BufferMs	set	90
+C	Game	FrameLock	set	1
+K	218.ini	265
+T	266	0	13	328	68e436c34bad8927	fc3fe8bb0a7a1dc4
+C	Input.Mouse	SensitivityX	set	0.09
+C	Input.Mouse	SensitivityY	set	0.09
+C	Input.Mouse	Smoothing	set	0.4
+C	Input.Keyboard	WalkScale	set	0.39
+C	Input.Keyboard	LookKeySpeed	set	0.45
+C	Input.Gamepad	TurnSensitivity	set	0.4
+C	Input.Gamepad	LookSensitivity	set	0.4
+C	Input.Gamepad	DeadzoneLeft	set	0.08
+C	Input.Gamepad	DeadzoneRight	set	0.08
+C	Input.Gamepad	TriggerThreshold	set	0.09
+C	Input.Gamepad	Rumble	set	0.4
+C	Audio	BufferMs	set	100
+C	Game	FrameLock	set	1
+K	219.ini	266
+T	267	0	13	327	7799716abc61917e	12b121f83f83af91
+C	Input.Mouse	SensitivityX	set	0.1
+C	Input.Mouse	SensitivityY	set	0.1
+C	Input.Mouse	Smoothing	set	0.45
+C	Input.Keyboard	WalkScale	set	0.4
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Input.Gamepad	TurnSensitivity	set	0.45
+C	Input.Gamepad	LookSensitivity	set	0.45
+C	Input.Gamepad	DeadzoneLeft	set	0.09
+C	Input.Gamepad	DeadzoneRight	set	0.09
+C	Input.Gamepad	TriggerThreshold	set	0.1
+C	Input.Gamepad	Rumble	set	0.45
+C	Audio	BufferMs	set	110
+C	Game	FrameLock	set	1
+K	220.ini	267
+T	268	0	13	326	37d8c5016ced24be	37528ff59cec6a5f
+C	Input.Mouse	SensitivityX	set	0.11
+C	Input.Mouse	SensitivityY	set	0.11
+C	Input.Mouse	Smoothing	set	0.5
+C	Input.Keyboard	WalkScale	set	0.41
+C	Input.Keyboard	LookKeySpeed	set	0.55
+C	Input.Gamepad	TurnSensitivity	set	0.5
+C	Input.Gamepad	LookSensitivity	set	0.5
+C	Input.Gamepad	DeadzoneLeft	set	0.1
+C	Input.Gamepad	DeadzoneRight	set	0.1
+C	Input.Gamepad	TriggerThreshold	set	0.11
+C	Input.Gamepad	Rumble	set	0.5
+C	Audio	BufferMs	set	120
+C	Game	FrameLock	set	1
+K	221.ini	268
+T	269	0	12	308	49cbee1bfa921095	e586d675874a06b7
+C	Input.Mouse	SensitivityX	set	0.12
+C	Input.Mouse	SensitivityY	set	0.12
+C	Input.Mouse	Smoothing	set	0.55
+C	Input.Keyboard	WalkScale	set	0.42
+C	Input.Keyboard	LookKeySpeed	set	0.6
+C	Input.Gamepad	TurnSensitivity	set	0.55
+C	Input.Gamepad	LookSensitivity	set	0.55
+C	Input.Gamepad	DeadzoneLeft	set	0.11
+C	Input.Gamepad	DeadzoneRight	set	0.11
+C	Input.Gamepad	Rumble	set	0.55
+C	Audio	BufferMs	set	130
+C	Game	FrameLock	set	1
+K	222.ini	269
+T	270	0	13	328	03ed272ad021e899	89a6572d19aa659e
+C	Input.Mouse	SensitivityX	set	0.13
+C	Input.Mouse	SensitivityY	set	0.13
+C	Input.Mouse	Smoothing	set	0.6
+C	Input.Keyboard	WalkScale	set	0.43
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Input.Gamepad	TurnSensitivity	set	0.6
+C	Input.Gamepad	LookSensitivity	set	0.6
+C	Input.Gamepad	DeadzoneLeft	set	0.12
+C	Input.Gamepad	DeadzoneRight	set	0.12
+C	Input.Gamepad	TriggerThreshold	set	0.13
+C	Input.Gamepad	Rumble	set	0.6
+C	Audio	BufferMs	set	140
+C	Game	FrameLock	set	1
+K	223.ini	270
+T	271	0	12	313	c6e2cb0aefe00902	2342d8347bd6be5c
+C	Input.Mouse	SensitivityX	set	0.14
+C	Input.Mouse	SensitivityY	set	0.14
+C	Input.Mouse	Smoothing	set	0.65
+C	Input.Keyboard	WalkScale	set	0.44
+C	Input.Gamepad	TurnSensitivity	set	0.65
+C	Input.Gamepad	LookSensitivity	set	0.65
+C	Input.Gamepad	DeadzoneLeft	set	0.13
+C	Input.Gamepad	DeadzoneRight	set	0.13
+C	Input.Gamepad	TriggerThreshold	set	0.14
+C	Input.Gamepad	Rumble	set	0.65
+C	Audio	BufferMs	set	150
+C	Game	FrameLock	set	1
+K	224.ini	271
+T	272	0	13	328	647196a021fff802	bdde306f17a2ba83
+C	Input.Mouse	SensitivityX	set	0.15
+C	Input.Mouse	SensitivityY	set	0.15
+C	Input.Mouse	Smoothing	set	0.7
+C	Input.Keyboard	WalkScale	set	0.45
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Input.Gamepad	TurnSensitivity	set	0.7
+C	Input.Gamepad	LookSensitivity	set	0.7
+C	Input.Gamepad	DeadzoneLeft	set	0.14
+C	Input.Gamepad	DeadzoneRight	set	0.14
+C	Input.Gamepad	TriggerThreshold	set	0.15
+C	Input.Gamepad	Rumble	set	0.7
+C	Audio	BufferMs	set	160
+C	Game	FrameLock	set	1
+K	225.ini	272
+T	273	0	13	331	6b8f772316b299cd	8138c63b111b3eab
+C	Input.Mouse	SensitivityX	set	0.16
+C	Input.Mouse	SensitivityY	set	0.16
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Keyboard	WalkScale	set	0.46
+C	Input.Keyboard	LookKeySpeed	set	0.8
+C	Input.Gamepad	TurnSensitivity	set	0.75
+C	Input.Gamepad	LookSensitivity	set	0.75
+C	Input.Gamepad	DeadzoneLeft	set	0.15
+C	Input.Gamepad	DeadzoneRight	set	0.15
+C	Input.Gamepad	TriggerThreshold	set	0.16
+C	Input.Gamepad	Rumble	set	0.75
+C	Audio	BufferMs	set	170
+C	Game	FrameLock	set	1
+K	226.ini	273
+T	274	0	13	328	cc948e4e5f019ffb	9b6e56780f392316
+C	Input.Mouse	SensitivityX	set	0.17
+C	Input.Mouse	SensitivityY	set	0.17
+C	Input.Mouse	Smoothing	set	0.8
+C	Input.Keyboard	WalkScale	set	0.47
+C	Input.Keyboard	LookKeySpeed	set	0.85
+C	Input.Gamepad	TurnSensitivity	set	0.8
+C	Input.Gamepad	LookSensitivity	set	0.8
+C	Input.Gamepad	DeadzoneLeft	set	0.16
+C	Input.Gamepad	DeadzoneRight	set	0.16
+C	Input.Gamepad	TriggerThreshold	set	0.17
+C	Input.Gamepad	Rumble	set	0.8
+C	Audio	BufferMs	set	180
+C	Game	FrameLock	set	1
+K	227.ini	274
+T	275	0	13	331	4ef74e8125dbad00	b2561f9f98d31316
+C	Input.Mouse	SensitivityX	set	0.18
+C	Input.Mouse	SensitivityY	set	0.18
+C	Input.Mouse	Smoothing	set	0.85
+C	Input.Keyboard	WalkScale	set	0.48
+C	Input.Keyboard	LookKeySpeed	set	0.9
+C	Input.Gamepad	TurnSensitivity	set	0.85
+C	Input.Gamepad	LookSensitivity	set	0.85
+C	Input.Gamepad	DeadzoneLeft	set	0.17
+C	Input.Gamepad	DeadzoneRight	set	0.17
+C	Input.Gamepad	TriggerThreshold	set	0.18
+C	Input.Gamepad	Rumble	set	0.85
+C	Audio	BufferMs	set	190
+C	Game	FrameLock	set	1
+K	228.ini	275
+T	276	0	13	328	f461901796476265	e02e46ba1d9489cf
+C	Input.Mouse	SensitivityX	set	0.19
+C	Input.Mouse	SensitivityY	set	0.19
+C	Input.Mouse	Smoothing	set	0.9
+C	Input.Keyboard	WalkScale	set	0.49
+C	Input.Keyboard	LookKeySpeed	set	0.95
+C	Input.Gamepad	TurnSensitivity	set	0.9
+C	Input.Gamepad	LookSensitivity	set	0.9
+C	Input.Gamepad	DeadzoneLeft	set	0.18
+C	Input.Gamepad	DeadzoneRight	set	0.18
+C	Input.Gamepad	TriggerThreshold	set	0.19
+C	Input.Gamepad	Rumble	set	0.9
+C	Audio	BufferMs	set	200
+C	Game	FrameLock	set	1
+K	229.ini	276
+T	277	0	13	325	3599b711f877f5e5	abd081bca71ec189
+C	Input.Mouse	SensitivityX	set	0.2
+C	Input.Mouse	SensitivityY	set	0.2
+C	Input.Mouse	Smoothing	set	0.95
+C	Input.Keyboard	WalkScale	set	0.5
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Input.Gamepad	TurnSensitivity	set	0.95
+C	Input.Gamepad	LookSensitivity	set	0.95
+C	Input.Gamepad	DeadzoneLeft	set	0.19
+C	Input.Gamepad	DeadzoneRight	set	0.19
+C	Input.Gamepad	TriggerThreshold	set	0.2
+C	Input.Gamepad	Rumble	set	0.95
+C	Audio	BufferMs	set	210
+C	Game	FrameLock	set	1
+K	230.ini	277
+T	278	0	9	257	a9eeac708554f825	d173524c1eea5184
+C	Input.Mouse	SensitivityX	set	0.21
+C	Input.Mouse	SensitivityY	set	0.21
+C	Input.Keyboard	WalkScale	set	0.51
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Input.Gamepad	DeadzoneLeft	set	0.2
+C	Input.Gamepad	DeadzoneRight	set	0.2
+C	Input.Gamepad	TriggerThreshold	set	0.21
+C	Audio	BufferMs	set	220
+C	Game	FrameLock	set	1
+K	231.ini	278
+T	279	0	13	328	a3a68dc39fca33c0	a2f1b7602147c6ec
+C	Input.Mouse	SensitivityX	set	0.22
+C	Input.Mouse	SensitivityY	set	0.22
+C	Input.Mouse	Smoothing	set	0.05
+C	Input.Keyboard	WalkScale	set	0.52
+C	Input.Keyboard	LookKeySpeed	set	0.1
+C	Input.Gamepad	TurnSensitivity	set	1.05
+C	Input.Gamepad	LookSensitivity	set	1.05
+C	Input.Gamepad	DeadzoneLeft	set	0.21
+C	Input.Gamepad	DeadzoneRight	set	0.21
+C	Input.Gamepad	TriggerThreshold	set	0.22
+C	Input.Gamepad	Rumble	set	0
+C	Audio	BufferMs	set	230
+C	Game	FrameLock	set	1
+K	232.ini	279
+T	280	0	13	329	eed6e37ca740dfb3	21263ae26e4707b0
+C	Input.Mouse	SensitivityX	set	0.23
+C	Input.Mouse	SensitivityY	set	0.23
+C	Input.Mouse	Smoothing	set	0.1
+C	Input.Keyboard	WalkScale	set	0.53
+C	Input.Keyboard	LookKeySpeed	set	0.15
+C	Input.Gamepad	TurnSensitivity	set	1.1
+C	Input.Gamepad	LookSensitivity	set	1.1
+C	Input.Gamepad	DeadzoneLeft	set	0.22
+C	Input.Gamepad	DeadzoneRight	set	0.22
+C	Input.Gamepad	TriggerThreshold	set	0.23
+C	Input.Gamepad	Rumble	set	0.05
+C	Audio	BufferMs	set	240
+C	Game	FrameLock	set	1
+K	233.ini	280
+T	281	0	13	330	839fa78c7e0d746b	1c9b83a64c22b3b8
+C	Input.Mouse	SensitivityX	set	0.24
+C	Input.Mouse	SensitivityY	set	0.24
+C	Input.Mouse	Smoothing	set	0.15
+C	Input.Keyboard	WalkScale	set	0.54
+C	Input.Keyboard	LookKeySpeed	set	0.2
+C	Input.Gamepad	TurnSensitivity	set	1.15
+C	Input.Gamepad	LookSensitivity	set	1.15
+C	Input.Gamepad	DeadzoneLeft	set	0.23
+C	Input.Gamepad	DeadzoneRight	set	0.23
+C	Input.Gamepad	TriggerThreshold	set	0.24
+C	Input.Gamepad	Rumble	set	0.1
+C	Audio	BufferMs	set	250
+C	Game	FrameLock	set	1
+K	234.ini	281
+T	282	0	11	290	ab0a132143fae095	dff0b173a4c47493
+C	Input.Mouse	SensitivityX	set	0.25
+C	Input.Mouse	SensitivityY	set	0.25
+C	Input.Mouse	Smoothing	set	0.2
+C	Input.Keyboard	WalkScale	set	0.55
+C	Input.Keyboard	LookKeySpeed	set	0.25
+C	Input.Gamepad	TurnSensitivity	set	1.2
+C	Input.Gamepad	LookSensitivity	set	1.2
+C	Input.Gamepad	TriggerThreshold	set	0.25
+C	Input.Gamepad	Rumble	set	0.15
+C	Audio	BufferMs	set	260
+C	Game	FrameLock	set	1
+K	235.ini	282
+T	283	0	13	330	8728a3366cfcd200	72981f1e5e1e74e6
+C	Input.Mouse	SensitivityX	set	0.26
+C	Input.Mouse	SensitivityY	set	0.26
+C	Input.Mouse	Smoothing	set	0.25
+C	Input.Keyboard	WalkScale	set	0.56
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Input.Gamepad	TurnSensitivity	set	1.25
+C	Input.Gamepad	LookSensitivity	set	1.25
+C	Input.Gamepad	DeadzoneLeft	set	0.25
+C	Input.Gamepad	DeadzoneRight	set	0.25
+C	Input.Gamepad	TriggerThreshold	set	0.26
+C	Input.Gamepad	Rumble	set	0.2
+C	Audio	BufferMs	set	270
+C	Game	FrameLock	set	1
+K	236.ini	283
+T	284	0	13	329	590e68e849509915	f0e2e93a0cfd46d8
+C	Input.Mouse	SensitivityX	set	0.27
+C	Input.Mouse	SensitivityY	set	0.27
+C	Input.Mouse	Smoothing	set	0.3
+C	Input.Keyboard	WalkScale	set	0.57
+C	Input.Keyboard	LookKeySpeed	set	0.35
+C	Input.Gamepad	TurnSensitivity	set	1.3
+C	Input.Gamepad	LookSensitivity	set	1.3
+C	Input.Gamepad	DeadzoneLeft	set	0.26
+C	Input.Gamepad	DeadzoneRight	set	0.26
+C	Input.Gamepad	TriggerThreshold	set	0.27
+C	Input.Gamepad	Rumble	set	0.25
+C	Audio	BufferMs	set	280
+C	Game	FrameLock	set	1
+K	237.ini	284
+T	285	0	13	330	789fbe28c1fcc039	6d687bc544aa3e5d
+C	Input.Mouse	SensitivityX	set	0.28
+C	Input.Mouse	SensitivityY	set	0.28
+C	Input.Mouse	Smoothing	set	0.35
+C	Input.Keyboard	WalkScale	set	0.58
+C	Input.Keyboard	LookKeySpeed	set	0.4
+C	Input.Gamepad	TurnSensitivity	set	1.35
+C	Input.Gamepad	LookSensitivity	set	1.35
+C	Input.Gamepad	DeadzoneLeft	set	0.27
+C	Input.Gamepad	DeadzoneRight	set	0.27
+C	Input.Gamepad	TriggerThreshold	set	0.28
+C	Input.Gamepad	Rumble	set	0.3
+C	Audio	BufferMs	set	290
+C	Game	FrameLock	set	1
+K	238.ini	285
+T	286	0	13	329	bc189231758d0df3	c1423061a6e06a04
+C	Input.Mouse	SensitivityX	set	0.29
+C	Input.Mouse	SensitivityY	set	0.29
+C	Input.Mouse	Smoothing	set	0.4
+C	Input.Keyboard	WalkScale	set	0.59
+C	Input.Keyboard	LookKeySpeed	set	0.45
+C	Input.Gamepad	TurnSensitivity	set	1.4
+C	Input.Gamepad	LookSensitivity	set	1.4
+C	Input.Gamepad	DeadzoneLeft	set	0.28
+C	Input.Gamepad	DeadzoneRight	set	0.28
+C	Input.Gamepad	TriggerThreshold	set	0.29
+C	Input.Gamepad	Rumble	set	0.35
+C	Audio	BufferMs	set	300
+C	Game	FrameLock	set	1
+K	239.ini	286
+T	287	0	12	311	7c5d48ab1ca99282	c826a68f1ca96e07
+C	Input.Mouse	SensitivityX	set	0.3
+C	Input.Mouse	SensitivityY	set	0.3
+C	Input.Mouse	Smoothing	set	0.45
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Input.Gamepad	TurnSensitivity	set	1.45
+C	Input.Gamepad	LookSensitivity	set	1.45
+C	Input.Gamepad	DeadzoneLeft	set	0.29
+C	Input.Gamepad	DeadzoneRight	set	0.29
+C	Input.Gamepad	TriggerThreshold	set	0.3
+C	Input.Gamepad	Rumble	set	0.4
+C	Audio	BufferMs	set	310
+C	Game	FrameLock	set	1
+K	240.ini	287
+T	288	0	13	327	48868370bb2b9ce6	4a4294a84700ac54
+C	Input.Mouse	SensitivityX	set	0.31
+C	Input.Mouse	SensitivityY	set	0.31
+C	Input.Mouse	Smoothing	set	0.5
+C	Input.Keyboard	WalkScale	set	0.61
+C	Input.Keyboard	LookKeySpeed	set	0.55
+C	Input.Gamepad	TurnSensitivity	set	1.5
+C	Input.Gamepad	LookSensitivity	set	1.5
+C	Input.Gamepad	DeadzoneLeft	set	0.3
+C	Input.Gamepad	DeadzoneRight	set	0.3
+C	Input.Gamepad	TriggerThreshold	set	0.31
+C	Input.Gamepad	Rumble	set	0.45
+C	Audio	BufferMs	set	320
+C	Game	FrameLock	set	1
+K	241.ini	288
+T	289	0	13	330	a3ef46229bbc413e	080ba02e2734ecd8
+C	Input.Mouse	SensitivityX	set	0.32
+C	Input.Mouse	SensitivityY	set	0.32
+C	Input.Mouse	Smoothing	set	0.55
+C	Input.Keyboard	WalkScale	set	0.62
+C	Input.Keyboard	LookKeySpeed	set	0.6
+C	Input.Gamepad	TurnSensitivity	set	1.55
+C	Input.Gamepad	LookSensitivity	set	1.55
+C	Input.Gamepad	DeadzoneLeft	set	0.31
+C	Input.Gamepad	DeadzoneRight	set	0.31
+C	Input.Gamepad	TriggerThreshold	set	0.32
+C	Input.Gamepad	Rumble	set	0.5
+C	Audio	BufferMs	set	330
+C	Game	FrameLock	set	1
+K	242.ini	289
+T	290	0	13	329	6262e7b534560475	f6c1b20a5ee140ce
+C	Input.Mouse	SensitivityX	set	0.33
+C	Input.Mouse	SensitivityY	set	0.33
+C	Input.Mouse	Smoothing	set	0.6
+C	Input.Keyboard	WalkScale	set	0.63
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Input.Gamepad	TurnSensitivity	set	1.6
+C	Input.Gamepad	LookSensitivity	set	1.6
+C	Input.Gamepad	DeadzoneLeft	set	0.32
+C	Input.Gamepad	DeadzoneRight	set	0.32
+C	Input.Gamepad	TriggerThreshold	set	0.33
+C	Input.Gamepad	Rumble	set	0.55
+C	Audio	BufferMs	set	340
+C	Game	FrameLock	set	1
+K	243.ini	290
+T	291	0	12	312	62ececcaa8059a15	155b5ae4db0549dd
+C	Input.Mouse	SensitivityX	set	0.34
+C	Input.Mouse	SensitivityY	set	0.34
+C	Input.Mouse	Smoothing	set	0.65
+C	Input.Keyboard	WalkScale	set	0.64
+C	Input.Gamepad	TurnSensitivity	set	1.65
+C	Input.Gamepad	LookSensitivity	set	1.65
+C	Input.Gamepad	DeadzoneLeft	set	0.33
+C	Input.Gamepad	DeadzoneRight	set	0.33
+C	Input.Gamepad	TriggerThreshold	set	0.34
+C	Input.Gamepad	Rumble	set	0.6
+C	Audio	BufferMs	set	350
+C	Game	FrameLock	set	1
+K	244.ini	291
+T	292	0	13	329	0698e828700abf8e	e49909b115286894
+C	Input.Mouse	SensitivityX	set	0.35
+C	Input.Mouse	SensitivityY	set	0.35
+C	Input.Mouse	Smoothing	set	0.7
+C	Input.Keyboard	WalkScale	set	0.65
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Input.Gamepad	TurnSensitivity	set	1.7
+C	Input.Gamepad	LookSensitivity	set	1.7
+C	Input.Gamepad	DeadzoneLeft	set	0.34
+C	Input.Gamepad	DeadzoneRight	set	0.34
+C	Input.Gamepad	TriggerThreshold	set	0.35
+C	Input.Gamepad	Rumble	set	0.65
+C	Audio	BufferMs	set	360
+C	Game	FrameLock	set	1
+K	245.ini	292
+T	293	0	13	330	d6b939ab6dce2b28	b7e7be9fc7431d94
+C	Input.Mouse	SensitivityX	set	0.36
+C	Input.Mouse	SensitivityY	set	0.36
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Keyboard	WalkScale	set	0.66
+C	Input.Keyboard	LookKeySpeed	set	0.8
+C	Input.Gamepad	TurnSensitivity	set	1.75
+C	Input.Gamepad	LookSensitivity	set	1.75
+C	Input.Gamepad	DeadzoneLeft	set	0.35
+C	Input.Gamepad	DeadzoneRight	set	0.35
+C	Input.Gamepad	TriggerThreshold	set	0.36
+C	Input.Gamepad	Rumble	set	0.7
+C	Audio	BufferMs	set	370
+C	Game	FrameLock	set	1
+K	246.ini	293
+T	294	0	13	329	19b0c1ed10b6301f	012be24966950c4c
+C	Input.Mouse	SensitivityX	set	0.37
+C	Input.Mouse	SensitivityY	set	0.37
+C	Input.Mouse	Smoothing	set	0.8
+C	Input.Keyboard	WalkScale	set	0.67
+C	Input.Keyboard	LookKeySpeed	set	0.85
+C	Input.Gamepad	TurnSensitivity	set	1.8
+C	Input.Gamepad	LookSensitivity	set	1.8
+C	Input.Gamepad	DeadzoneLeft	set	0.36
+C	Input.Gamepad	DeadzoneRight	set	0.36
+C	Input.Gamepad	TriggerThreshold	set	0.37
+C	Input.Gamepad	Rumble	set	0.75
+C	Audio	BufferMs	set	380
+C	Game	FrameLock	set	1
+K	247.ini	294
+T	295	0	13	330	15faf74c63bad1f3	1320dadec101860d
+C	Input.Mouse	SensitivityX	set	0.38
+C	Input.Mouse	SensitivityY	set	0.38
+C	Input.Mouse	Smoothing	set	0.85
+C	Input.Keyboard	WalkScale	set	0.68
+C	Input.Keyboard	LookKeySpeed	set	0.9
+C	Input.Gamepad	TurnSensitivity	set	1.85
+C	Input.Gamepad	LookSensitivity	set	1.85
+C	Input.Gamepad	DeadzoneLeft	set	0.37
+C	Input.Gamepad	DeadzoneRight	set	0.37
+C	Input.Gamepad	TriggerThreshold	set	0.38
+C	Input.Gamepad	Rumble	set	0.8
+C	Audio	BufferMs	set	390
+C	Game	FrameLock	set	1
+K	248.ini	295
+T	296	0	13	329	8e2eedda7b62d765	ce607aed40b86ff1
+C	Input.Mouse	SensitivityX	set	0.39
+C	Input.Mouse	SensitivityY	set	0.39
+C	Input.Mouse	Smoothing	set	0.9
+C	Input.Keyboard	WalkScale	set	0.69
+C	Input.Keyboard	LookKeySpeed	set	0.95
+C	Input.Gamepad	TurnSensitivity	set	1.9
+C	Input.Gamepad	LookSensitivity	set	1.9
+C	Input.Gamepad	DeadzoneLeft	set	0.38
+C	Input.Gamepad	DeadzoneRight	set	0.38
+C	Input.Gamepad	TriggerThreshold	set	0.39
+C	Input.Gamepad	Rumble	set	0.85
+C	Audio	BufferMs	set	400
+C	Game	FrameLock	set	1
+K	249.ini	296
+T	297	0	13	324	610a3349d2f75912	ca52428709cbbb22
+C	Input.Mouse	SensitivityX	set	0.4
+C	Input.Mouse	SensitivityY	set	0.4
+C	Input.Mouse	Smoothing	set	0.95
+C	Input.Keyboard	WalkScale	set	0.7
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Input.Gamepad	TurnSensitivity	set	1.95
+C	Input.Gamepad	LookSensitivity	set	1.95
+C	Input.Gamepad	DeadzoneLeft	set	0.39
+C	Input.Gamepad	DeadzoneRight	set	0.39
+C	Input.Gamepad	TriggerThreshold	set	0.4
+C	Input.Gamepad	Rumble	set	0.9
+C	Audio	BufferMs	set	410
+C	Game	FrameLock	set	1
+K	250.ini	297
+T	298	0	12	308	81eff35952cdb1ac	4160077a4bdce8bc
+C	Input.Mouse	SensitivityX	set	0.41
+C	Input.Mouse	SensitivityY	set	0.41
+C	Input.Keyboard	WalkScale	set	0.71
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Input.Gamepad	TurnSensitivity	set	2
+C	Input.Gamepad	LookSensitivity	set	2
+C	Input.Gamepad	DeadzoneLeft	set	0.4
+C	Input.Gamepad	DeadzoneRight	set	0.4
+C	Input.Gamepad	TriggerThreshold	set	0.41
+C	Input.Gamepad	Rumble	set	0.95
+C	Audio	BufferMs	set	420
+C	Game	FrameLock	set	1
+K	251.ini	298
+T	299	0	12	318	24ec091b4f3c795d	8b6c4ce9aee374ac
+C	Input.Mouse	SensitivityX	set	0.42
+C	Input.Mouse	SensitivityY	set	0.42
+C	Input.Mouse	Smoothing	set	0.05
+C	Input.Keyboard	WalkScale	set	0.72
+C	Input.Keyboard	LookKeySpeed	set	0.1
+C	Input.Gamepad	TurnSensitivity	set	2.05
+C	Input.Gamepad	LookSensitivity	set	2.05
+C	Input.Gamepad	DeadzoneLeft	set	0.41
+C	Input.Gamepad	DeadzoneRight	set	0.41
+C	Input.Gamepad	TriggerThreshold	set	0.42
+C	Audio	BufferMs	set	430
+C	Game	FrameLock	set	1
+K	252.ini	299
+T	300	0	13	326	7d40e1f8576dbfa6	1dbf9d9b97ff098d
+C	Input.Mouse	SensitivityX	set	0.43
+C	Input.Mouse	SensitivityY	set	0.43
+C	Input.Mouse	Smoothing	set	0.1
+C	Input.Keyboard	WalkScale	set	0.73
+C	Input.Keyboard	LookKeySpeed	set	0.15
+C	Input.Gamepad	TurnSensitivity	set	2.1
+C	Input.Gamepad	LookSensitivity	set	2.1
+C	Input.Gamepad	DeadzoneLeft	set	0.42
+C	Input.Gamepad	DeadzoneRight	set	0.42
+C	Input.Gamepad	TriggerThreshold	set	0.43
+C	Input.Gamepad	Rumble	set	0
+C	Audio	BufferMs	set	440
+C	Game	FrameLock	set	1
+K	253.ini	300
+T	301	0	13	331	3d326252dc6eb39f	ef46e8b7cdac31e3
+C	Input.Mouse	SensitivityX	set	0.44
+C	Input.Mouse	SensitivityY	set	0.44
+C	Input.Mouse	Smoothing	set	0.15
+C	Input.Keyboard	WalkScale	set	0.74
+C	Input.Keyboard	LookKeySpeed	set	0.2
+C	Input.Gamepad	TurnSensitivity	set	2.15
+C	Input.Gamepad	LookSensitivity	set	2.15
+C	Input.Gamepad	DeadzoneLeft	set	0.43
+C	Input.Gamepad	DeadzoneRight	set	0.43
+C	Input.Gamepad	TriggerThreshold	set	0.44
+C	Input.Gamepad	Rumble	set	0.05
+C	Audio	BufferMs	set	450
+C	Game	FrameLock	set	1
+K	254.ini	301
+T	302	0	13	328	5d3ba1644e1f7873	3b42da1df5d408c2
+C	Input.Mouse	SensitivityX	set	0.45
+C	Input.Mouse	SensitivityY	set	0.45
+C	Input.Mouse	Smoothing	set	0.2
+C	Input.Keyboard	WalkScale	set	0.75
+C	Input.Keyboard	LookKeySpeed	set	0.25
+C	Input.Gamepad	TurnSensitivity	set	2.2
+C	Input.Gamepad	LookSensitivity	set	2.2
+C	Input.Gamepad	DeadzoneLeft	set	0.44
+C	Input.Gamepad	DeadzoneRight	set	0.44
+C	Input.Gamepad	TriggerThreshold	set	0.45
+C	Input.Gamepad	Rumble	set	0.1
+C	Audio	BufferMs	set	460
+C	Game	FrameLock	set	1
+K	255.ini	302
+T	303	0	13	331	8b126c72ba149f38	9a8a501baa28d030
+C	Input.Mouse	SensitivityX	set	0.46
+C	Input.Mouse	SensitivityY	set	0.46
+C	Input.Mouse	Smoothing	set	0.25
+C	Input.Keyboard	WalkScale	set	0.76
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Input.Gamepad	TurnSensitivity	set	2.25
+C	Input.Gamepad	LookSensitivity	set	2.25
+C	Input.Gamepad	DeadzoneLeft	set	0.45
+C	Input.Gamepad	DeadzoneRight	set	0.45
+C	Input.Gamepad	TriggerThreshold	set	0.46
+C	Input.Gamepad	Rumble	set	0.15
+C	Audio	BufferMs	set	470
+C	Game	FrameLock	set	1
+K	256.ini	303
+T	304	0	13	328	5f1fdcfef7851be6	14dada601bde0e14
+C	Input.Mouse	SensitivityX	set	0.47
+C	Input.Mouse	SensitivityY	set	0.47
+C	Input.Mouse	Smoothing	set	0.3
+C	Input.Keyboard	WalkScale	set	0.77
+C	Input.Keyboard	LookKeySpeed	set	0.35
+C	Input.Gamepad	TurnSensitivity	set	2.3
+C	Input.Gamepad	LookSensitivity	set	2.3
+C	Input.Gamepad	DeadzoneLeft	set	0.46
+C	Input.Gamepad	DeadzoneRight	set	0.46
+C	Input.Gamepad	TriggerThreshold	set	0.47
+C	Input.Gamepad	Rumble	set	0.2
+C	Audio	BufferMs	set	480
+C	Game	FrameLock	set	1
+K	257.ini	304
+T	305	0	13	331	4ab09309edde983d	0872a0c3910ae7e5
+C	Input.Mouse	SensitivityX	set	0.48
+C	Input.Mouse	SensitivityY	set	0.48
+C	Input.Mouse	Smoothing	set	0.35
+C	Input.Keyboard	WalkScale	set	0.78
+C	Input.Keyboard	LookKeySpeed	set	0.4
+C	Input.Gamepad	TurnSensitivity	set	2.35
+C	Input.Gamepad	LookSensitivity	set	2.35
+C	Input.Gamepad	DeadzoneLeft	set	0.47
+C	Input.Gamepad	DeadzoneRight	set	0.47
+C	Input.Gamepad	TriggerThreshold	set	0.48
+C	Input.Gamepad	Rumble	set	0.25
+C	Audio	BufferMs	set	490
+C	Game	FrameLock	set	1
+K	258.ini	305
+T	306	0	13	328	0a06d18bec1955be	e47aa26b18cc8b15
+C	Input.Mouse	SensitivityX	set	0.49
+C	Input.Mouse	SensitivityY	set	0.49
+C	Input.Mouse	Smoothing	set	0.4
+C	Input.Keyboard	WalkScale	set	0.79
+C	Input.Keyboard	LookKeySpeed	set	0.45
+C	Input.Gamepad	TurnSensitivity	set	2.4
+C	Input.Gamepad	LookSensitivity	set	2.4
+C	Input.Gamepad	DeadzoneLeft	set	0.48
+C	Input.Gamepad	DeadzoneRight	set	0.48
+C	Input.Gamepad	TriggerThreshold	set	0.49
+C	Input.Gamepad	Rumble	set	0.3
+C	Audio	BufferMs	set	500
+C	Game	FrameLock	set	1
+K	259.ini	306
+T	307	0	13	326	ce36b303dae71173	efef55181c1858ef
+C	Input.Mouse	SensitivityX	set	0.5
+C	Input.Mouse	SensitivityY	set	0.5
+C	Input.Mouse	Smoothing	set	0.45
+C	Input.Keyboard	WalkScale	set	0.8
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Input.Gamepad	TurnSensitivity	set	2.45
+C	Input.Gamepad	LookSensitivity	set	2.45
+C	Input.Gamepad	DeadzoneLeft	set	0.49
+C	Input.Gamepad	DeadzoneRight	set	0.49
+C	Input.Gamepad	TriggerThreshold	set	0.5
+C	Input.Gamepad	Rumble	set	0.35
+C	Audio	BufferMs	set	20
+C	Game	FrameLock	set	1
+K	260.ini	307
+T	308	0	13	325	7acdb8fdfcac4253	026128a1c4266ab3
+C	Input.Mouse	SensitivityX	set	0.51
+C	Input.Mouse	SensitivityY	set	0.51
+C	Input.Mouse	Smoothing	set	0.5
+C	Input.Keyboard	WalkScale	set	0.81
+C	Input.Keyboard	LookKeySpeed	set	0.55
+C	Input.Gamepad	TurnSensitivity	set	2.5
+C	Input.Gamepad	LookSensitivity	set	2.5
+C	Input.Gamepad	DeadzoneLeft	set	0.5
+C	Input.Gamepad	DeadzoneRight	set	0.5
+C	Input.Gamepad	TriggerThreshold	set	0.51
+C	Input.Gamepad	Rumble	set	0.4
+C	Audio	BufferMs	set	30
+C	Game	FrameLock	set	1
+K	261.ini	308
+T	309	0	13	330	9acf79c18d86214e	466573aa8cc6faaf
+C	Input.Mouse	SensitivityX	set	0.52
+C	Input.Mouse	SensitivityY	set	0.52
+C	Input.Mouse	Smoothing	set	0.55
+C	Input.Keyboard	WalkScale	set	0.82
+C	Input.Keyboard	LookKeySpeed	set	0.6
+C	Input.Gamepad	TurnSensitivity	set	2.55
+C	Input.Gamepad	LookSensitivity	set	2.55
+C	Input.Gamepad	DeadzoneLeft	set	0.51
+C	Input.Gamepad	DeadzoneRight	set	0.51
+C	Input.Gamepad	TriggerThreshold	set	0.52
+C	Input.Gamepad	Rumble	set	0.45
+C	Audio	BufferMs	set	40
+C	Game	FrameLock	set	1
+K	262.ini	309
+T	310	0	13	327	c7f57209edb37e18	babe7a60acaea576
+C	Input.Mouse	SensitivityX	set	0.53
+C	Input.Mouse	SensitivityY	set	0.53
+C	Input.Mouse	Smoothing	set	0.6
+C	Input.Keyboard	WalkScale	set	0.83
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Input.Gamepad	TurnSensitivity	set	2.6
+C	Input.Gamepad	LookSensitivity	set	2.6
+C	Input.Gamepad	DeadzoneLeft	set	0.52
+C	Input.Gamepad	DeadzoneRight	set	0.52
+C	Input.Gamepad	TriggerThreshold	set	0.53
+C	Input.Gamepad	Rumble	set	0.5
+C	Audio	BufferMs	set	50
+C	Game	FrameLock	set	1
+K	263.ini	310
+T	311	0	12	312	5a2842fc0665c77b	78fca3d2cf602c56
+C	Input.Mouse	SensitivityX	set	0.54
+C	Input.Mouse	SensitivityY	set	0.54
+C	Input.Mouse	Smoothing	set	0.65
+C	Input.Keyboard	WalkScale	set	0.84
+C	Input.Gamepad	TurnSensitivity	set	2.65
+C	Input.Gamepad	LookSensitivity	set	2.65
+C	Input.Gamepad	DeadzoneLeft	set	0.53
+C	Input.Gamepad	DeadzoneRight	set	0.53
+C	Input.Gamepad	TriggerThreshold	set	0.54
+C	Input.Gamepad	Rumble	set	0.55
+C	Audio	BufferMs	set	60
+C	Game	FrameLock	set	1
+K	264.ini	311
+T	312	0	12	303	2f77c0045ae33346	fb1881d7bfd5eec0
+C	Input.Mouse	SensitivityX	set	0.55
+C	Input.Mouse	SensitivityY	set	0.55
+C	Input.Mouse	Smoothing	set	0.7
+C	Input.Keyboard	WalkScale	set	0.85
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Input.Gamepad	TurnSensitivity	set	2.7
+C	Input.Gamepad	LookSensitivity	set	2.7
+C	Input.Gamepad	DeadzoneLeft	set	0.54
+C	Input.Gamepad	DeadzoneRight	set	0.54
+C	Input.Gamepad	TriggerThreshold	set	0.55
+C	Input.Gamepad	Rumble	set	0.6
+C	Game	FrameLock	set	1
+K	265.ini	312
+T	313	0	13	330	7d273d7f545248f8	ace9db3d7f1aba3e
+C	Input.Mouse	SensitivityX	set	0.56
+C	Input.Mouse	SensitivityY	set	0.56
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Keyboard	WalkScale	set	0.86
+C	Input.Keyboard	LookKeySpeed	set	0.8
+C	Input.Gamepad	TurnSensitivity	set	2.75
+C	Input.Gamepad	LookSensitivity	set	2.75
+C	Input.Gamepad	DeadzoneLeft	set	0.55
+C	Input.Gamepad	DeadzoneRight	set	0.55
+C	Input.Gamepad	TriggerThreshold	set	0.56
+C	Input.Gamepad	Rumble	set	0.65
+C	Audio	BufferMs	set	80
+C	Game	FrameLock	set	1
+K	266.ini	313
+T	314	0	13	327	dc70fea9556de276	3b68af20e79ae1fa
+C	Input.Mouse	SensitivityX	set	0.57
+C	Input.Mouse	SensitivityY	set	0.57
+C	Input.Mouse	Smoothing	set	0.8
+C	Input.Keyboard	WalkScale	set	0.87
+C	Input.Keyboard	LookKeySpeed	set	0.85
+C	Input.Gamepad	TurnSensitivity	set	2.8
+C	Input.Gamepad	LookSensitivity	set	2.8
+C	Input.Gamepad	DeadzoneLeft	set	0.56
+C	Input.Gamepad	DeadzoneRight	set	0.56
+C	Input.Gamepad	TriggerThreshold	set	0.57
+C	Input.Gamepad	Rumble	set	0.7
+C	Audio	BufferMs	set	90
+C	Game	FrameLock	set	1
+K	267.ini	314
+T	315	0	13	331	a2be64e235d39fd8	ea7ad65046c3c215
+C	Input.Mouse	SensitivityX	set	0.58
+C	Input.Mouse	SensitivityY	set	0.58
+C	Input.Mouse	Smoothing	set	0.85
+C	Input.Keyboard	WalkScale	set	0.88
+C	Input.Keyboard	LookKeySpeed	set	0.9
+C	Input.Gamepad	TurnSensitivity	set	2.85
+C	Input.Gamepad	LookSensitivity	set	2.85
+C	Input.Gamepad	DeadzoneLeft	set	0.57
+C	Input.Gamepad	DeadzoneRight	set	0.57
+C	Input.Gamepad	TriggerThreshold	set	0.58
+C	Input.Gamepad	Rumble	set	0.75
+C	Audio	BufferMs	set	100
+C	Game	FrameLock	set	1
+K	268.ini	315
+T	316	0	13	328	e91093b975fc41f2	eb140325526df73c
+C	Input.Mouse	SensitivityX	set	0.59
+C	Input.Mouse	SensitivityY	set	0.59
+C	Input.Mouse	Smoothing	set	0.9
+C	Input.Keyboard	WalkScale	set	0.89
+C	Input.Keyboard	LookKeySpeed	set	0.95
+C	Input.Gamepad	TurnSensitivity	set	2.9
+C	Input.Gamepad	LookSensitivity	set	2.9
+C	Input.Gamepad	DeadzoneLeft	set	0.58
+C	Input.Gamepad	DeadzoneRight	set	0.58
+C	Input.Gamepad	TriggerThreshold	set	0.59
+C	Input.Gamepad	Rumble	set	0.8
+C	Audio	BufferMs	set	110
+C	Game	FrameLock	set	1
+K	269.ini	316
+T	317	0	13	325	1f5084c6629e0a0a	684a8b565ca9b2e9
+C	Input.Mouse	SensitivityX	set	0.6
+C	Input.Mouse	SensitivityY	set	0.6
+C	Input.Mouse	Smoothing	set	0.95
+C	Input.Keyboard	WalkScale	set	0.9
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Input.Gamepad	TurnSensitivity	set	2.95
+C	Input.Gamepad	LookSensitivity	set	2.95
+C	Input.Gamepad	DeadzoneLeft	set	0.59
+C	Input.Gamepad	DeadzoneRight	set	0.59
+C	Input.Gamepad	TriggerThreshold	set	0.6
+C	Input.Gamepad	Rumble	set	0.85
+C	Audio	BufferMs	set	120
+C	Game	FrameLock	set	1
+K	270.ini	317
+T	318	0	12	307	400fdc7e6b8a17f9	b33f9cb2ddb7e6d8
+C	Input.Mouse	SensitivityX	set	0.61
+C	Input.Mouse	SensitivityY	set	0.61
+C	Input.Keyboard	WalkScale	set	0.91
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Input.Gamepad	TurnSensitivity	set	3
+C	Input.Gamepad	LookSensitivity	set	3
+C	Input.Gamepad	DeadzoneLeft	set	0.6
+C	Input.Gamepad	DeadzoneRight	set	0.6
+C	Input.Gamepad	TriggerThreshold	set	0.61
+C	Input.Gamepad	Rumble	set	0.9
+C	Audio	BufferMs	set	130
+C	Game	FrameLock	set	1
+K	271.ini	318
+T	319	0	13	331	639ae9ffb1840860	85dd1c4bf564eca1
+C	Input.Mouse	SensitivityX	set	0.62
+C	Input.Mouse	SensitivityY	set	0.62
+C	Input.Mouse	Smoothing	set	0.05
+C	Input.Keyboard	WalkScale	set	0.92
+C	Input.Keyboard	LookKeySpeed	set	0.1
+C	Input.Gamepad	TurnSensitivity	set	3.05
+C	Input.Gamepad	LookSensitivity	set	3.05
+C	Input.Gamepad	DeadzoneLeft	set	0.61
+C	Input.Gamepad	DeadzoneRight	set	0.61
+C	Input.Gamepad	TriggerThreshold	set	0.62
+C	Input.Gamepad	Rumble	set	0.95
+C	Audio	BufferMs	set	140
+C	Game	FrameLock	set	1
+K	272.ini	319
+T	320	0	12	316	fe370e9016505fc1	4b576b90b898b904
+C	Input.Mouse	SensitivityX	set	0.63
+C	Input.Mouse	SensitivityY	set	0.63
+C	Input.Mouse	Smoothing	set	0.1
+C	Input.Keyboard	WalkScale	set	0.93
+C	Input.Keyboard	LookKeySpeed	set	0.15
+C	Input.Gamepad	TurnSensitivity	set	3.1
+C	Input.Gamepad	LookSensitivity	set	3.1
+C	Input.Gamepad	DeadzoneLeft	set	0.62
+C	Input.Gamepad	DeadzoneRight	set	0.62
+C	Input.Gamepad	TriggerThreshold	set	0.63
+C	Audio	BufferMs	set	150
+C	Game	FrameLock	set	1
+K	273.ini	320
+T	321	0	13	328	aa71f6ae0b643904	31d53e467d254766
+C	Input.Mouse	SensitivityX	set	0.64
+C	Input.Mouse	SensitivityY	set	0.64
+C	Input.Mouse	Smoothing	set	0.15
+C	Input.Keyboard	WalkScale	set	0.94
+C	Input.Keyboard	LookKeySpeed	set	0.2
+C	Input.Gamepad	TurnSensitivity	set	3.15
+C	Input.Gamepad	LookSensitivity	set	3.15
+C	Input.Gamepad	DeadzoneLeft	set	0.63
+C	Input.Gamepad	DeadzoneRight	set	0.63
+C	Input.Gamepad	TriggerThreshold	set	0.64
+C	Input.Gamepad	Rumble	set	0
+C	Audio	BufferMs	set	160
+C	Game	FrameLock	set	1
+K	274.ini	321
+T	322	0	13	329	c0b85f33087a3457	aa0540a7ee83ffa8
+C	Input.Mouse	SensitivityX	set	0.65
+C	Input.Mouse	SensitivityY	set	0.65
+C	Input.Mouse	Smoothing	set	0.2
+C	Input.Keyboard	WalkScale	set	0.95
+C	Input.Keyboard	LookKeySpeed	set	0.25
+C	Input.Gamepad	TurnSensitivity	set	3.2
+C	Input.Gamepad	LookSensitivity	set	3.2
+C	Input.Gamepad	DeadzoneLeft	set	0.64
+C	Input.Gamepad	DeadzoneRight	set	0.64
+C	Input.Gamepad	TriggerThreshold	set	0.65
+C	Input.Gamepad	Rumble	set	0.05
+C	Audio	BufferMs	set	170
+C	Game	FrameLock	set	1
+K	275.ini	322
+T	323	0	13	330	0b7483711467e003	2455a40a600afe56
+C	Input.Mouse	SensitivityX	set	0.66
+C	Input.Mouse	SensitivityY	set	0.66
+C	Input.Mouse	Smoothing	set	0.25
+C	Input.Keyboard	WalkScale	set	0.96
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Input.Gamepad	TurnSensitivity	set	3.25
+C	Input.Gamepad	LookSensitivity	set	3.25
+C	Input.Gamepad	DeadzoneLeft	set	0.65
+C	Input.Gamepad	DeadzoneRight	set	0.65
+C	Input.Gamepad	TriggerThreshold	set	0.66
+C	Input.Gamepad	Rumble	set	0.1
+C	Audio	BufferMs	set	180
+C	Game	FrameLock	set	1
+K	276.ini	323
+T	324	0	13	329	98f3f102dc7fa4e2	25744038d42caed3
+C	Input.Mouse	SensitivityX	set	0.67
+C	Input.Mouse	SensitivityY	set	0.67
+C	Input.Mouse	Smoothing	set	0.3
+C	Input.Keyboard	WalkScale	set	0.97
+C	Input.Keyboard	LookKeySpeed	set	0.35
+C	Input.Gamepad	TurnSensitivity	set	3.3
+C	Input.Gamepad	LookSensitivity	set	3.3
+C	Input.Gamepad	DeadzoneLeft	set	0.66
+C	Input.Gamepad	DeadzoneRight	set	0.66
+C	Input.Gamepad	TriggerThreshold	set	0.67
+C	Input.Gamepad	Rumble	set	0.15
+C	Audio	BufferMs	set	190
+C	Game	FrameLock	set	1
+K	277.ini	324
+T	325	0	13	330	94aedb153dcab249	3f8858369dc3f15c
+C	Input.Mouse	SensitivityX	set	0.68
+C	Input.Mouse	SensitivityY	set	0.68
+C	Input.Mouse	Smoothing	set	0.35
+C	Input.Keyboard	WalkScale	set	0.98
+C	Input.Keyboard	LookKeySpeed	set	0.4
+C	Input.Gamepad	TurnSensitivity	set	3.35
+C	Input.Gamepad	LookSensitivity	set	3.35
+C	Input.Gamepad	DeadzoneLeft	set	0.67
+C	Input.Gamepad	DeadzoneRight	set	0.67
+C	Input.Gamepad	TriggerThreshold	set	0.68
+C	Input.Gamepad	Rumble	set	0.2
+C	Audio	BufferMs	set	200
+C	Game	FrameLock	set	1
+K	278.ini	325
+T	326	0	13	329	f7f44bda7cc81798	2311f8625c0ab940
+C	Input.Mouse	SensitivityX	set	0.69
+C	Input.Mouse	SensitivityY	set	0.69
+C	Input.Mouse	Smoothing	set	0.4
+C	Input.Keyboard	WalkScale	set	0.99
+C	Input.Keyboard	LookKeySpeed	set	0.45
+C	Input.Gamepad	TurnSensitivity	set	3.4
+C	Input.Gamepad	LookSensitivity	set	3.4
+C	Input.Gamepad	DeadzoneLeft	set	0.68
+C	Input.Gamepad	DeadzoneRight	set	0.68
+C	Input.Gamepad	TriggerThreshold	set	0.69
+C	Input.Gamepad	Rumble	set	0.25
+C	Audio	BufferMs	set	210
+C	Game	FrameLock	set	1
+K	279.ini	326
+T	327	0	13	324	9b5bff34e2e79a97	aa01de98bc8f0e35
+C	Input.Mouse	SensitivityX	set	0.7
+C	Input.Mouse	SensitivityY	set	0.7
+C	Input.Mouse	Smoothing	set	0.45
+C	Input.Keyboard	WalkScale	set	1
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Input.Gamepad	TurnSensitivity	set	3.45
+C	Input.Gamepad	LookSensitivity	set	3.45
+C	Input.Gamepad	DeadzoneLeft	set	0.69
+C	Input.Gamepad	DeadzoneRight	set	0.69
+C	Input.Gamepad	TriggerThreshold	set	0.7
+C	Input.Gamepad	Rumble	set	0.3
+C	Audio	BufferMs	set	220
+C	Game	FrameLock	set	1
+K	280.ini	327
+T	328	0	13	327	52ec03b2f67fc360	cc5882c74e79fc26
+C	Input.Mouse	SensitivityX	set	0.71
+C	Input.Mouse	SensitivityY	set	0.71
+C	Input.Mouse	Smoothing	set	0.5
+C	Input.Keyboard	WalkScale	set	0.31
+C	Input.Keyboard	LookKeySpeed	set	0.55
+C	Input.Gamepad	TurnSensitivity	set	3.5
+C	Input.Gamepad	LookSensitivity	set	3.5
+C	Input.Gamepad	DeadzoneLeft	set	0.7
+C	Input.Gamepad	DeadzoneRight	set	0.7
+C	Input.Gamepad	TriggerThreshold	set	0.71
+C	Input.Gamepad	Rumble	set	0.35
+C	Audio	BufferMs	set	230
+C	Game	FrameLock	set	1
+K	281.ini	328
+T	329	0	13	330	19492f3df08c411e	5a8718f00d6ae179
+C	Input.Mouse	SensitivityX	set	0.72
+C	Input.Mouse	SensitivityY	set	0.72
+C	Input.Mouse	Smoothing	set	0.55
+C	Input.Keyboard	WalkScale	set	0.32
+C	Input.Keyboard	LookKeySpeed	set	0.6
+C	Input.Gamepad	TurnSensitivity	set	3.55
+C	Input.Gamepad	LookSensitivity	set	3.55
+C	Input.Gamepad	DeadzoneLeft	set	0.71
+C	Input.Gamepad	DeadzoneRight	set	0.71
+C	Input.Gamepad	TriggerThreshold	set	0.72
+C	Input.Gamepad	Rumble	set	0.4
+C	Audio	BufferMs	set	240
+C	Game	FrameLock	set	1
+K	282.ini	329
+T	330	0	13	329	dd1669677998fb5d	8c7daa940c348c0f
+C	Input.Mouse	SensitivityX	set	0.73
+C	Input.Mouse	SensitivityY	set	0.73
+C	Input.Mouse	Smoothing	set	0.6
+C	Input.Keyboard	WalkScale	set	0.33
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Input.Gamepad	TurnSensitivity	set	3.6
+C	Input.Gamepad	LookSensitivity	set	3.6
+C	Input.Gamepad	DeadzoneLeft	set	0.72
+C	Input.Gamepad	DeadzoneRight	set	0.72
+C	Input.Gamepad	TriggerThreshold	set	0.73
+C	Input.Gamepad	Rumble	set	0.45
+C	Audio	BufferMs	set	250
+C	Game	FrameLock	set	1
+K	283.ini	330
+T	331	0	12	312	10f05f1bb401acdb	9ce9640dd469e675
+C	Input.Mouse	SensitivityX	set	0.74
+C	Input.Mouse	SensitivityY	set	0.74
+C	Input.Mouse	Smoothing	set	0.65
+C	Input.Keyboard	WalkScale	set	0.34
+C	Input.Gamepad	TurnSensitivity	set	3.65
+C	Input.Gamepad	LookSensitivity	set	3.65
+C	Input.Gamepad	DeadzoneLeft	set	0.73
+C	Input.Gamepad	DeadzoneRight	set	0.73
+C	Input.Gamepad	TriggerThreshold	set	0.74
+C	Input.Gamepad	Rumble	set	0.5
+C	Audio	BufferMs	set	260
+C	Game	FrameLock	set	1
+K	284.ini	331
+T	332	0	13	329	8b4070316d2e02dc	b8adcef272fa8b6f
+C	Input.Mouse	SensitivityX	set	0.75
+C	Input.Mouse	SensitivityY	set	0.75
+C	Input.Mouse	Smoothing	set	0.7
+C	Input.Keyboard	WalkScale	set	0.35
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Input.Gamepad	TurnSensitivity	set	3.7
+C	Input.Gamepad	LookSensitivity	set	3.7
+C	Input.Gamepad	DeadzoneLeft	set	0.74
+C	Input.Gamepad	DeadzoneRight	set	0.74
+C	Input.Gamepad	TriggerThreshold	set	0.75
+C	Input.Gamepad	Rumble	set	0.55
+C	Audio	BufferMs	set	270
+C	Game	FrameLock	set	1
+K	285.ini	332
+T	333	0	13	330	8b5a6ca1746be808	63895a1e5b8d0a67
+C	Input.Mouse	SensitivityX	set	0.76
+C	Input.Mouse	SensitivityY	set	0.76
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Keyboard	WalkScale	set	0.36
+C	Input.Keyboard	LookKeySpeed	set	0.8
+C	Input.Gamepad	TurnSensitivity	set	3.75
+C	Input.Gamepad	LookSensitivity	set	3.75
+C	Input.Gamepad	DeadzoneLeft	set	0.75
+C	Input.Gamepad	DeadzoneRight	set	0.75
+C	Input.Gamepad	TriggerThreshold	set	0.76
+C	Input.Gamepad	Rumble	set	0.6
+C	Audio	BufferMs	set	280
+C	Game	FrameLock	set	1
+K	286.ini	333
+T	334	0	13	329	4ed34e3aeb55491b	8773d1a8fc77a748
+C	Input.Mouse	SensitivityX	set	0.77
+C	Input.Mouse	SensitivityY	set	0.77
+C	Input.Mouse	Smoothing	set	0.8
+C	Input.Keyboard	WalkScale	set	0.37
+C	Input.Keyboard	LookKeySpeed	set	0.85
+C	Input.Gamepad	TurnSensitivity	set	3.8
+C	Input.Gamepad	LookSensitivity	set	3.8
+C	Input.Gamepad	DeadzoneLeft	set	0.76
+C	Input.Gamepad	DeadzoneRight	set	0.76
+C	Input.Gamepad	TriggerThreshold	set	0.77
+C	Input.Gamepad	Rumble	set	0.65
+C	Audio	BufferMs	set	290
+C	Game	FrameLock	set	1
+K	287.ini	334
+T	335	0	13	330	aea46a755a247fca	c61b953be7f8d249
+C	Input.Mouse	SensitivityX	set	0.78
+C	Input.Mouse	SensitivityY	set	0.78
+C	Input.Mouse	Smoothing	set	0.85
+C	Input.Keyboard	WalkScale	set	0.38
+C	Input.Keyboard	LookKeySpeed	set	0.9
+C	Input.Gamepad	TurnSensitivity	set	3.85
+C	Input.Gamepad	LookSensitivity	set	3.85
+C	Input.Gamepad	DeadzoneLeft	set	0.77
+C	Input.Gamepad	DeadzoneRight	set	0.77
+C	Input.Gamepad	TriggerThreshold	set	0.78
+C	Input.Gamepad	Rumble	set	0.7
+C	Audio	BufferMs	set	300
+C	Game	FrameLock	set	1
+K	288.ini	335
+T	336	0	13	329	46897c1683ab0bf1	9baded2a194ef8d3
+C	Input.Mouse	SensitivityX	set	0.79
+C	Input.Mouse	SensitivityY	set	0.79
+C	Input.Mouse	Smoothing	set	0.9
+C	Input.Keyboard	WalkScale	set	0.39
+C	Input.Keyboard	LookKeySpeed	set	0.95
+C	Input.Gamepad	TurnSensitivity	set	3.9
+C	Input.Gamepad	LookSensitivity	set	3.9
+C	Input.Gamepad	DeadzoneLeft	set	0.78
+C	Input.Gamepad	DeadzoneRight	set	0.78
+C	Input.Gamepad	TriggerThreshold	set	0.79
+C	Input.Gamepad	Rumble	set	0.75
+C	Audio	BufferMs	set	310
+C	Game	FrameLock	set	1
+K	289.ini	336
+T	337	0	13	324	0a7f3d80aab93486	683670614882f36d
+C	Input.Mouse	SensitivityX	set	0.8
+C	Input.Mouse	SensitivityY	set	0.8
+C	Input.Mouse	Smoothing	set	0.95
+C	Input.Keyboard	WalkScale	set	0.4
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Input.Gamepad	TurnSensitivity	set	3.95
+C	Input.Gamepad	LookSensitivity	set	3.95
+C	Input.Gamepad	DeadzoneLeft	set	0.79
+C	Input.Gamepad	DeadzoneRight	set	0.79
+C	Input.Gamepad	TriggerThreshold	set	0.8
+C	Input.Gamepad	Rumble	set	0.8
+C	Audio	BufferMs	set	320
+C	Game	FrameLock	set	1
+K	290.ini	337
+T	338	0	12	308	44b6835d9c9e1dd0	0f3f00f6633ab0fa
+C	Input.Mouse	SensitivityX	set	0.81
+C	Input.Mouse	SensitivityY	set	0.81
+C	Input.Keyboard	WalkScale	set	0.41
+C	Input.Keyboard	LookKeySpeed	set	0.05
+C	Input.Gamepad	TurnSensitivity	set	4
+C	Input.Gamepad	LookSensitivity	set	4
+C	Input.Gamepad	DeadzoneLeft	set	0.8
+C	Input.Gamepad	DeadzoneRight	set	0.8
+C	Input.Gamepad	TriggerThreshold	set	0.81
+C	Input.Gamepad	Rumble	set	0.85
+C	Audio	BufferMs	set	330
+C	Game	FrameLock	set	1
+K	291.ini	338
+T	339	0	13	324	7ccc5f802d2da594	b2c2250f93cf4d1f
+C	Input.Mouse	SensitivityX	set	0.82
+C	Input.Mouse	SensitivityY	set	0.82
+C	Input.Mouse	Smoothing	set	0.05
+C	Input.Keyboard	WalkScale	set	0.42
+C	Input.Keyboard	LookKeySpeed	set	0.1
+C	Input.Gamepad	TurnSensitivity	set	0
+C	Input.Gamepad	LookSensitivity	set	0
+C	Input.Gamepad	DeadzoneLeft	set	0.81
+C	Input.Gamepad	DeadzoneRight	set	0.81
+C	Input.Gamepad	TriggerThreshold	set	0.82
+C	Input.Gamepad	Rumble	set	0.9
+C	Audio	BufferMs	set	340
+C	Game	FrameLock	set	1
+K	292.ini	339
+T	340	0	13	331	93cfa910ccd86231	566974de060836a9
+C	Input.Mouse	SensitivityX	set	0.83
+C	Input.Mouse	SensitivityY	set	0.83
+C	Input.Mouse	Smoothing	set	0.1
+C	Input.Keyboard	WalkScale	set	0.43
+C	Input.Keyboard	LookKeySpeed	set	0.15
+C	Input.Gamepad	TurnSensitivity	set	0.05
+C	Input.Gamepad	LookSensitivity	set	0.05
+C	Input.Gamepad	DeadzoneLeft	set	0.82
+C	Input.Gamepad	DeadzoneRight	set	0.82
+C	Input.Gamepad	TriggerThreshold	set	0.83
+C	Input.Gamepad	Rumble	set	0.95
+C	Audio	BufferMs	set	350
+C	Game	FrameLock	set	1
+K	293.ini	340
+T	341	0	12	316	497dbbf2fa1faace	1563d2e9b3e9babe
+C	Input.Mouse	SensitivityX	set	0.84
+C	Input.Mouse	SensitivityY	set	0.84
+C	Input.Mouse	Smoothing	set	0.15
+C	Input.Keyboard	WalkScale	set	0.44
+C	Input.Keyboard	LookKeySpeed	set	0.2
+C	Input.Gamepad	TurnSensitivity	set	0.1
+C	Input.Gamepad	LookSensitivity	set	0.1
+C	Input.Gamepad	DeadzoneLeft	set	0.83
+C	Input.Gamepad	DeadzoneRight	set	0.83
+C	Input.Gamepad	TriggerThreshold	set	0.84
+C	Audio	BufferMs	set	360
+C	Game	FrameLock	set	1
+K	294.ini	341
+T	342	0	13	328	894500d85237d175	98a1c88137b96add
+C	Input.Mouse	SensitivityX	set	0.85
+C	Input.Mouse	SensitivityY	set	0.85
+C	Input.Mouse	Smoothing	set	0.2
+C	Input.Keyboard	WalkScale	set	0.45
+C	Input.Keyboard	LookKeySpeed	set	0.25
+C	Input.Gamepad	TurnSensitivity	set	0.15
+C	Input.Gamepad	LookSensitivity	set	0.15
+C	Input.Gamepad	DeadzoneLeft	set	0.84
+C	Input.Gamepad	DeadzoneRight	set	0.84
+C	Input.Gamepad	TriggerThreshold	set	0.85
+C	Input.Gamepad	Rumble	set	0
+C	Audio	BufferMs	set	370
+C	Game	FrameLock	set	1
+K	295.ini	342
+T	343	0	13	329	9eb05b936f21bbc0	f830affcf72daeb6
+C	Input.Mouse	SensitivityX	set	0.86
+C	Input.Mouse	SensitivityY	set	0.86
+C	Input.Mouse	Smoothing	set	0.25
+C	Input.Keyboard	WalkScale	set	0.46
+C	Input.Keyboard	LookKeySpeed	set	0.3
+C	Input.Gamepad	TurnSensitivity	set	0.2
+C	Input.Gamepad	LookSensitivity	set	0.2
+C	Input.Gamepad	DeadzoneLeft	set	0.85
+C	Input.Gamepad	DeadzoneRight	set	0.85
+C	Input.Gamepad	TriggerThreshold	set	0.86
+C	Input.Gamepad	Rumble	set	0.05
+C	Audio	BufferMs	set	380
+C	Game	FrameLock	set	1
+K	296.ini	343
+T	344	0	13	330	adb95590222854f6	f0193de536087545
+C	Input.Mouse	SensitivityX	set	0.87
+C	Input.Mouse	SensitivityY	set	0.87
+C	Input.Mouse	Smoothing	set	0.3
+C	Input.Keyboard	WalkScale	set	0.47
+C	Input.Keyboard	LookKeySpeed	set	0.35
+C	Input.Gamepad	TurnSensitivity	set	0.25
+C	Input.Gamepad	LookSensitivity	set	0.25
+C	Input.Gamepad	DeadzoneLeft	set	0.86
+C	Input.Gamepad	DeadzoneRight	set	0.86
+C	Input.Gamepad	TriggerThreshold	set	0.87
+C	Input.Gamepad	Rumble	set	0.1
+C	Audio	BufferMs	set	390
+C	Game	FrameLock	set	1
+K	297.ini	344
+T	345	0	13	329	0907f5ccf3dab790	78d93eb5bb9ad64c
+C	Input.Mouse	SensitivityX	set	0.88
+C	Input.Mouse	SensitivityY	set	0.88
+C	Input.Mouse	Smoothing	set	0.35
+C	Input.Keyboard	WalkScale	set	0.48
+C	Input.Keyboard	LookKeySpeed	set	0.4
+C	Input.Gamepad	TurnSensitivity	set	0.3
+C	Input.Gamepad	LookSensitivity	set	0.3
+C	Input.Gamepad	DeadzoneLeft	set	0.87
+C	Input.Gamepad	DeadzoneRight	set	0.87
+C	Input.Gamepad	TriggerThreshold	set	0.88
+C	Input.Gamepad	Rumble	set	0.15
+C	Audio	BufferMs	set	400
+C	Game	FrameLock	set	1
+K	298.ini	345
+T	346	0	13	330	0bef42ed7807f144	ddcf8286f3700ffa
+C	Input.Mouse	SensitivityX	set	0.89
+C	Input.Mouse	SensitivityY	set	0.89
+C	Input.Mouse	Smoothing	set	0.4
+C	Input.Keyboard	WalkScale	set	0.49
+C	Input.Keyboard	LookKeySpeed	set	0.45
+C	Input.Gamepad	TurnSensitivity	set	0.35
+C	Input.Gamepad	LookSensitivity	set	0.35
+C	Input.Gamepad	DeadzoneLeft	set	0.88
+C	Input.Gamepad	DeadzoneRight	set	0.88
+C	Input.Gamepad	TriggerThreshold	set	0.89
+C	Input.Gamepad	Rumble	set	0.2
+C	Audio	BufferMs	set	410
+C	Game	FrameLock	set	1
+K	299.ini	346
+T	347	0	13	325	626e377d4645dc79	55ead82ef796383b
+C	Input.Mouse	SensitivityX	set	0.9
+C	Input.Mouse	SensitivityY	set	0.9
+C	Input.Mouse	Smoothing	set	0.45
+C	Input.Keyboard	WalkScale	set	0.5
+C	Input.Keyboard	LookKeySpeed	set	0.5
+C	Input.Gamepad	TurnSensitivity	set	0.4
+C	Input.Gamepad	LookSensitivity	set	0.4
+C	Input.Gamepad	DeadzoneLeft	set	0.89
+C	Input.Gamepad	DeadzoneRight	set	0.89
+C	Input.Gamepad	TriggerThreshold	set	0.9
+C	Input.Gamepad	Rumble	set	0.25
+C	Audio	BufferMs	set	420
+C	Game	FrameLock	set	1
+K	300.ini	347
+T	348	0	13	328	a96638efca9fd019	47082cf56ae5084b
+C	Input.Mouse	SensitivityX	set	0.91
+C	Input.Mouse	SensitivityY	set	0.91
+C	Input.Mouse	Smoothing	set	0.5
+C	Input.Keyboard	WalkScale	set	0.51
+C	Input.Keyboard	LookKeySpeed	set	0.55
+C	Input.Gamepad	TurnSensitivity	set	0.45
+C	Input.Gamepad	LookSensitivity	set	0.45
+C	Input.Gamepad	DeadzoneLeft	set	0.9
+C	Input.Gamepad	DeadzoneRight	set	0.9
+C	Input.Gamepad	TriggerThreshold	set	0.91
+C	Input.Gamepad	Rumble	set	0.3
+C	Audio	BufferMs	set	430
+C	Game	FrameLock	set	1
+K	301.ini	348
+T	349	0	13	323	1bf5f111fdd9aaea	ab050083978c350a
+C	Input.Mouse	SensitivityX	set	0.92
+C	Input.Mouse	SensitivityY	set	0.92
+C	Input.Mouse	Smoothing	set	0.55
+C	Input.Keyboard	WalkScale	set	0.52
+C	Input.Keyboard	LookKeySpeed	set	0.6
+C	Input.Gamepad	TurnSensitivity	set	0.5
+C	Input.Gamepad	LookSensitivity	set	0.5
+C	Input.Gamepad	DeadzoneLeft	set	0
+C	Input.Gamepad	DeadzoneRight	set	0
+C	Input.Gamepad	TriggerThreshold	set	0.92
+C	Input.Gamepad	Rumble	set	0.35
+C	Audio	BufferMs	set	440
+C	Game	FrameLock	set	1
+K	302.ini	349
+T	350	0	13	330	0fdbb8a1174e63f0	20108436dec189a6
+C	Input.Mouse	SensitivityX	set	0.93
+C	Input.Mouse	SensitivityY	set	0.93
+C	Input.Mouse	Smoothing	set	0.6
+C	Input.Keyboard	WalkScale	set	0.53
+C	Input.Keyboard	LookKeySpeed	set	0.65
+C	Input.Gamepad	TurnSensitivity	set	0.55
+C	Input.Gamepad	LookSensitivity	set	0.55
+C	Input.Gamepad	DeadzoneLeft	set	0.01
+C	Input.Gamepad	DeadzoneRight	set	0.01
+C	Input.Gamepad	TriggerThreshold	set	0.93
+C	Input.Gamepad	Rumble	set	0.4
+C	Audio	BufferMs	set	450
+C	Game	FrameLock	set	1
+K	303.ini	350
+T	351	0	12	311	d21ea803847b47dd	77da87154cf59835
+C	Input.Mouse	SensitivityX	set	0.94
+C	Input.Mouse	SensitivityY	set	0.94
+C	Input.Mouse	Smoothing	set	0.65
+C	Input.Keyboard	WalkScale	set	0.54
+C	Input.Gamepad	TurnSensitivity	set	0.6
+C	Input.Gamepad	LookSensitivity	set	0.6
+C	Input.Gamepad	DeadzoneLeft	set	0.02
+C	Input.Gamepad	DeadzoneRight	set	0.02
+C	Input.Gamepad	TriggerThreshold	set	0.94
+C	Input.Gamepad	Rumble	set	0.45
+C	Audio	BufferMs	set	460
+C	Game	FrameLock	set	1
+K	304.ini	351
+T	352	0	13	330	16d737241ab61bcd	e0e0e2d2dc79b28f
+C	Input.Mouse	SensitivityX	set	0.95
+C	Input.Mouse	SensitivityY	set	0.95
+C	Input.Mouse	Smoothing	set	0.7
+C	Input.Keyboard	WalkScale	set	0.55
+C	Input.Keyboard	LookKeySpeed	set	0.75
+C	Input.Gamepad	TurnSensitivity	set	0.65
+C	Input.Gamepad	LookSensitivity	set	0.65
+C	Input.Gamepad	DeadzoneLeft	set	0.03
+C	Input.Gamepad	DeadzoneRight	set	0.03
+C	Input.Gamepad	TriggerThreshold	set	0.95
+C	Input.Gamepad	Rumble	set	0.5
+C	Audio	BufferMs	set	470
+C	Game	FrameLock	set	1
+K	305.ini	352
+T	353	0	13	329	e6e97709331b0a04	0f30ae0ecf2b040c
+C	Input.Mouse	SensitivityX	set	0.96
+C	Input.Mouse	SensitivityY	set	0.96
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Keyboard	WalkScale	set	0.56
+C	Input.Keyboard	LookKeySpeed	set	0.8
+C	Input.Gamepad	TurnSensitivity	set	0.7
+C	Input.Gamepad	LookSensitivity	set	0.7
+C	Input.Gamepad	DeadzoneLeft	set	0.04
+C	Input.Gamepad	DeadzoneRight	set	0.04
+C	Input.Gamepad	TriggerThreshold	set	0.96
+C	Input.Gamepad	Rumble	set	0.55
+C	Audio	BufferMs	set	480
+C	Game	FrameLock	set	1
+K	306.ini	353
+T	354	0	13	330	8c974630226d34f6	ff96f4d6fd02459f
+C	Input.Mouse	SensitivityX	set	0.97
+C	Input.Mouse	SensitivityY	set	0.97
+C	Input.Mouse	Smoothing	set	0.8
+C	Input.Keyboard	WalkScale	set	0.57
+C	Input.Keyboard	LookKeySpeed	set	0.85
+C	Input.Gamepad	TurnSensitivity	set	0.75
+C	Input.Gamepad	LookSensitivity	set	0.75
+C	Input.Gamepad	DeadzoneLeft	set	0.05
+C	Input.Gamepad	DeadzoneRight	set	0.05
+C	Input.Gamepad	TriggerThreshold	set	0.97
+C	Input.Gamepad	Rumble	set	0.6
+C	Audio	BufferMs	set	490
+C	Game	FrameLock	set	1
+K	307.ini	354
+T	355	0	13	329	85c2e78fa492f008	7cdaedf195bae2f5
+C	Input.Mouse	SensitivityX	set	0.98
+C	Input.Mouse	SensitivityY	set	0.98
+C	Input.Mouse	Smoothing	set	0.85
+C	Input.Keyboard	WalkScale	set	0.58
+C	Input.Keyboard	LookKeySpeed	set	0.9
+C	Input.Gamepad	TurnSensitivity	set	0.8
+C	Input.Gamepad	LookSensitivity	set	0.8
+C	Input.Gamepad	DeadzoneLeft	set	0.06
+C	Input.Gamepad	DeadzoneRight	set	0.06
+C	Input.Gamepad	TriggerThreshold	set	0.98
+C	Input.Gamepad	Rumble	set	0.65
+C	Audio	BufferMs	set	500
+C	Game	FrameLock	set	1
+K	308.ini	355
+T	356	0	13	329	63bb1356a3c990d0	ed79d9d2d4e62c05
+C	Input.Mouse	SensitivityX	set	0.99
+C	Input.Mouse	SensitivityY	set	0.99
+C	Input.Mouse	Smoothing	set	0.9
+C	Input.Keyboard	WalkScale	set	0.59
+C	Input.Keyboard	LookKeySpeed	set	0.95
+C	Input.Gamepad	TurnSensitivity	set	0.85
+C	Input.Gamepad	LookSensitivity	set	0.85
+C	Input.Gamepad	DeadzoneLeft	set	0.07
+C	Input.Gamepad	DeadzoneRight	set	0.07
+C	Input.Gamepad	TriggerThreshold	set	0.99
+C	Input.Gamepad	Rumble	set	0.7
+C	Audio	BufferMs	set	20
+C	Game	FrameLock	set	1
+K	309.ini	356
+T	357	0	12	301	c8957ee969425e76	69544ee2c28aebf4
+C	Input.Mouse	SensitivityX	set	1
+C	Input.Mouse	SensitivityY	set	1
+C	Input.Mouse	Smoothing	set	0.95
+C	Input.Keyboard	LookKeySpeed	set	1
+C	Input.Gamepad	TurnSensitivity	set	0.9
+C	Input.Gamepad	LookSensitivity	set	0.9
+C	Input.Gamepad	DeadzoneLeft	set	0.08
+C	Input.Gamepad	DeadzoneRight	set	0.08
+C	Input.Gamepad	TriggerThreshold	set	1
+C	Input.Gamepad	Rumble	set	0.75
+C	Audio	BufferMs	set	30
+C	Game	FrameLock	set	1
+K	310.ini	357
+T	358	0	23	384	807f07f0fd75ed8a	e5c4533e5c0180e5
+C	Input.Keyboard	Circle	set	Home
+C	Input.Keyboard	MoveForward	set	Backspace
+C	Input.Keyboard	Select	set	0
+C	Input.Keyboard	MoveBack	set	Tab
+C	Input.Keyboard	Cross	set	PageDown
+C	Input.Keyboard	MoveLeft	set	Enter
+C	Input.Keyboard	MoveRight	set	CapsLock
+C	Input.Keyboard	Start	set	Delete
+C	Input.Keyboard	Walk	set	Escape
+C	Input.Keyboard	Square	set	Space
+C	Input.Keyboard	R	set	PageUp
+C	Input.Keyboard	Triangle	set	End
+C	Input.Keyboard	DpadLeft	set	Up
+C	Input.Keyboard	L	set	Left
+C	Input.Keyboard	DpadUp	set	Insert
+C	Input.Keyboard	LookLeft	set	1
+C	Input.Keyboard	DpadRight	set	Right
+C	Input.Keyboard	LookRight	set	2
+C	Input.Keyboard	LookUp	set	3
+C	Input.Keyboard	LookDown	set	4
+C	Input.Keyboard	ToggleMouseCapture	set	5
+C	Input.Keyboard	ToggleInputDisplay	set	6
+C	Game	FrameLock	set	1
+K	311.ini	358
+T	359	0	23	328	7f171712b108e20c	353b88eb0c3c867d
+C	Input.Keyboard	MoveForward	set	7
+C	Input.Keyboard	MoveBack	set	8
+C	Input.Keyboard	MoveLeft	set	9
+C	Input.Keyboard	MoveRight	set	A
+C	Input.Keyboard	Walk	set	B
+C	Input.Keyboard	Square	set	C
+C	Input.Keyboard	R	set	D
+C	Input.Keyboard	Circle	set	G
+C	Input.Keyboard	Triangle	set	F
+C	Input.Keyboard	L	set	H
+C	Input.Keyboard	LookUp	set	Q
+C	Input.Keyboard	DpadLeft	set	I,1
+C	Input.Keyboard	LookLeft	set	O
+C	Input.Keyboard	DpadRight	set	J,2
+C	Input.Keyboard	LookDown	set	R
+C	Input.Keyboard	DpadDown	set	K,Z
+C	Input.Keyboard	LookRight	set	P
+C	Input.Keyboard	DpadUp	set	L
+C	Input.Keyboard	Start	set	M
+C	Input.Keyboard	Select	set	N
+C	Input.Keyboard	ToggleMouseCapture	set	S
+C	Input.Keyboard	ToggleInputDisplay	set	T
+C	Game	FrameLock	set	1
+K	312.ini	359
+T	360	0	25	450	b1921c88f45f9a75	a56a42e97eb3de75
+C	Input.Keyboard	MoveForward	set	U
+C	Input.Keyboard	R	set	Numpad0
+C	Input.Keyboard	MoveBack	set	V
+C	Input.Keyboard	MoveLeft	set	W
+C	Input.Keyboard	Walk	set	Y
+C	Input.Keyboard	MoveRight	set	X
+C	Input.Keyboard	DpadDown	set	Numpad7
+C	Input.Keyboard	Square	set	Z
+C	Input.Mouse	Mouse2	set	None
+C	Input.Keyboard	Cross	set	Numpad1,E,Enter
+C	Input.Keyboard	Triangle	set	Numpad2
+C	Input.Keyboard	Circle	set	Numpad3,Backspace
+C	Input.Keyboard	L	set	Numpad4
+C	Input.Keyboard	DpadLeft	set	Numpad5,1
+C	Input.Keyboard	DpadRight	set	Numpad6,2
+C	Input.Keyboard	DpadUp	set	Numpad8
+C	Input.Keyboard	Start	set	Numpad9
+C	Input.Keyboard	ToggleMouseCapture	set	F6
+C	Input.Keyboard	Select	set	F1
+C	Input.Keyboard	LookLeft	set	F2
+C	Input.Keyboard	ToggleInputDisplay	set	F7
+C	Input.Keyboard	LookRight	set	F3
+C	Input.Keyboard	LookUp	set	F4
+C	Input.Keyboard	LookDown	set	F5
+C	Game	FrameLock	set	1
+K	313.ini	360
+T	361	0	22	401	f2006d5721d0814f	3fc982ac9ce4a436
+C	Input.Keyboard	MoveForward	set	F8
+C	Input.Keyboard	MoveBack	set	F9
+C	Input.Keyboard	MoveLeft	set	F10
+C	Input.Keyboard	MoveRight	set	F12
+C	Input.Keyboard	Walk	set	LShift
+C	Input.Keyboard	Square	set	RShift
+C	Input.Keyboard	R	set	LCtrl
+C	Input.Keyboard	Cross	set	RCtrl,E,Enter
+C	Input.Keyboard	Triangle	set	LAlt
+C	Input.Keyboard	Circle	set	RAlt,Backspace
+C	Input.Keyboard	L	set	Semicolon
+C	Input.Keyboard	DpadLeft	set	Equals,1
+C	Input.Keyboard	DpadRight	set	Comma,2
+C	Input.Keyboard	DpadDown	set	Minus,Z
+C	Input.Keyboard	DpadUp	set	Period
+C	Input.Keyboard	Start	set	Slash
+C	Input.Keyboard	Select	set	Grave
+C	Input.Keyboard	LookLeft	set	LBracket
+C	Input.Keyboard	LookRight	set	Backslash
+C	Input.Keyboard	LookUp	set	RBracket
+C	Input.Keyboard	LookDown	set	Quote
+C	Game	FrameLock	set	1
+K	314.ini	361
+T	362	0	22	403	78b7e5994924c3c1	b9d5fc19f43a3627
+C	Input.Keyboard	Circle	set	Home
+C	Input.Keyboard	MoveForward	set	W,Backspace,4
+C	Input.Keyboard	Select	set	Delete,H
+C	Input.Keyboard	MoveBack	set	S,Tab,5
+C	Input.Keyboard	Cross	set	PageDown,9
+C	Input.Keyboard	MoveLeft	set	Enter,6
+C	Input.Keyboard	MoveRight	set	CapsLock,7
+C	Input.Keyboard	Start	set	Insert,G
+C	Input.Keyboard	Walk	set	X,Escape,8
+C	Input.Keyboard	Square	set	Space
+C	Input.Keyboard	R	set	V,PageUp
+C	Input.Keyboard	Triangle	set	R,End,A
+C	Input.Keyboard	DpadLeft	set	Up,C
+C	Input.Keyboard	L	set	Q,Left,B
+C	Input.Keyboard	DpadUp	set	Down,F
+C	Input.Keyboard	DpadRight	set	D
+C	Input.Keyboard	DpadDown	set	Z,Right,E
+C	Input.Keyboard	LookLeft	set	0,I
+C	Input.Keyboard	LookRight	set	1,J
+C	Input.Keyboard	LookUp	set	2,K
+C	Input.Keyboard	LookDown	set	3,L
+C	Game	FrameLock	set	1
+K	315.ini	362
+T	363	0	8	174	1353b6e283f6eaba	fc93d9e4cd3a0086
+C	Input.Mouse	Mouse1	set	MoveForward
+C	Input.Mouse	Mouse2	set	MoveBack
+C	Input.Mouse	Mouse3	set	MoveLeft
+C	Input.Mouse	Mouse4	set	MoveRight
+C	Input.Mouse	Mouse5	set	Walk
+C	Input.Mouse	WheelUp	set	Square
+C	Input.Mouse	WheelDown	set	R
+C	Game	FrameLock	set	1
+K	316.ini	363
+T	364	0	9	203	bc88565859a1940e	0fbeaf6f16b83b5e
+C	Input.Mouse	Mouse1	set	MoveBack
+C	Input.Mouse	Mouse2	set	MoveLeft
+C	Input.Mouse	Mouse3	set	MoveRight
+C	Input.Mouse	Mouse4	set	Walk
+C	Input.Mouse	Mouse5	set	Square
+C	Input.Mouse	WheelUp	set	R
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	WheelDown	set	Cross
+C	Game	FrameLock	set	1
+K	317.ini	364
+T	365	0	9	203	9cf3444118ef584c	ebc26e71b616c664
+C	Input.Mouse	Mouse1	set	MoveLeft
+C	Input.Mouse	Mouse2	set	MoveRight
+C	Input.Mouse	Mouse3	set	Walk
+C	Input.Mouse	Mouse4	set	Square
+C	Input.Mouse	Mouse5	set	R
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	WheelUp	set	Cross
+C	Input.Mouse	WheelDown	set	Triangle
+C	Game	FrameLock	set	1
+K	318.ini	365
+T	366	0	9	201	ea5c4c54e25ecc70	a6c111b13701dbc1
+C	Input.Mouse	Mouse1	set	MoveRight
+C	Input.Mouse	Mouse2	set	Walk
+C	Input.Mouse	Mouse3	set	Square
+C	Input.Mouse	Mouse4	set	R
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	Mouse5	set	Cross
+C	Input.Mouse	WheelUp	set	Triangle
+C	Input.Mouse	WheelDown	set	Circle
+C	Game	FrameLock	set	1
+K	319.ini	366
+T	367	0	9	193	5041b002da26f74d	df25c9903f2a48b1
+C	Input.Mouse	Mouse1	set	Walk
+C	Input.Mouse	Mouse2	set	Square
+C	Input.Mouse	Mouse3	set	R
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	Mouse4	set	Cross
+C	Input.Mouse	Mouse5	set	Triangle
+C	Input.Mouse	WheelUp	set	Circle
+C	Input.Mouse	WheelDown	set	L
+C	Game	FrameLock	set	1
+K	320.ini	367
+T	368	0	6	152	c163caf23e6df08d	9e565bab7f0d4354
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	Mouse3	set	Cross
+C	Input.Mouse	Mouse4	set	Triangle
+C	Input.Mouse	Mouse5	set	Circle
+C	Input.Mouse	WheelUp	set	L
+C	Game	FrameLock	set	1
+K	321.ini	368
+T	369	0	10	212	68be35d15bad4a87	76a763cd1bf8831e
+C	Input.Mouse	Mouse1	set	R
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	Mouse2	set	Cross
+C	Input.Mouse	Mouse3	set	Triangle
+C	Input.Mouse	Mouse4	set	Circle
+C	Input.Mouse	Mouse5	set	L
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	WheelUp	set	DpadLeft
+C	Input.Mouse	WheelDown	set	DpadRight
+C	Game	FrameLock	set	1
+K	322.ini	369
+T	370	0	8	185	e693f57611cd2c5b	d9d9e2229b7871e6
+C	Input.Keyboard	Cross	set	E,Enter
+C	Input.Mouse	Mouse1	set	Cross
+C	Input.Mouse	Mouse2	set	Triangle
+C	Input.Mouse	Mouse4	set	L
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	Mouse5	set	DpadLeft
+C	Input.Mouse	WheelDown	set	DpadDown
+C	Game	FrameLock	set	1
+K	323.ini	370
+T	371	0	11	236	8e825f83d374718b	74f745435df0fb3e
+C	Input.Mouse	Mouse1	set	Triangle
+C	Input.Keyboard	Circle	set	Backspace
+C	Input.Mouse	Mouse2	set	Circle
+C	Input.Mouse	Mouse3	set	L
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	Mouse4	set	DpadLeft
+C	Input.Keyboard	DpadRight	set	2
+C	Input.Mouse	Mouse5	set	DpadRight
+C	Input.Mouse	WheelUp	set	DpadDown
+C	Input.Mouse	WheelDown	set	DpadUp
+C	Game	FrameLock	set	1
+K	324.ini	371
+T	372	0	11	233	4fbd5b8251259ef3	23a58845a38dd330
+C	Input.Keyboard	Circle	set	Backspace
+C	Input.Mouse	Mouse1	set	Circle
+C	Input.Mouse	Mouse2	set	L
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	Mouse3	set	DpadLeft
+C	Input.Keyboard	DpadRight	set	2
+C	Input.Mouse	Mouse4	set	DpadRight
+C	Input.Mouse	Mouse5	set	DpadDown
+C	Input.Mouse	WheelUp	set	DpadUp
+C	Input.Mouse	WheelDown	set	Start
+C	Game	FrameLock	set	1
+K	325.ini	372
+T	373	0	10	215	1dc199b7e5a31b5c	50c1b13341121079
+C	Input.Mouse	Mouse1	set	L
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	Mouse2	set	DpadLeft
+C	Input.Keyboard	DpadRight	set	2
+C	Input.Mouse	Mouse3	set	DpadRight
+C	Input.Mouse	Mouse4	set	DpadDown
+C	Input.Mouse	Mouse5	set	DpadUp
+C	Input.Mouse	WheelUp	set	Start
+C	Input.Mouse	WheelDown	set	Select
+C	Game	FrameLock	set	1
+K	326.ini	373
+T	374	0	10	222	0386241a5854a246	aad41cac69d30950
+C	Input.Keyboard	DpadLeft	set	1
+C	Input.Mouse	Mouse1	set	DpadLeft
+C	Input.Keyboard	DpadRight	set	2
+C	Input.Mouse	Mouse2	set	DpadRight
+C	Input.Mouse	Mouse3	set	DpadDown
+C	Input.Mouse	Mouse4	set	DpadUp
+C	Input.Mouse	Mouse5	set	Start
+C	Input.Mouse	WheelUp	set	Select
+C	Input.Mouse	WheelDown	set	LookLeft
+C	Game	FrameLock	set	1
+K	327.ini	374
+T	375	0	9	211	4630413ee4ed3a8e	6b259052ba4b7375
+C	Input.Keyboard	DpadRight	set	2
+C	Input.Mouse	Mouse1	set	DpadRight
+C	Input.Mouse	Mouse2	set	DpadDown
+C	Input.Mouse	Mouse3	set	DpadUp
+C	Input.Mouse	Mouse4	set	Start
+C	Input.Mouse	Mouse5	set	Select
+C	Input.Mouse	WheelUp	set	LookLeft
+C	Input.Mouse	WheelDown	set	LookRight
+C	Game	FrameLock	set	1
+K	328.ini	375
+T	376	0	8	175	e82919746c550573	569b6351366cd2ff
+C	Input.Mouse	Mouse1	set	DpadDown
+C	Input.Mouse	Mouse2	set	DpadUp
+C	Input.Mouse	Mouse3	set	Start
+C	Input.Mouse	Mouse4	set	Select
+C	Input.Mouse	Mouse5	set	LookLeft
+C	Input.Mouse	WheelUp	set	LookRight
+C	Input.Mouse	WheelDown	set	LookUp
+C	Game	FrameLock	set	1
+K	329.ini	376
+T	377	0	8	175	1dd2d9cf2501fa7d	4cc660379b23091d
+C	Input.Mouse	Mouse1	set	DpadUp
+C	Input.Mouse	Mouse2	set	Start
+C	Input.Mouse	Mouse3	set	Select
+C	Input.Mouse	Mouse4	set	LookLeft
+C	Input.Mouse	Mouse5	set	LookRight
+C	Input.Mouse	WheelUp	set	LookUp
+C	Input.Mouse	WheelDown	set	LookDown
+C	Game	FrameLock	set	1
+K	330.ini	377
+T	378	0	8	180	3f698a8396f9b91d	7f92276a91f54851
+C	Input.Mouse	Mouse1	set	Start
+C	Input.Mouse	Mouse2	set	Select
+C	Input.Mouse	Mouse3	set	LookLeft
+C	Input.Mouse	Mouse4	set	LookRight
+C	Input.Mouse	Mouse5	set	LookUp
+C	Input.Mouse	WheelUp	set	LookDown
+C	Input.Mouse	WheelDown	set	MoveForward
+C	Game	FrameLock	set	1
+K	331.ini	378
+T	379	0	8	183	5ef4505c7d708c39	e993c3c6f07f9ffb
+C	Input.Mouse	Mouse1	set	Select
+C	Input.Mouse	Mouse2	set	LookLeft
+C	Input.Mouse	Mouse3	set	LookRight
+C	Input.Mouse	Mouse4	set	LookUp
+C	Input.Mouse	Mouse5	set	LookDown
+C	Input.Mouse	WheelUp	set	MoveForward
+C	Input.Mouse	WheelDown	set	MoveBack
+C	Game	FrameLock	set	1
+K	332.ini	379
+T	380	0	8	185	04dd274623d64d75	f5aa15354a6f0a0e
+C	Input.Mouse	Mouse1	set	LookLeft
+C	Input.Mouse	Mouse2	set	LookRight
+C	Input.Mouse	Mouse3	set	LookUp
+C	Input.Mouse	Mouse4	set	LookDown
+C	Input.Mouse	Mouse5	set	MoveForward
+C	Input.Mouse	WheelUp	set	MoveBack
+C	Input.Mouse	WheelDown	set	MoveLeft
+C	Game	FrameLock	set	1
+K	333.ini	380
+T	381	0	8	186	d220cbfa92ed48a8	02cf47559b0775d1
+C	Input.Mouse	Mouse1	set	LookRight
+C	Input.Mouse	Mouse2	set	LookUp
+C	Input.Mouse	Mouse3	set	LookDown
+C	Input.Mouse	Mouse4	set	MoveForward
+C	Input.Mouse	Mouse5	set	MoveBack
+C	Input.Mouse	WheelUp	set	MoveLeft
+C	Input.Mouse	WheelDown	set	MoveRight
+C	Game	FrameLock	set	1
+K	334.ini	381
+T	382	0	8	181	4cfc7a6d1a4bc5c0	0710fd99d8f6d529
+C	Input.Mouse	Mouse1	set	LookUp
+C	Input.Mouse	Mouse2	set	LookDown
+C	Input.Mouse	Mouse3	set	MoveForward
+C	Input.Mouse	Mouse4	set	MoveBack
+C	Input.Mouse	Mouse5	set	MoveLeft
+C	Input.Mouse	WheelUp	set	MoveRight
+C	Input.Mouse	WheelDown	set	Walk
+C	Game	FrameLock	set	1
+K	335.ini	382
+T	383	0	8	181	f02cfd4dd32d8e59	fa472b55b459f27d
+C	Input.Mouse	Mouse1	set	LookDown
+C	Input.Mouse	Mouse2	set	MoveForward
+C	Input.Mouse	Mouse3	set	MoveBack
+C	Input.Mouse	Mouse4	set	MoveLeft
+C	Input.Mouse	Mouse5	set	MoveRight
+C	Input.Mouse	WheelUp	set	Walk
+C	Input.Mouse	WheelDown	set	Square
+C	Game	FrameLock	set	1
+K	336.ini	383
+T	384	0	15	244	a4ae96a6863924f4	aaf94b978eab3567
+C	Input.Gamepad	A	set	MoveForward
+C	Input.Gamepad	B	set	MoveBack
+C	Input.Gamepad	X	set	MoveLeft
+C	Input.Gamepad	Y	set	MoveRight
+C	Input.Gamepad	LB	set	Walk
+C	Input.Gamepad	RB	set	Square
+C	Input.Gamepad	RT	set	Cross
+C	Input.Gamepad	LS	set	Triangle
+C	Input.Gamepad	RS	set	Circle
+C	Input.Gamepad	Back	set	L
+C	Input.Gamepad	Start	set	DpadLeft
+C	Input.Gamepad	DpadUp	set	DpadRight
+C	Input.Gamepad	DpadLeft	set	DpadUp
+C	Input.Gamepad	DpadRight	set	Start
+C	Game	FrameLock	set	1
+K	337.ini	384
+T	385	0	17	264	ee557ad6506b17bc	928f2ee5ae139faa
+C	Input.Gamepad	A	set	MoveBack
+C	Input.Gamepad	B	set	MoveLeft
+C	Input.Gamepad	X	set	MoveRight
+C	Input.Gamepad	Y	set	Walk
+C	Input.Gamepad	LB	set	Square
+C	Input.Gamepad	RB	set	R
+C	Input.Gamepad	LT	set	Cross
+C	Input.Gamepad	RT	set	Triangle
+C	Input.Gamepad	LS	set	Circle
+C	Input.Gamepad	RS	set	L
+C	Input.Gamepad	Back	set	DpadLeft
+C	Input.Gamepad	Start	set	DpadRight
+C	Input.Gamepad	DpadUp	set	DpadDown
+C	Input.Gamepad	DpadDown	set	DpadUp
+C	Input.Gamepad	DpadLeft	set	Start
+C	Input.Gamepad	DpadRight	set	Select
+C	Game	FrameLock	set	1
+K	338.ini	385
+T	386	0	15	243	bc4126cff1e8e68d	6a5fc951eafbef88
+C	Input.Gamepad	A	set	MoveLeft
+C	Input.Gamepad	B	set	MoveRight
+C	Input.Gamepad	X	set	Walk
+C	Input.Gamepad	Y	set	Square
+C	Input.Gamepad	LB	set	R
+C	Input.Gamepad	RB	set	Cross
+C	Input.Gamepad	LT	set	Triangle
+C	Input.Gamepad	RT	set	Circle
+C	Input.Gamepad	RS	set	DpadLeft
+C	Input.Gamepad	Back	set	DpadRight
+C	Input.Gamepad	Start	set	DpadDown
+C	Input.Gamepad	DpadDown	set	Start
+C	Input.Gamepad	DpadLeft	set	Select
+C	Input.Gamepad	DpadRight	set	LookLeft
+C	Game	FrameLock	set	1
+K	339.ini	386
+T	387	0	17	265	fdd4ec8886d1fc37	4be0fc68f9e7a85e
+C	Input.Gamepad	A	set	MoveRight
+C	Input.Gamepad	B	set	Walk
+C	Input.Gamepad	X	set	Square
+C	Input.Gamepad	Y	set	R
+C	Input.Gamepad	LB	set	Cross
+C	Input.Gamepad	RB	set	Triangle
+C	Input.Gamepad	LT	set	Circle
+C	Input.Gamepad	RT	set	L
+C	Input.Gamepad	LS	set	DpadLeft
+C	Input.Gamepad	RS	set	DpadRight
+C	Input.Gamepad	Back	set	DpadDown
+C	Input.Gamepad	Start	set	DpadUp
+C	Input.Gamepad	DpadUp	set	Start
+C	Input.Gamepad	DpadDown	set	Select
+C	Input.Gamepad	DpadLeft	set	LookLeft
+C	Input.Gamepad	DpadRight	set	LookRight
+C	Game	FrameLock	set	1
+K	340.ini	387
+T	388	0	15	240	cda969e37b011df9	f690709c6deb68ab
+C	Input.Gamepad	A	set	Walk
+C	Input.Gamepad	B	set	Square
+C	Input.Gamepad	X	set	R
+C	Input.Gamepad	LB	set	Triangle
+C	Input.Gamepad	RB	set	Circle
+C	Input.Gamepad	LT	set	L
+C	Input.Gamepad	RT	set	DpadLeft
+C	Input.Gamepad	LS	set	DpadRight
+C	Input.Gamepad	RS	set	DpadDown
+C	Input.Gamepad	Back	set	DpadUp
+C	Input.Gamepad	DpadUp	set	Select
+C	Input.Gamepad	DpadDown	set	LookLeft
+C	Input.Gamepad	DpadLeft	set	LookRight
+C	Input.Gamepad	DpadRight	set	LookUp
+C	Game	FrameLock	set	1
+K	341.ini	388
+T	389	0	17	266	a37c28071d94b03a	a30741ec7d4578f0
+C	Input.Gamepad	A	set	Square
+C	Input.Gamepad	B	set	R
+C	Input.Gamepad	X	set	Cross
+C	Input.Gamepad	Y	set	Triangle
+C	Input.Gamepad	LB	set	Circle
+C	Input.Gamepad	RB	set	L
+C	Input.Gamepad	LT	set	DpadLeft
+C	Input.Gamepad	RT	set	DpadRight
+C	Input.Gamepad	LS	set	DpadDown
+C	Input.Gamepad	RS	set	DpadUp
+C	Input.Gamepad	Back	set	Start
+C	Input.Gamepad	Start	set	Select
+C	Input.Gamepad	DpadUp	set	LookLeft
+C	Input.Gamepad	DpadDown	set	LookRight
+C	Input.Gamepad	DpadLeft	set	LookUp
+C	Input.Gamepad	DpadRight	set	LookDown
+C	Game	FrameLock	set	1
+K	342.ini	389
+T	390	0	15	246	a15f752e33f4364a	2d250fc9de7388eb
+C	Input.Gamepad	A	set	R
+C	Input.Gamepad	B	set	Cross
+C	Input.Gamepad	Y	set	Circle
+C	Input.Gamepad	LB	set	L
+C	Input.Gamepad	RB	set	DpadLeft
+C	Input.Gamepad	LT	set	DpadRight
+C	Input.Gamepad	RT	set	DpadDown
+C	Input.Gamepad	LS	set	DpadUp
+C	Input.Gamepad	RS	set	Start
+C	Input.Gamepad	Start	set	LookLeft
+C	Input.Gamepad	DpadUp	set	LookRight
+C	Input.Gamepad	DpadDown	set	LookUp
+C	Input.Gamepad	DpadLeft	set	LookDown
+C	Input.Gamepad	DpadRight	set	MoveForward
+C	Game	FrameLock	set	1
+K	343.ini	390
+T	391	0	14	242	e7b33072b5cd1afd	d942dd29e67f40f4
+C	Input.Gamepad	B	set	Triangle
+C	Input.Gamepad	X	set	Circle
+C	Input.Gamepad	Y	set	L
+C	Input.Gamepad	LT	set	DpadDown
+C	Input.Gamepad	RT	set	DpadUp
+C	Input.Gamepad	LS	set	Start
+C	Input.Gamepad	RS	set	Select
+C	Input.Gamepad	Back	set	LookLeft
+C	Input.Gamepad	Start	set	LookRight
+C	Input.Gamepad	DpadUp	set	LookUp
+C	Input.Gamepad	DpadDown	set	LookDown
+C	Input.Gamepad	DpadLeft	set	MoveForward
+C	Input.Gamepad	DpadRight	set	MoveBack
+C	Game	FrameLock	set	1
+K	344.ini	391
+T	392	0	16	271	c3441c7594523881	ce2fbb79af1aa911
+C	Input.Gamepad	A	set	Triangle
+C	Input.Gamepad	X	set	L
+C	Input.Gamepad	Y	set	DpadLeft
+C	Input.Gamepad	LB	set	DpadRight
+C	Input.Gamepad	RB	set	DpadDown
+C	Input.Gamepad	LT	set	DpadUp
+C	Input.Gamepad	RT	set	Start
+C	Input.Gamepad	LS	set	Select
+C	Input.Gamepad	RS	set	LookLeft
+C	Input.Gamepad	Back	set	LookRight
+C	Input.Gamepad	Start	set	LookUp
+C	Input.Gamepad	DpadUp	set	LookDown
+C	Input.Gamepad	DpadDown	set	MoveForward
+C	Input.Gamepad	DpadLeft	set	MoveBack
+C	Input.Gamepad	DpadRight	set	MoveLeft
+C	Game	FrameLock	set	1
+K	345.ini	392
+T	393	0	17	282	7d4be1af271d342a	0460d1fb178080c9
+C	Input.Gamepad	A	set	Circle
+C	Input.Gamepad	B	set	L
+C	Input.Gamepad	X	set	DpadLeft
+C	Input.Gamepad	Y	set	DpadRight
+C	Input.Gamepad	LB	set	DpadDown
+C	Input.Gamepad	RB	set	DpadUp
+C	Input.Gamepad	LT	set	Start
+C	Input.Gamepad	RT	set	Select
+C	Input.Gamepad	LS	set	LookLeft
+C	Input.Gamepad	RS	set	LookRight
+C	Input.Gamepad	Back	set	LookUp
+C	Input.Gamepad	Start	set	LookDown
+C	Input.Gamepad	DpadUp	set	MoveForward
+C	Input.Gamepad	DpadDown	set	MoveBack
+C	Input.Gamepad	DpadLeft	set	MoveLeft
+C	Input.Gamepad	DpadRight	set	MoveRight
+C	Game	FrameLock	set	1
+K	346.ini	393
+T	394	0	17	280	8de0fbf549aecd6b	e2827359c070b3af
+C	Input.Gamepad	A	set	L
+C	Input.Gamepad	B	set	DpadLeft
+C	Input.Gamepad	X	set	DpadRight
+C	Input.Gamepad	Y	set	DpadDown
+C	Input.Gamepad	LB	set	DpadUp
+C	Input.Gamepad	RB	set	Start
+C	Input.Gamepad	LT	set	Select
+C	Input.Gamepad	RT	set	LookLeft
+C	Input.Gamepad	LS	set	LookRight
+C	Input.Gamepad	RS	set	LookUp
+C	Input.Gamepad	Back	set	LookDown
+C	Input.Gamepad	Start	set	MoveForward
+C	Input.Gamepad	DpadUp	set	MoveBack
+C	Input.Gamepad	DpadDown	set	MoveLeft
+C	Input.Gamepad	DpadLeft	set	MoveRight
+C	Input.Gamepad	DpadRight	set	Walk
+C	Game	FrameLock	set	1
+K	347.ini	394
+T	395	0	17	285	99686d6177510684	ec7a243160d4d363
+C	Input.Gamepad	A	set	DpadLeft
+C	Input.Gamepad	B	set	DpadRight
+C	Input.Gamepad	X	set	DpadDown
+C	Input.Gamepad	Y	set	DpadUp
+C	Input.Gamepad	LB	set	Start
+C	Input.Gamepad	RB	set	Select
+C	Input.Gamepad	LT	set	LookLeft
+C	Input.Gamepad	RT	set	LookRight
+C	Input.Gamepad	LS	set	LookUp
+C	Input.Gamepad	RS	set	LookDown
+C	Input.Gamepad	Back	set	MoveForward
+C	Input.Gamepad	Start	set	MoveBack
+C	Input.Gamepad	DpadUp	set	MoveLeft
+C	Input.Gamepad	DpadDown	set	MoveRight
+C	Input.Gamepad	DpadLeft	set	Walk
+C	Input.Gamepad	DpadRight	set	Square
+C	Game	FrameLock	set	1
+K	348.ini	395
+T	396	0	17	278	d8ee321b11614332	3296b39fada3e74f
+C	Input.Gamepad	A	set	DpadRight
+C	Input.Gamepad	B	set	DpadDown
+C	Input.Gamepad	X	set	DpadUp
+C	Input.Gamepad	Y	set	Start
+C	Input.Gamepad	LB	set	Select
+C	Input.Gamepad	RB	set	LookLeft
+C	Input.Gamepad	LT	set	LookRight
+C	Input.Gamepad	RT	set	LookUp
+C	Input.Gamepad	LS	set	LookDown
+C	Input.Gamepad	RS	set	MoveForward
+C	Input.Gamepad	Back	set	MoveBack
+C	Input.Gamepad	Start	set	MoveLeft
+C	Input.Gamepad	DpadUp	set	MoveRight
+C	Input.Gamepad	DpadDown	set	Walk
+C	Input.Gamepad	DpadLeft	set	Square
+C	Input.Gamepad	DpadRight	set	R
+C	Game	FrameLock	set	1
+K	349.ini	396
+T	397	0	17	274	24dc82d456e73847	9d7084ccb309f94c
+C	Input.Gamepad	A	set	DpadDown
+C	Input.Gamepad	B	set	DpadUp
+C	Input.Gamepad	X	set	Start
+C	Input.Gamepad	Y	set	Select
+C	Input.Gamepad	LB	set	LookLeft
+C	Input.Gamepad	RB	set	LookRight
+C	Input.Gamepad	LT	set	LookUp
+C	Input.Gamepad	RT	set	LookDown
+C	Input.Gamepad	LS	set	MoveForward
+C	Input.Gamepad	RS	set	MoveBack
+C	Input.Gamepad	Back	set	MoveLeft
+C	Input.Gamepad	Start	set	MoveRight
+C	Input.Gamepad	DpadUp	set	Walk
+C	Input.Gamepad	DpadDown	set	Square
+C	Input.Gamepad	DpadLeft	set	R
+C	Input.Gamepad	DpadRight	set	Cross
+C	Game	FrameLock	set	1
+K	350.ini	397
+T	398	0	17	274	a50e5e1085324084	56d7162f56497ebd
+C	Input.Gamepad	A	set	DpadUp
+C	Input.Gamepad	B	set	Start
+C	Input.Gamepad	X	set	Select
+C	Input.Gamepad	Y	set	LookLeft
+C	Input.Gamepad	LB	set	LookRight
+C	Input.Gamepad	RB	set	LookUp
+C	Input.Gamepad	LT	set	LookDown
+C	Input.Gamepad	RT	set	MoveForward
+C	Input.Gamepad	LS	set	MoveBack
+C	Input.Gamepad	RS	set	MoveLeft
+C	Input.Gamepad	Back	set	MoveRight
+C	Input.Gamepad	Start	set	Walk
+C	Input.Gamepad	DpadUp	set	Square
+C	Input.Gamepad	DpadDown	set	R
+C	Input.Gamepad	DpadLeft	set	Cross
+C	Input.Gamepad	DpadRight	set	Triangle
+C	Game	FrameLock	set	1
+K	351.ini	398
+T	399	0	17	274	5043e39157d57c00	a8fc10076c4dd719
+C	Input.Gamepad	A	set	Start
+C	Input.Gamepad	B	set	Select
+C	Input.Gamepad	X	set	LookLeft
+C	Input.Gamepad	Y	set	LookRight
+C	Input.Gamepad	LB	set	LookUp
+C	Input.Gamepad	RB	set	LookDown
+C	Input.Gamepad	LT	set	MoveForward
+C	Input.Gamepad	RT	set	MoveBack
+C	Input.Gamepad	LS	set	MoveLeft
+C	Input.Gamepad	RS	set	MoveRight
+C	Input.Gamepad	Back	set	Walk
+C	Input.Gamepad	Start	set	Square
+C	Input.Gamepad	DpadUp	set	R
+C	Input.Gamepad	DpadDown	set	Cross
+C	Input.Gamepad	DpadLeft	set	Triangle
+C	Input.Gamepad	DpadRight	set	Circle
+C	Game	FrameLock	set	1
+K	352.ini	399
+T	400	0	17	270	89ed6ba18742c0e2	17ff55c56ac046c8
+C	Input.Gamepad	A	set	Select
+C	Input.Gamepad	B	set	LookLeft
+C	Input.Gamepad	X	set	LookRight
+C	Input.Gamepad	Y	set	LookUp
+C	Input.Gamepad	LB	set	LookDown
+C	Input.Gamepad	RB	set	MoveForward
+C	Input.Gamepad	LT	set	MoveBack
+C	Input.Gamepad	RT	set	MoveLeft
+C	Input.Gamepad	LS	set	MoveRight
+C	Input.Gamepad	RS	set	Walk
+C	Input.Gamepad	Back	set	Square
+C	Input.Gamepad	Start	set	R
+C	Input.Gamepad	DpadUp	set	Cross
+C	Input.Gamepad	DpadDown	set	Triangle
+C	Input.Gamepad	DpadLeft	set	Circle
+C	Input.Gamepad	DpadRight	set	L
+C	Game	FrameLock	set	1
+K	353.ini	400
+T	401	0	17	272	2d152bbb9533b956	11e449bd40449a03
+C	Input.Gamepad	A	set	LookLeft
+C	Input.Gamepad	B	set	LookRight
+C	Input.Gamepad	X	set	LookUp
+C	Input.Gamepad	Y	set	LookDown
+C	Input.Gamepad	LB	set	MoveForward
+C	Input.Gamepad	RB	set	MoveBack
+C	Input.Gamepad	LT	set	MoveLeft
+C	Input.Gamepad	RT	set	MoveRight
+C	Input.Gamepad	LS	set	Walk
+C	Input.Gamepad	RS	set	Square
+C	Input.Gamepad	Back	set	R
+C	Input.Gamepad	Start	set	Cross
+C	Input.Gamepad	DpadUp	set	Triangle
+C	Input.Gamepad	DpadDown	set	Circle
+C	Input.Gamepad	DpadLeft	set	L
+C	Input.Gamepad	DpadRight	set	DpadLeft
+C	Game	FrameLock	set	1
+K	354.ini	401
+T	402	0	15	233	8a63cb7df61fd995	a3179f9cdb0ef0a0
+C	Input.Gamepad	A	set	LookRight
+C	Input.Gamepad	B	set	LookUp
+C	Input.Gamepad	X	set	LookDown
+C	Input.Gamepad	Y	set	MoveForward
+C	Input.Gamepad	LB	set	MoveBack
+C	Input.Gamepad	RB	set	MoveLeft
+C	Input.Gamepad	LT	set	MoveRight
+C	Input.Gamepad	RT	set	Walk
+C	Input.Gamepad	LS	set	Square
+C	Input.Gamepad	RS	set	R
+C	Input.Gamepad	Back	set	Cross
+C	Input.Gamepad	Start	set	Triangle
+C	Input.Gamepad	DpadUp	set	Circle
+C	Input.Gamepad	DpadDown	set	L
+C	Game	FrameLock	set	1
+K	355.ini	402
+T	403	0	16	261	2395eb61741f18c0	38fcfa85b589e0c9
+C	Input.Gamepad	A	set	LookUp
+C	Input.Gamepad	B	set	LookDown
+C	Input.Gamepad	X	set	MoveForward
+C	Input.Gamepad	Y	set	MoveBack
+C	Input.Gamepad	LB	set	MoveLeft
+C	Input.Gamepad	RB	set	MoveRight
+C	Input.Gamepad	LT	set	Walk
+C	Input.Gamepad	LS	set	R
+C	Input.Gamepad	RS	set	Cross
+C	Input.Gamepad	Back	set	Triangle
+C	Input.Gamepad	Start	set	Circle
+C	Input.Gamepad	DpadUp	set	L
+C	Input.Gamepad	DpadDown	set	DpadLeft
+C	Input.Gamepad	DpadLeft	set	DpadRight
+C	Input.Gamepad	DpadRight	set	DpadDown
+C	Game	FrameLock	set	1
+K	356.ini	403
+T	404	0	17	272	47fadceaf88cdead	f66b4ebc7300f59a
+C	Input.Gamepad	A	set	LookDown
+C	Input.Gamepad	B	set	MoveForward
+C	Input.Gamepad	X	set	MoveBack
+C	Input.Gamepad	Y	set	MoveLeft
+C	Input.Gamepad	LB	set	MoveRight
+C	Input.Gamepad	RB	set	Walk
+C	Input.Gamepad	LT	set	Square
+C	Input.Gamepad	RT	set	R
+C	Input.Gamepad	LS	set	Cross
+C	Input.Gamepad	RS	set	Triangle
+C	Input.Gamepad	Back	set	Circle
+C	Input.Gamepad	Start	set	L
+C	Input.Gamepad	DpadUp	set	DpadLeft
+C	Input.Gamepad	DpadDown	set	DpadRight
+C	Input.Gamepad	DpadLeft	set	DpadDown
+C	Input.Gamepad	DpadRight	set	DpadUp
+C	Game	FrameLock	set	1
+K	357.ini	404
+T	405	0	29	394	98e8dcd43824b2c5	0c7596339b2657cd
+C	Input.Keyboard	MoveForward	set	
+C	Input.Keyboard	MoveBack	set	
+C	Input.Keyboard	MoveLeft	set	
+C	Input.Keyboard	MoveRight	set	
+C	Input.Keyboard	Walk	set	
+C	Input.Keyboard	Square	set	
+C	Input.Mouse	Mouse1	set	None
+C	Input.Keyboard	R	set	
+C	Input.Mouse	Mouse2	set	None
+C	Input.Keyboard	Cross	set	
+C	Input.Keyboard	Triangle	set	
+C	Input.Keyboard	Circle	set	
+C	Input.Mouse	Mouse3	set	None
+C	Input.Keyboard	L	set	
+C	Input.Keyboard	DpadLeft	set	
+C	Input.Mouse	WheelDown	set	None
+C	Input.Keyboard	DpadRight	set	
+C	Input.Mouse	WheelUp	set	None
+C	Input.Keyboard	DpadDown	set	
+C	Input.Keyboard	DpadUp	set	
+C	Input.Keyboard	Start	set	
+C	Input.Keyboard	Select	set	
+C	Input.Keyboard	LookLeft	set	
+C	Input.Keyboard	LookRight	set	
+C	Input.Keyboard	LookUp	set	
+C	Input.Keyboard	LookDown	set	
+C	Input.Keyboard	ToggleMouseCapture	set	
+C	Input.Keyboard	ToggleInputDisplay	set	
+C	Game	FrameLock	set	1
+K	358.ini	405
+T	406	0	16	221	998728e087b3d8b4	429812e05e9bc429
+C	Input.Gamepad	RT	set	None
+C	Input.Gamepad	LT	set	None
+C	Input.Gamepad	A	set	None
+C	Input.Gamepad	Y	set	None
+C	Input.Gamepad	X	set	None
+C	Input.Gamepad	B	set	None
+C	Input.Gamepad	LS	set	None
+C	Input.Gamepad	LB	set	None
+C	Input.Gamepad	DpadLeft	set	None
+C	Input.Gamepad	RB	set	None
+C	Input.Gamepad	DpadRight	set	None
+C	Input.Gamepad	DpadDown	set	None
+C	Input.Gamepad	DpadUp	set	None
+C	Input.Gamepad	Start	set	None
+C	Input.Gamepad	Back	set	None
+C	Game	FrameLock	set	1
+K	359.ini	406
+T	407	0	4	112	e7deef3219213e7d	209979ff7dda2d0d
+C	Rendering	Fullscreen	set	true
+C	Rendering	InternalScale	set	8
+C	Game	FrameLock	set	2
+C	Rendering	EarlyPresent	set	false
+K	360.ini	407
+T	408	407	4	115	fbc02bbd8f044fb9	b24b1857d86e36a2
+C	Rendering	Fullscreen	set	false
+C	Rendering	InternalScale	set	auto
+C	Game	FrameLock	set	1
+C	Rendering	EarlyPresent	set	true
+K	361.ini	408
+T	409	0	7	159	45f14c559e66d71c	2151ed74a81a5c67
+C	Rendering	AntiAliasing	set	msaa8
+C	Rendering	SSAO	set	low
+C	Rendering	TextureFilter	set	nearest
+C	Rendering	Anisotropy	set	8
+C	Rendering	Backend	set	software
+C	Rendering	GeThread	set	false
+C	Game	FrameLock	set	1
+K	362.ini	409
+T	410	409	6	152	cc5c70dffc6837d4	821fa8f293ab4ab5
+C	Rendering	AntiAliasing	set	fxaa
+C	Rendering	Anisotropy	set	16
+C	Rendering	TextureFilter	set	game
+C	Rendering	SSAO	set	off
+C	Rendering	Backend	set	d3d12
+C	Rendering	GeThread	set	true
+K	363.ini	410
+T	411	0	18	380	f8660731c3c335c7	ac4aef72733e7fc6
+C	Input	Scheme	set	psp
+C	Input.Mouse	SensitivityX	set	0.5
+C	Input.Mouse	InvertX	set	true
+C	Input.Mouse	InvertY	set	true
+C	Input.Mouse	HoldPitch	set	false
+C	Game	Camera	set	tight
+C	Input.Mouse	Exact	set	false
+C	Input.Mouse	Smoothing	set	0.75
+C	Input.Mouse	Capture	set	never
+C	Input.Mouse	MenuClicks	set	false
+C	Input.Mouse	Enabled	set	false
+C	Input.Keyboard	WalkScale	set	0.86
+C	Input	Prompts	set	psp
+C	Input.Gamepad	Glyphs	set	playstation
+C	Input	ExactTurn	set	false
+C	Input	BackgroundInput	set	true
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+K	364.ini	411
+T	412	411	13	372	58d10339f70db194	0860e06a6e5aa961
+C	Input.Mouse	SensitivityX	set	0.08
+C	Input.Mouse	InvertX	set	false
+C	Input.Mouse	InvertY	set	false
+C	Input.Mouse	HoldPitch	set	true
+C	Input.Mouse	Exact	set	true
+C	Input.Mouse	Smoothing	set	0
+C	Input.Mouse	Capture	set	click
+C	Input.Mouse	MenuClicks	set	true
+C	Input.Mouse	Enabled	set	true
+C	Input.Keyboard	WalkScale	set	0.6
+C	Game	Camera	set	original
+C	Input	Prompts	set	auto
+C	Input.Gamepad	Glyphs	set	auto
+K	365.ini	412
+T	413	0	18	374	69006a9a36eaa1ad	68b849c934e5898d
+C	Input	Scheme	set	psp
+C	Input.Gamepad	TurnSensitivity	set	3.2
+C	Input.Gamepad	InvertY	set	true
+C	Game	Camera	set	tight
+C	Input.Gamepad	DeadzoneLeft	set	0.72
+C	Input.Gamepad	DeadzoneRight	set	0.72
+C	Input.Gamepad	TriggerThreshold	set	0.8
+C	Input.Gamepad	CompensateEngineDeadzone	set	false
+C	Input.Gamepad	Index	set	3
+C	Input.Gamepad	PlayStationPads	set	false
+C	Input.Gamepad	Rumble	set	0.8
+C	Input.Gamepad	Enabled	set	false
+C	Input	Prompts	set	psp
+C	Input.Gamepad	Glyphs	set	playstation
+C	Input	ExactTurn	set	false
+C	Input	BackgroundInput	set	true
+C	Input	ShowInput	set	true
+C	Game	FrameLock	set	1
+K	366.ini	413
+T	414	413	13	371	4f0815c9418189af	62eb3c3b08bdb3fa
+C	Input.Gamepad	DeadzoneLeft	set	0.24
+C	Input.Gamepad	DeadzoneRight	set	0.24
+C	Input.Gamepad	TriggerThreshold	set	0.12
+C	Input.Gamepad	TurnSensitivity	set	1.0
+C	Input.Gamepad	InvertY	set	false
+C	Input.Gamepad	CompensateEngineDeadzone	set	true
+C	Input.Gamepad	Index	set	auto
+C	Input.Gamepad	Enabled	set	true
+C	Game	Camera	set	original
+C	Input.Gamepad	Rumble	set	1
+C	Input.Gamepad	PlayStationPads	set	true
+C	Input	Prompts	set	auto
+C	Input.Gamepad	Glyphs	set	auto
+K	367.ini	414
+T	415	0	4	117	86579d03427e55ae	e93e719ad986c57a
+C	Mods	Enabled	set	camera_mod,empty_mod
+C	Mods	DumpTextures	set	true
+C	Mods	LogFiles	set	true
+C	Game	FrameLock	set	1
+K	368.ini	415
+T	416	415	3	121	be3f44b980db6fb1	5ef71a92d331892e
+C	Mods	Enabled	unset	
+C	Mods	DumpTextures	set	false
+C	Mods	LogFiles	set	false
+K	369.ini	416
+T	417	0	2	68	d5441390504d3369	0d2b857e449aa4ca
+C	Audio	BufferMs	set	260
+C	Game	FrameLock	set	1
+K	370.ini	417
+T	418	417	1	67	76256e2b3f38a94a	51dc6bc4350e5858
+C	Audio	BufferMs	set	70
+K	371.ini	418
+T	419	0	2	96	5e38375c98c6751c	e349fb83d0be7a93
+C	Disc	Path	raw	C:\\Games\\Chili Con Carnage (USA).iso
+C	Game	FrameLock	set	1
+K	372.ini	419
+T	420	0	2	98	c0a4d7f5b783d14c	d5d28ed3b7fe5d37
+C	Disc	Path	raw	C:\\Games\\Chili Con Carnage (USA)\\disc0
+C	Game	FrameLock	set	1
+K	373.ini	420

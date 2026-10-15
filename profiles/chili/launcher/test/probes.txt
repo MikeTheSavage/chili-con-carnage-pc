@@ -1,0 +1,25 @@
+Texts a real game build holds when it understands a setting. The stand-in game carries them all, so the launcher treats it as the newest build.
+Backend must be d3d12 or software
+InternalScale must be auto or 1 to 8
+MSAA must be 1, 2, 4 or 8
+AntiAliasing must be off, fxaa, msaa2, msaa4 or msaa8
+Anisotropy must be 1, 2, 4, 8 or 16
+TextureFilter must be game, linear or nearest
+SSAO must be off, low or high
+Glow must be smooth, game or off
+Fullscreen must be true or false
+EarlyPresent must be true or false
+Preset must be low, medium, high or custom
+GeThread must be true or false
+FrameLock must be 1 (60 fps) or 2 (30 fps)
+Camera must be tight or original
+Priority must be high or normal
+BufferMs must be 20 to 500
+DumpTextures must be true or false
+LogFiles must be true or false
+[Disc]
+ExactTurn BackgroundInput ShowInput WalkScale LookKeySpeed MenuClicks SensitivityY HoldPitch Exact Smoothing
+CompensateEngineDeadzone TurnSensitivity LookSensitivity
+Prompts must be auto, keyboard, gamepad or psp
+Glyphs must be auto, xbox or playstation
+PlayStationPads Rumble
