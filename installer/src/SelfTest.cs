@@ -2,7 +2,8 @@
 // keys and a made-up controller through the same entry points as the player's (the keys the window gets,
 // the controller state it polls, a dropped file). It goes from page 1 to page 6 with the given disc and
 // installs into the test home; every check is a line of the log, and the exit code is the number of failed
-// checks. "Start the game when done" is switched off on the way, so nothing is started.
+// checks. "Start the game when done" is switched off on the way, so nothing is started. With a disc that is
+// refused it stops on page 2 after checking that no music starts (the refusal is its one failed check).
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +83,27 @@ namespace ChiliSetup
             w.View.Dropped(args.Iso);
             yield return Until(() => !m.Checking && m.Disc != null, 60, "the disc check ends");
             Check(m.DiscOk, "the disc is accepted: " + (m.Disc != null ? m.Disc.Summary + " " + m.Disc.Message : "-"));
+            if (!m.DiscOk)
+            {
+                // A refused disc ends the drive here: Enter on this page would open the file picker, a window of
+                // Windows' own that comes to the front. Wait as long as an export takes, then look: no music,
+                // Next still off, still on this page.
+                yield return Pause(3.0);
+                Check(!w.Music.Playing, "a refused disc: no music");
+                Check(m.Page == Page.Disc && !w.View.Hots.Any(h => h.Id == "next" && h.Enabled), "a refused disc: Next stays off");
+                // Nothing was installed, so no uninstall takes the test home's remembered values away: done here.
+                if (Env.IsTest)
+                {
+                    try { Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree(Env.SettingsKey, false); } catch { }
+                    try
+                    {
+                        using (var k = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\ChiliConCarnagePC"))
+                            if (k != null && k.SubKeyCount == 0 && k.ValueCount == 0) { k.Close(); Microsoft.Win32.Registry.CurrentUser.DeleteSubKey(@"Software\ChiliConCarnagePC", false); }
+                    }
+                    catch { }
+                }
+                yield break;
+            }
             Check(m.Icon0 != null && m.Pic1 != null, "the disc's two pictures are shown");
             bool music = w.M.DiscOk && HasMusic();
             if (music)
