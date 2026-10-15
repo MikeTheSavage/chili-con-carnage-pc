@@ -1,0 +1,103 @@
+# Build output
+/out/
+/build/
+CMakeUserPresets.json
+b*_perf/
+cmake-build-*/
+
+# Binary build artifacts, wherever they land
+*.exe
+*.dll
+*.lib
+*.obj
+*.exp
+*.iobj
+*.ipdb
+*.res
+*.tlog
+*.pdb
+*.ilk
+*.map
+# ...except the FFmpeg kit the build links (third_party/ffmpeg/README.md)
+!/profiles/chili/third_party/ffmpeg/bin/*.dll
+!/profiles/chili/third_party/ffmpeg/lib/*.lib
+
+# Game data in any form: never. The player's disc is read in place and nothing of it belongs here.
+*.iso
+*.cso
+*.ISO
+*.CSO
+*.naz
+*.NAZ
+*.at3
+*.AT3
+*.pmf
+*.PMF
+*.prx
+*.PRX
+*.sfo
+*.SFO
+*.elf
+*.ELF
+*.texture_psp
+*.mediastream_data_psp
+BOOT.BIN
+EBOOT.BIN
+UMD_DATA.BIN
+DATA.BIN
+ICON0.PNG
+ICON1.PMF
+PIC1.PNG
+SND0.AT3
+PARAM.SFO
+configpsp.txt
+PSP_GAME/
+PSP_DATA/
+SAVEDATA/
+SAVEDATA_PREVIOUS/
+saves/
+ms0*/
+art/
+textures/
+texture_dump/
+mods/*/textures/
+*.gpucache
+ChiliNative.ini
+!/profiles/chili/launcher/test/sample_ChiliNative.ini
+launcher.ini
+extraction_manifest.json
+
+# What a builder makes from their own copy: the extracted disc, the generated corpus (C++ made from the
+# game's executable), captures of runs, notes
+/profiles/*/game/
+/profiles/*/analysis/
+/profiles/*/captures/
+/profiles/*/progress/
+/profiles/*/symbols/
+generated_unit_*.cpp
+generated_registry.cpp
+generated_units.hpp
+
+# Run output
+*.log
+*.wav
+*.bmp
+logs/
+*.generated
+*.tmp
+
+# Installer build output
+/installer/bin/
+/installer/obj/
+/installer/payload/
+
+# IDE files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Python
+__pycache__/
+*.pyc

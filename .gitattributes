@@ -1,0 +1,9 @@
+# Test data whose bytes, line ends included, are checked by the tests: never converted.
+/profiles/chili/tools/ini_fixture/** -text
+
+# Binary files.
+*.dll binary
+*.lib binary
+*.ico binary
+*.png binary
+*.ttf binary
