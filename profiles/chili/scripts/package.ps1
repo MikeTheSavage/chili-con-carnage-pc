@@ -10,6 +10,7 @@
         launcher.ini                     the launcher's own switches (kept when the folder already has one)
         Chili Con Carnage settings.lnk   starts the launcher with --settings: the way back to the settings
                                          for a player who switched on "Skip this window next time"
+                                         (not with -NoSettingsShortcut)
         ChiliConCarnage.exe      the build's chili_recomp.exe, marked as a program without a console
         *.dll                    FFmpeg, and the Visual C++ runtime when Visual Studio has it
         ChiliNative.ini          the default settings (kept when the folder already has one)
@@ -52,6 +53,9 @@ param(
     [switch]$DesktopShortcut,
     # Leave the launcher out: the package is then the game alone, started by ChiliConCarnage.exe.
     [switch]$NoLauncher,
+    # Leave out "Chili Con Carnage settings.lnk" (a folder made for the installer, which makes its own shortcuts:
+    # a shortcut file records the folder and the computer it was made on).
+    [switch]$NoSettingsShortcut,
     # Leave the Visual C++ runtime DLLs out (the PC then needs the Visual C++ Redistributable).
     [switch]$NoRuntime
 )
@@ -270,14 +274,18 @@ if ($NoLauncher) {
         [IO.File]::WriteAllText($launcherIni, $text, (New-Object Text.UTF8Encoding($false)))
     }
     # The way back to the settings for a player who switched on "Skip this window next time".
-    $shell = New-Object -ComObject WScript.Shell
-    $link = $shell.CreateShortcut($settingsLink)
-    $link.TargetPath = $launcher
-    $link.Arguments = '--settings'
-    $link.WorkingDirectory = $Out
-    $link.IconLocation = "$launcher,0"
-    $link.Description = 'Chili Con Carnage: settings'
-    $link.Save()
+    if ($NoSettingsShortcut) {
+        if (Test-Path -LiteralPath $settingsLink) { [IO.File]::Delete($settingsLink) }
+    } else {
+        $shell = New-Object -ComObject WScript.Shell
+        $link = $shell.CreateShortcut($settingsLink)
+        $link.TargetPath = $launcher
+        $link.Arguments = '--settings'
+        $link.WorkingDirectory = $Out
+        $link.IconLocation = "$launcher,0"
+        $link.Description = 'Chili Con Carnage: settings'
+        $link.Save()
+    }
 }
 
 # 7. Nothing of the game may be in the program files of the package. (saves\ is the owner's own data; mods,
