@@ -169,7 +169,7 @@ void start_first() {
             rank(kWall01) < rank(kTitleLogo) && rank(kTitleLogo) < rank(kCharacter), "in the order the game draws them");
 
     // Five HD packs with 27 loading pictures at 2048x1088, in the order the mods' folders give them
-    // (hd_hud, hd_loading, hd_menu, hd_pickups, hd_text): the start's pictures come first, the text sheet before the
+    // (five packs, by their folder names): the start's pictures come first, the text sheet before the
     // first loading screen, then the 27 loading pictures, then the rest, the largest first.
     std::vector<GeTextureAheadFile> files;
     files.push_back({kRifle, 1024u, 512u});

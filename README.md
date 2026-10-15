@@ -3,7 +3,9 @@
 The PSP game Chili Con Carnage (USA release, ULUS-10216) as a native Windows program, made by static
 recompilation with [PSPRecomp](https://github.com/jessicanataliagta/PSPRecomp).
 
-You need your own copy of the game as an `.iso` file. This repository and the installer contain no game data.
+You need your own copy of the game as an `.iso` file. This repository contains no game data, and Setup contains
+no files of the game; its optional HD loading pictures are upscales of the game's own loading screens, made
+for this PC version.
 
 ## What it is
 
@@ -40,7 +42,7 @@ You need your own copy of the game as an `.iso` file. This repository and the in
 - Windows 10 (version 1903 or later) or Windows 11, 64-bit.
 - A graphics card with Direct3D 12.
 - .NET Framework 4.8 (part of those Windows versions) for the launcher and the installer.
-- About 300 MB of disk space (about 120 MB without the HD loading pictures).
+- 327 MB of free disk space (155 MB without the HD loading pictures).
 - Your own copy of Chili Con Carnage (USA, ULUS-10216) as a plain `.iso`, unmodified. A compressed `.cso`
   must be converted to `.iso` first.
 
@@ -77,8 +79,8 @@ ChiliConCarnagePC-Setup-<version>.exe --silent --iso "D:\Games\Chili Con Carnage
 
 - **"Windows protected your PC"**: the programs are not signed. Compare the file's SHA-256 with
   `SHA256SUMS.txt` on the Releases page, then choose More info and Run anyway.
-- **"This is not Chili Con Carnage (USA)"** or **"a different game program"**: the disc is another release or
-  a modified copy.
+- **"This is not Chili Con Carnage (USA)"**, **"This copy of the game is modified"** or **"a different game
+  program"**: the disc is another release or a modified copy.
 - **The game stops at once**: the launcher's Open logs button, or `logs\ChiliConCarnage.log` in the game
   folder.
 - **Crackling sound**: raise `[Audio] BufferMs` in `ChiliNative.ini` (default 70, try 120), or choose 30 fps

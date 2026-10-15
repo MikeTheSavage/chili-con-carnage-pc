@@ -10,7 +10,7 @@ profiles/<id>/
   README.md
   config/          Profile configuration and analysis inputs
   data/            Redistributable profile data generated from compatible sources
-  generated/       Checked-in AOT C++ corpus for the supported executable
+  generated/       AOT C++ corpus for the supported executable (see section 6)
   host/            HLE, bootstrap, renderer/audio/input integration and patches
   scripts/         Current build, run and benchmark entry points
   tests/           Profile-specific regression tests
@@ -53,6 +53,9 @@ cmake --build out/framework
 ```
 
 ## 6. Keep generated code reproducible
+
+In this repository the corpus is never checked in: `profiles/chili/scripts/analyze.ps1 -Iso` generates it from
+the player's own disc into `profiles/chili/analysis/generated`, which is git-ignored (see BUILDING.md).
 
 If generated AOT files are checked in, document:
 

@@ -331,9 +331,9 @@ block on the disc is not changed, and a block whose tables are not the game's ow
 says what was done, or why not:
 
 ```
-[mods] font advances: hd_text (Saira): 149 glyphs in both font tables of todpsp_game.main, 0 unknown; pen steps x0.96 of the game's over those letters (4.9 ms at the start)
-[mods] font advances: hd_text\textures\5d0c6d1a663a8515.advances.txt ignored: line 12: the step 99 is not between 3 and 48
-[mods] font advances: hd_menu's file ignored, the fill sheet in force is hd_text's
+[mods] font advances: font_pack (Saira): 149 glyphs in both font tables of todpsp_game.main, 0 unknown; pen steps x0.96 of the game's over those letters (4.9 ms at the start)
+[mods] font advances: font_pack\textures\5d0c6d1a663a8515.advances.txt ignored: line 12: the step 99 is not between 3 and 48
+[mods] font advances: menu_pack's file ignored, the fill sheet in force is font_pack's
 ```
 
 Text widths and line breaks follow, in the game and in the settings page. The code: `host/font_advances.hpp`,

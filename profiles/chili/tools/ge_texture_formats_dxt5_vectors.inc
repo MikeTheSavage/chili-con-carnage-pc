@@ -1,4 +1,5 @@
-// Recorded real-PSP DXT5 alpha sweep facts: tests/gpu/texcolors/dxt5.expected
+// Recorded real-PSP DXT5 alpha sweep facts: pspautotests (https://github.com/hrydgard/pspautotests),
+// tests/gpu/texcolors/dxt5.expected
 // Endpoint alpha0=255, alpha1=row; columns are alpha selectors 0..7.
 static constexpr unsigned dxt5_hardware_alpha[256][8]={
     {255,0,218,182,145,109,72,36},

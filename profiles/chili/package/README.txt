@@ -263,8 +263,9 @@ LICENCES
 
   The video and sound decoding uses FFmpeg 7.1 (avcodec, avformat, avutil, swresample, swscale)
   under the GNU Lesser General Public License 2.1 or later; its text is in
-  licenses\COPYING.FFmpeg.LGPLv2.1.txt. The FFmpeg source code for these DLLs is published with
-  each release of this program, beside the download. The five DLLs beside the program can be
+  licenses\COPYING.FFmpeg.LGPLv2.1.txt. The FFmpeg source code for these DLLs (ffmpeg-7.1.tar.xz)
+  is attached to each release of this program, beside the download, and is also at
+  https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz. The five DLLs beside the program can be
   replaced by other builds of the same versions (avcodec-61, avformat-61, avutil-59, swresample-5,
   swscale-8).
 @RUNTIME_NOTE@

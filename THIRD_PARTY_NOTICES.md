@@ -16,14 +16,18 @@ of it is in this repository, and this project is not affiliated with them.
 
 - What: FFmpeg 7.1, the libraries avcodec-61, avformat-61, avutil-59, swresample-5 and swscale-8, used for
   the game's ATRAC3plus sound and its movies. In this repository: their headers, import libraries and DLLs in
-  `profiles/chili/third_party/ffmpeg/`. In the release: the five DLLs beside the program.
+  `profiles/chili/third_party/ffmpeg/`. In the release: the five DLLs beside the program, and a second copy of
+  avcodec-61, avutil-59 and swresample-5 inside Setup for the tool that reads the music from the player's disc
+  (it runs from Setup's temporary folder and is not installed). The same licence and source offer cover every
+  copy.
 - Licence: GNU Lesser General Public License, version 2.1 or later. The text is
   `profiles/chili/third_party/ffmpeg/COPYING.LGPLv2.1`, and `licenses\COPYING.FFmpeg.LGPLv2.1.txt` in the
   installed game.
 - Built without `--enable-gpl` and without `--enable-nonfree`, with only the ATRAC3plus and H.264 decoders.
   The configure line is in [profiles/chili/third_party/ffmpeg/README.md](profiles/chili/third_party/ffmpeg/README.md).
-- Source: <https://ffmpeg.org/download.html>. The source archive of FFmpeg 7.1 that corresponds to the
-  shipped DLLs is published with each release of this program, beside the download.
+- Source: the source archive of FFmpeg 7.1 that corresponds to the shipped DLLs, `ffmpeg-7.1.tar.xz`, is
+  attached to each release of this program on its Releases page, beside the download. It is also at
+  <https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz> (<https://ffmpeg.org/download.html>).
 - The program links the DLLs dynamically. They can be replaced by other builds of the same versions.
 - FFmpeg is a trademark of Fabrice Bellard, originator of the FFmpeg project.
 
