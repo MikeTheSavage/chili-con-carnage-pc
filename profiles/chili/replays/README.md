@@ -84,6 +84,14 @@ otherwise leaves out) the main menu's block and 31 mission blocks are served cha
 one: frame 100 `b100a453299e6dfd`, 1000 `14bd9330bdd9c8ea`, 2000 `5a10295987c2f0f8`, 2340 `6c35ea4bb3cd2a1e`
 (`clock_us=78295094`).
 
+**The control styles leave every hash of this file as it is** (`CONTROLS.md`, "Control styles": Total
+Overdose PC the default, Modern and PSP original beside it, `[Input] Layout`). A deterministic run keeps PSP
+original's bindings unless `CHILI_CONFIG` names a file, the bindings go to PSP buttons, no host input is read in
+such a run, and the prompt pictures do not reach the game's memory. `replays\mouse.ini` has no `Layout` line, so
+it now means Total Overdose PC's keys; the replays do not read keys. The baseline gives the same 24 lines (frame
+2340 `817ded4a1e89e140`) with a settings file of Total Overdose PC's keys on the psp scheme and the keyboard's
+pictures (`CHILI_CONFIG`, `CHILI_PROMPTS=keyboard`).
+
 Baseline on the software rasterizer, wall ms per game frame over frames 250-2339 (2,090 frames):
 
 | Build | mean | p50 | p90 | p99 | max |

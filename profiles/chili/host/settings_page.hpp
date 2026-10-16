@@ -631,7 +631,7 @@ private:
         const auto look = [&](Page which) {
             for (const auto &row : rows_of(which)) {
                 Lock lock = Lock::None;
-                if (row.kind == RowKind::Setting) { if (same_name(row.setting->key, "Scheme")) continue; lock = live_->locked(*row.setting, frame_); }
+                if (row.kind == RowKind::Setting) { if (same_name(row.setting->key, "Layout")) continue; lock = live_->locked(*row.setting, frame_); }
                 else if (row.kind == RowKind::Quality) lock = live_->quality_lock(frame_);
                 else if (row.kind == RowKind::Textures) { lock = live_->textures_lock(frame_); if (lock == Lock::NoHdPack) lock = Lock::None; }
                 else continue;

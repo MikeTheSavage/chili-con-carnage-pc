@@ -16,6 +16,8 @@
 //   Restart   takes a restart of the game
 //   Off       not a key for a page in the game (a path, a spelling of another key, the file's version)
 // A key whose page is None is not shown by the game's page; the launcher has it.
+#include "input_layout.hpp"
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstdint>
@@ -25,6 +27,7 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <vector>
 namespace chili::settings {
 enum class Kind : std::uint8_t { Switch, Choice, Slider, Binding, Text };
 enum class Class : std::uint8_t { Live, Moderate, Split, Restart, Off };
@@ -39,8 +42,9 @@ struct Setting {
     Class cls{};
     Page page{};                  // None: not on the game's page
     std::string_view name;        // the row's name on the page; empty when not shown
-    std::string_view fallback;    // the game's default (with Scheme=dual_analog)
-    const char *fallback_psp{};   // the default with Scheme=psp where it differs, else null
+    std::string_view fallback;    // the game's default (with the control style Total Overdose PC)
+    const char *fallback_modern{};   // the default with Layout=modern where it differs, else null
+    const char *fallback_psp{};   // the default with Layout=psp where it differs from Modern's, else null
     std::span<const Value> values;     // Choice and Switch: what the file holds and the word shown for it
     double min{}, max{}, step{};       // Slider
     Show show{};
@@ -48,7 +52,12 @@ struct Setting {
 
     std::string id() const { return std::string(section) + "/" + std::string(key); }
     constexpr bool shown() const noexcept { return page != Page::None; }
-    constexpr std::string_view default_for(bool psp) const noexcept { return psp && fallback_psp ? std::string_view(fallback_psp) : fallback; }
+    // The default with a control style: PSP original takes Modern's where it has none of its own.
+    constexpr std::string_view default_for(InputLayout layout) const noexcept {
+        if (layout == InputLayout::Psp && fallback_psp) return fallback_psp;
+        if (layout != InputLayout::TodPc && fallback_modern) return fallback_modern;
+        return fallback;
+    }
 };
 
 namespace words {
@@ -66,7 +75,7 @@ inline constexpr Value renderer[]{{"d3d12", "Graphics card"}, {"software", "Soft
 inline constexpr Value frame_rate[]{{"2", "30 fps"}, {"1", "60 fps"}};
 inline constexpr Value camera[]{{"tight", "Responsive"}, {"original", "Original"}};
 inline constexpr Value priority[]{{"normal", "Normal"}, {"high", "High"}};
-inline constexpr Value control_style[]{{"dual_analog", "Modern"}, {"psp", "PSP original"}};
+inline constexpr Value control_style[]{{"tod_pc", "Total Overdose PC"}, {"modern", "Modern"}, {"psp", "PSP original"}};
 inline constexpr Value prompts[]{{"auto", "Automatic"}, {"keyboard", "Keyboard"}, {"gamepad", "Gamepad"}, {"psp", "PSP original"}};
 inline constexpr Value grab[]{{"click", "On click"}, {"never", "Never"}};
 inline constexpr Value which_pad[]{{"auto", "Automatic"}, {"0", "1"}, {"1", "2"}, {"2", "3"}, {"3", "4"}};
@@ -76,26 +85,27 @@ inline constexpr Value button_pictures[]{{"auto", "Automatic"}, {"xbox", "Xbox"}
 namespace detail {
 constexpr Setting choice(std::string_view section, std::string_view key, Class cls, Page page, std::string_view name, std::string_view fallback,
                          std::span<const Value> values, std::string_view environment = {}, const char *fallback_psp = nullptr) {
-    return Setting{section, key, Kind::Choice, cls, page, name, fallback, fallback_psp, values, 0.0, 0.0, 0.0, Show::Number, environment};
+    return Setting{section, key, Kind::Choice, cls, page, name, fallback, nullptr, fallback_psp, values, 0.0, 0.0, 0.0, Show::Number, environment};
 }
 constexpr Setting toggle(std::string_view section, std::string_view key, Class cls, Page page, std::string_view name, std::string_view fallback, std::string_view environment = {}) {
-    return Setting{section, key, Kind::Switch, cls, page, name, fallback, nullptr, words::on_off, 0.0, 0.0, 0.0, Show::Number, environment};
+    return Setting{section, key, Kind::Switch, cls, page, name, fallback, nullptr, nullptr, words::on_off, 0.0, 0.0, 0.0, Show::Number, environment};
 }
 constexpr Setting slider(std::string_view section, std::string_view key, Class cls, Page page, std::string_view name, std::string_view fallback,
                          double min, double max, double step, Show show, std::string_view environment = {}) {
-    return Setting{section, key, Kind::Slider, cls, page, name, fallback, nullptr, {}, min, max, step, show, environment};
+    return Setting{section, key, Kind::Slider, cls, page, name, fallback, nullptr, nullptr, {}, min, max, step, show, environment};
 }
-constexpr Setting binding(std::string_view section, std::string_view key, std::string_view fallback, const char *fallback_psp = nullptr) {
-    return Setting{section, key, Kind::Binding, Class::Live, Page::None, {}, fallback, fallback_psp, {}, 0.0, 0.0, 0.0, Show::Number, {}};
+// `fallback`: Total Overdose PC's; `fallback_modern`: Modern's where it differs; `fallback_psp`: PSP original's where it differs from Modern's.
+constexpr Setting binding(std::string_view section, std::string_view key, std::string_view fallback, const char *fallback_modern = nullptr, const char *fallback_psp = nullptr) {
+    return Setting{section, key, Kind::Binding, Class::Live, Page::None, {}, fallback, fallback_modern, fallback_psp, {}, 0.0, 0.0, 0.0, Show::Number, {}};
 }
 constexpr Setting text(std::string_view section, std::string_view key, Class cls, std::string_view fallback, std::string_view environment = {}) {
-    return Setting{section, key, Kind::Text, cls, Page::None, {}, fallback, nullptr, {}, 0.0, 0.0, 0.0, Show::Number, environment};
+    return Setting{section, key, Kind::Text, cls, Page::None, {}, fallback, nullptr, nullptr, {}, 0.0, 0.0, 0.0, Show::Number, environment};
 }
 }
 
 // Every key of launcher/src/Model.cs, in its order: the settings first, then the bindings (the keys of an
 // action, the mouse's inputs, a pad's buttons).
-inline constexpr std::array<Setting, 98> table{{
+inline constexpr std::array<Setting, 99> table{{
     // [Rendering]
     detail::choice("Rendering", "Fullscreen", Class::Live, Page::Display, "Screen", "false", words::screen),
     detail::text("Rendering", "WindowSize", Class::Off, ""),
@@ -124,11 +134,13 @@ inline constexpr std::array<Setting, 98> table{{
     // [Disc]
     detail::text("Disc", "Path", Class::Off, ""),
     // [Input]
-    detail::choice("Input", "Scheme", Class::Restart, Page::Controls, "Control style", "dual_analog", words::control_style),
+    // The control style (input_layout.hpp); the scheme goes with it and is not a row of its own.
+    detail::choice("Input", "Layout", Class::Restart, Page::Controls, "Style", "tod_pc", words::control_style),
+    detail::text("Input", "Scheme", Class::Off, "dual_analog"),
     detail::toggle("Input", "ExactTurn", Class::Live, Page::Gamepad, "Precise turning", "true"),
     detail::toggle("Input", "BackgroundInput", Class::Live, Page::None, "", "false"),
     detail::toggle("Input", "ShowInput", Class::Live, Page::None, "", "false"),
-    detail::text("Input", "Version", Class::Off, "2"),
+    detail::text("Input", "Version", Class::Off, "3"),
     detail::choice("Input", "Prompts", Class::Live, Page::Controls, "Prompts", "auto", words::prompts),
     // [Input.Keyboard]
     detail::slider("Input.Keyboard", "WalkScale", Class::Live, Page::KeyboardMouse, "Walk speed", "0.6", 0.31, 1.0, 0.01, Show::Percent),
@@ -157,18 +169,19 @@ inline constexpr std::array<Setting, 98> table{{
     detail::choice("Input.Gamepad", "Glyphs", Class::Live, Page::Controls, "Button pictures", "auto", words::button_pictures),
     detail::toggle("Input.Gamepad", "PlayStationPads", Class::Moderate, Page::Gamepad, "PlayStation pads", "true"),
     detail::slider("Input.Gamepad", "Rumble", Class::Live, Page::Gamepad, "Rumble", "1", 0.0, 1.0, 0.05, Show::Percent),
-    // The keys of an action ([Input.Keyboard] Target=key[,key]), in the launcher's order of actions.
+    // The keys of an action ([Input.Keyboard] Target=key[,key]), in the launcher's order of actions: Total
+    // Overdose PC's, then Modern's where they differ (PSP original has Modern's, without the look keys).
     detail::binding("Input.Keyboard", "MoveForward", "W"), detail::binding("Input.Keyboard", "MoveBack", "S"),
     detail::binding("Input.Keyboard", "MoveLeft", "A"), detail::binding("Input.Keyboard", "MoveRight", "D"),
     detail::binding("Input.Keyboard", "Walk", "X"), detail::binding("Input.Keyboard", "Square", "G"),
-    detail::binding("Input.Keyboard", "R", "V"), detail::binding("Input.Keyboard", "Cross", "Space,E,Enter"),
-    detail::binding("Input.Keyboard", "Triangle", "R"), detail::binding("Input.Keyboard", "Circle", "F,Backspace"),
-    detail::binding("Input.Keyboard", "L", "Q"), detail::binding("Input.Keyboard", "DpadLeft", "Left,1"),
-    detail::binding("Input.Keyboard", "DpadRight", "Right,2"), detail::binding("Input.Keyboard", "DpadDown", "Down,Z"),
-    detail::binding("Input.Keyboard", "DpadUp", "Up"), detail::binding("Input.Keyboard", "Start", "Escape"),
-    detail::binding("Input.Keyboard", "Select", "Tab"),
-    detail::binding("Input.Keyboard", "LookLeft", "J", ""), detail::binding("Input.Keyboard", "LookRight", "L", ""),
-    detail::binding("Input.Keyboard", "LookUp", "I", ""), detail::binding("Input.Keyboard", "LookDown", "K", ""),
+    detail::binding("Input.Keyboard", "R", "V"), detail::binding("Input.Keyboard", "Cross", "Space,F,Enter,LShift", "Space,E,Enter"),
+    detail::binding("Input.Keyboard", "Triangle", "R,LCtrl", "R"), detail::binding("Input.Keyboard", "Circle", "E,Backspace", "F,Backspace"),
+    detail::binding("Input.Keyboard", "L", "Q,C", "Q"), detail::binding("Input.Keyboard", "DpadLeft", "Left", "Left,1"),
+    detail::binding("Input.Keyboard", "DpadRight", "Right", "Right,2"), detail::binding("Input.Keyboard", "DpadDown", "Tab,Down,PageDown", "Down,Z"),
+    detail::binding("Input.Keyboard", "DpadUp", "Up,PageUp", "Up"), detail::binding("Input.Keyboard", "Start", "Escape,P", "Escape"),
+    detail::binding("Input.Keyboard", "Select", "Grave", "Tab"),
+    detail::binding("Input.Keyboard", "LookLeft", "J", nullptr, ""), detail::binding("Input.Keyboard", "LookRight", "L", nullptr, ""),
+    detail::binding("Input.Keyboard", "LookUp", "I", nullptr, ""), detail::binding("Input.Keyboard", "LookDown", "K", nullptr, ""),
     detail::binding("Input.Keyboard", "ToggleMouseCapture", "F1"), detail::binding("Input.Keyboard", "ToggleInputDisplay", "F3"),
     // The mouse's inputs ([Input.Mouse] Mouse1..5, WheelUp, WheelDown = Target).
     detail::binding("Input.Mouse", "Mouse1", "Square"), detail::binding("Input.Mouse", "Mouse2", "R"),
@@ -177,10 +190,10 @@ inline constexpr std::array<Setting, 98> table{{
     detail::binding("Input.Mouse", "WheelDown", "DpadLeft"),
     // A pad's buttons ([Input.Gamepad] Button=Target).
     detail::binding("Input.Gamepad", "A", "Cross"), detail::binding("Input.Gamepad", "B", "Circle"),
-    detail::binding("Input.Gamepad", "X", "Triangle", "Square"), detail::binding("Input.Gamepad", "Y", "Cross", "Triangle"),
-    detail::binding("Input.Gamepad", "LB", "DpadLeft", "L"), detail::binding("Input.Gamepad", "RB", "DpadRight", "R"),
+    detail::binding("Input.Gamepad", "X", "Triangle", nullptr, "Square"), detail::binding("Input.Gamepad", "Y", "Cross", nullptr, "Triangle"),
+    detail::binding("Input.Gamepad", "LB", "DpadLeft", nullptr, "L"), detail::binding("Input.Gamepad", "RB", "DpadRight", nullptr, "R"),
     detail::binding("Input.Gamepad", "LT", "R"), detail::binding("Input.Gamepad", "RT", "Square"),
-    detail::binding("Input.Gamepad", "LS", "L", "None"), detail::binding("Input.Gamepad", "RS", "None"),
+    detail::binding("Input.Gamepad", "LS", "L", nullptr, "None"), detail::binding("Input.Gamepad", "RS", "None"),
     detail::binding("Input.Gamepad", "Back", "Select"), detail::binding("Input.Gamepad", "Start", "Start"),
     detail::binding("Input.Gamepad", "DpadUp", "DpadUp"), detail::binding("Input.Gamepad", "DpadDown", "DpadDown"),
     detail::binding("Input.Gamepad", "DpadLeft", "DpadLeft"), detail::binding("Input.Gamepad", "DpadRight", "DpadRight"),
@@ -250,7 +263,7 @@ inline constexpr Row rows[]{
     detail::key(Page::Graphics, "Rendering", "Glow"),
     detail::other(Page::Graphics, RowKind::Defaults, "Defaults"),
 
-    detail::key(Page::Controls, "Input", "Scheme"),
+    detail::key(Page::Controls, "Input", "Layout"),
     detail::key(Page::Controls, "Game", "Camera"),
     detail::link(Page::Controls, "Keyboard & mouse", Page::KeyboardMouse),
     detail::link(Page::Controls, "Gamepad", Page::Gamepad),
@@ -382,6 +395,30 @@ inline bool equivalent(std::string_view a, std::string_view b) {
     const auto x = number(a), y = number(b);
     if (x && y) return std::fabs(*x - *y) < 1e-9;
     return (is_true(a) && is_true(b)) || (is_false(a) && is_false(b));
+}
+// Whether two values of a binding key name the same inputs: for the keys of an action the same key names
+// (Return is Enter, Esc is Escape; without case, in any order, a name twice counts once), for a mouse input
+// or a pad button the same target (nothing is None). The launcher's Model.SameBinding.
+inline bool binding_equivalent(const Setting &setting, std::string_view a, std::string_view b) {
+    if (same_name(setting.section, "Input.Keyboard")) {
+        const auto names = [](std::string_view text) {
+            std::vector<std::string> out;
+            while (!text.empty()) {
+                const auto comma = std::min(text.find(','), text.size());
+                auto name = lowered(trimmed(text.substr(0u, comma)));
+                text.remove_prefix(std::min(comma + 1u, text.size()));
+                if (name.empty()) continue;
+                if (name == "return") name = "enter";
+                else if (name == "esc") name = "escape";
+                if (std::find(out.begin(), out.end(), name) == out.end()) out.push_back(std::move(name));
+            }
+            std::sort(out.begin(), out.end());
+            return out;
+        };
+        return names(a) == names(b);
+    }
+    const auto target = [](std::string_view text) { auto t = lowered(trimmed(text)); return t.empty() ? std::string("none") : t; };
+    return target(a) == target(b);
 }
 // A number as the launcher writes it into the file: at most three decimals, no zeros at the end ("0.###").
 inline std::string number_text(double value) {

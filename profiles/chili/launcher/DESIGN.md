@@ -265,9 +265,9 @@ if the game exits within 3 s with an error the launcher reopens on Play with the
 
 ### Controls
 Top of the card: a two-way switch `Keyboard & mouse / Gamepad` (what the rows show, not a setting) and the
-scheme: `Control style: Modern (move + aim) / PSP original` with the hint "PSP original turns with
-left/right and cannot look up or down." (`[Input] Scheme` dual_analog / psp). Changing the style asks
-"Load that style's default bindings too?" Yes / No.
+style: `Control style: Total Overdose PC / Modern / PSP original` (`[Input] Layout` tod_pc / modern / psp,
+with the `[Input] Scheme` that goes with it: dual_analog, dual_analog, psp). Changing the style gives every
+binding that still has the old style's default the new one's; nothing is asked.
 
 Keyboard & mouse view, rows by action, each with up to three binding chips and a "+" chip:
 Move forward, Move back, Move left, Move right, Walk (hold), Shoot, Headshot mode, Jump / dive / use,
@@ -459,7 +459,7 @@ emulator" or "the port". No trademarks of the publisher in the UI text. Messages
   when it is tried.
 - Game failed to start (returned within 3 s): `The game stopped right away.` with an `Open logs` button;
   later: `The game stopped with error <code>.`
-- Scheme change: `Load the default bindings for PSP original too?` `Yes` / `No`.
+- Control style change: no question; a binding that still has the old style's default takes the new one's.
 - Defaults: `Reset keyboard & mouse bindings to the defaults?` `Reset` / `Cancel`.
 - Mods: nothing is said when there are none; an empty folder is a locked row that says `<name>: This folder
   is empty.` when tried. Controller header: nothing with a controller, `No controller found` without one.

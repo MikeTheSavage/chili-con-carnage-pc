@@ -1,2 +1,4 @@
 # The sample settings file is test data: its bytes, line ends included, must stay as the game wrote them.
 test/sample_ChiliNative.ini -text
+# Its update by the game (and by the launcher), byte for byte: tools/pc_input_test.cpp and the launcher's tests compare with it.
+test/sample_ChiliNative.migrated.ini -text

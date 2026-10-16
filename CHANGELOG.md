@@ -17,6 +17,10 @@ The first public version.
   game's own look, worked with keys, mouse or controller.
 - **Launcher.** Every setting on seven pages, usable with a controller alone; rebinding of every key, mouse
   button and controller button; mods on and off and in order.
+- **Controls.** The default keys and mouse are those Total Overdose (2005, the same engine) had on PC: W A S
+  D, mouse look and aim, left button shoot, right button headshot, Space shoot-dodge, Left Shift jump, F use,
+  R reload, Left Ctrl the loco move, Tab rewind, the wheel for weapons, Escape and P pause. "Modern" and
+  "PSP original" are one choice away in the launcher and on the settings page inside the game.
 - **Controllers.** Xbox-style controllers and PlayStation controllers (DualShock 4, DualSense) without a
   helper program; the one touched last is used. The buttons the game shows on screen follow the device you
   used last.

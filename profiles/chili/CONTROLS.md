@@ -1,65 +1,150 @@
 # PC controls
 
 Bindings live in `ChiliNative.ini` beside `chili_recomp.exe`. The file is written with the defaults on the
-first run; delete it to get them back. Code: `host/pc_input.hpp` (devices and bindings),
+first run; delete it to get them back. Code: `host/pc_input.hpp` (devices and bindings, the first-run text of
+each control style, an older file brought up to date), `host/input_layout.hpp` (the control styles),
 `host/pad_sample.hpp` and `host/hid_pad.hpp` (gamepads: the state every pad is read into, PlayStation pads),
 `host/pad_rumble_hook.hpp` (the game's vibration call), `host/input_device.hpp` (what the on-screen prompts
 are told), `host/prompt_style.hpp` and `host/prompt_glyphs.*` (the on-screen prompts), `host/input_title.hpp`
 (what the title bar says), `host/dual_analog_controls.hpp` and `host/dual_analog.cpp` (the two-stick scheme
-inside the game). Tests: `tools/pc_input_test.cpp` (bindings, mouse, gamepads, the ini file),
-`tools/pad_rumble_hook_test.cpp` (the game's vibration call to the pad in use), `tools/prompt_glyphs_test.cpp`
-(the prompt pictures, and the input code and the prompts together) and `tools/dual_analog_test.cpp` (where a
-frame's turn goes, over a made-up player in guest memory).
+inside the game). Tests: `tools/pc_input_test.cpp` (bindings, mouse, gamepads, the ini file, the control
+styles and the update of an older file), `tools/pad_rumble_hook_test.cpp` (the game's vibration call to the
+pad in use), `tools/prompt_glyphs_test.cpp` (the prompt pictures, and the input code and the prompts together)
+and `tools/dual_analog_test.cpp` (where a frame's turn goes, over a made-up player in guest memory).
+
+## Control styles
+
+`[Input] Layout` picks the keys, mouse buttons and pad buttons a player starts with. The launcher's Controls
+page ("Control style") and the game's own Settings page (Controls, "Style") show the three by name:
+
+| Name | `Layout` | `Scheme` | What it is |
+|---|---|---|---|
+| Total Overdose PC (the default) | `tod_pc` | `dual_analog` | The keys and the mouse Total Overdose had on PC, for every action the two games share; the chili's own actions on keys in the same spirit (below) |
+| Modern | `modern` | `dual_analog` | The port's own layout before Total Overdose PC, unchanged |
+| PSP original | `psp` | `psp` | The PSP's layout: left/right turns, L strafes (Modern's keys without the look keys, the PSP's pad table) |
+
+Total Overdose on PC had no controller layout (its PC setup is keyboard and mouse only), so the pad table
+of Total Overdose PC is Modern's, and so are the mouse and every setting that is no binding.
+
+A binding the file leaves out takes the default of the file's `Layout`; a file without a `Layout` line means
+PSP original with `Scheme=psp` and Total Overdose PC otherwise. Choosing another style, in the launcher or on
+the game's page, writes `Layout`, the `Scheme` that goes with it, and the new style's keys into every binding
+line that still holds the old style's (the same keys in any order, case or spelling); a binding the player
+changed stays as it is (`PcInputConfig::layout_binding_changes`, the launcher's `Model.SwitchLayout`). On the
+game's page the style is written at once and runs from the next start, like the scheme. The launcher no
+longer asks "Load the default bindings too?".
 
 ## Schemes
 
-`[Input] Scheme=dual_analog` (default): keyboard and mouse, or a two-stick gamepad. The move keys or the left
-stick run and strafe; the mouse or the right stick turns the player and pitches the view. This is the
-engine's own two-stick path: the player script asks for `run_left`, `run_right`, `look_up` and `look_down`,
-which the PSP data never defined, and the host answers them (the same `Control`/`ControlSetup` layer as Total
-Overdose). The second stick carries a rate: one byte per axis, where the PSP stick's full pressure sits a
-third of the way along and full travel is about 1,500 degrees per second of turn and of pitch. The mouse does
-not go through that stick: it is an angle, applied as it is, and the stick's turn is applied as each frame's
-angle too (see "Mouse latency and aim"). The engine limits the pitch to 45 degrees up and down, and auto-aim
-still picks the target.
+`[Input] Scheme=dual_analog` (with Total Overdose PC and Modern): keyboard and mouse, or a two-stick gamepad.
+The move keys or the left stick run and strafe; the mouse or the right stick turns the player and pitches the
+view. This is the engine's own two-stick path: the player script asks for `run_left`, `run_right`, `look_up`
+and `look_down`, which the PSP data never defined, and the host answers them (the same
+`Control`/`ControlSetup` layer as Total Overdose). The second stick carries a rate: one byte per axis, where
+the PSP stick's full pressure sits a third of the way along and full travel is about 1,500 degrees per second
+of turn and of pitch. The mouse does not go through that stick: it is an angle, applied as it is, and the
+stick's turn is applied as each frame's angle too (see "Mouse latency and aim"). The engine limits the pitch
+to 45 degrees up and down, and auto-aim still picks the target.
 
-`Scheme=psp`. The PSP layout untouched: left/right turns, holding L strafes, no pitch, turning capped at
-about 170 degrees per second; the mouse turns left and right only. Deterministic runs use it unless
-`CHILI_CONFIG` or the replay file says otherwise, so replays recorded before the second stick existed give
-the same state hashes.
+`Scheme=psp` (with PSP original). The PSP layout untouched: left/right turns, holding L strafes, no pitch,
+turning capped at about 170 degrees per second; the mouse turns left and right only. Deterministic runs use
+it with PSP original's bindings unless `CHILI_CONFIG` or the replay file says otherwise, so replays recorded
+before the second stick existed give the same state hashes. Bindings go to PSP buttons and no host input is
+read in those runs, so the control style moves no hash.
 
-A `ChiliNative.ini` that the game wrote before the file carried `[Input] Version` (an early build wrote
-`Scheme=psp`) gets the current input defaults once: the `[Input...]` sections are replaced, the other
-sections stay, the old file is kept as `ChiliNative.ini.bak`, and the log says so. After that the file is
-yours: `Scheme=psp` set in it stays. A hand-written ini (one that does not start with the game's own first
-line) and any ini read by a deterministic run are never changed.
+## Settings files of older builds
 
-## Defaults (dual_analog)
+`[Input] Version` is 3 since the control styles. When the game starts on a file it wrote itself (the file
+begins with the game's own first line) with a lower number, it brings the file up to date once, keeps the
+file as it was as `ChiliNative.ini.bak` (over an older backup), and says so in one `[input]` line of the log:
+
+- No `Version`, or 1 (an early build wrote `Scheme=psp`): every `[Input...]` section is replaced by the current
+  defaults (Total Overdose PC); the other sections stay.
+- 2 (earlier builds, whose defaults were Modern with `dual_analog` and PSP original
+  with `psp`): every binding line is compared with that default. All of them equal and `Scheme=dual_analog`:
+  the binding lines take Total Overdose PC's keys (ten keyboard lines change; the mouse and pad lines are the
+  same in both) and `Layout=tod_pc` is added. All equal and `Scheme=psp`: nothing is rewritten,
+  `Layout=psp`. Any line of the player's own (or an `[Input.Gamepad.PlayStation]` section): every binding is
+  kept and the file gets the style it was made with, `Layout=modern` or `psp`. In every case `Version=3`;
+  every other line stays as it is (mouse and stick speeds, inversion, `ExactTurn`, `Prompts`, `[Rendering]`,
+  `[Game]`, `[Audio]`, `[Mods]`, `[Disc]`), except three comment lines that described the older build and,
+  where the keys change, the comments above Cross and Triangle.
+
+The launcher does the same when it opens such a file (`launcher/src/Model.cs`, `InputMigration`, under the
+mutex the two share), to the same bytes: `launcher/test/sample_ChiliNative.migrated.ini` is the update of
+the launcher's sample (a file of an earlier build), and the game's test and the launcher's test both have to make
+exactly it. A hand-written ini (one that does not start with the game's own first line) and any ini read by a
+deterministic run are never changed. An older build reads a Version 3 file without changing it and says
+`Layout` is a setting it does not know.
+
+## Defaults (Total Overdose PC)
 
 | Action | Keyboard and mouse | Xbox-style pad | PlayStation pad (same buttons by position) |
 |---|---|---|---|
 | Move and strafe | W A S D (X held: walk) | Left stick | Left stick |
 | Turn and look | Mouse (J L I K without one) | Right stick | Right stick |
 | Shoot (Square) | Mouse 1, G | RT | R2 |
-| Headshot mode (R) | Mouse 2, V | LT | L2 |
-| Jump, dive, use, confirm (Cross) | Space, E, Enter; in menus also a left click | A, Y | Cross, Triangle |
-| Reload (Triangle) | R | X | Square |
-| Weapon wheel; back and cancel in menus (Circle) | F, Backspace, Mouse 3; in menus also a right click | B | Circle |
-| Target objects, exit stunt (L) | Q | Left stick click | L3 |
-| Previous / next weapon | Wheel down / up, 1 / 2, Left / Right | LB / RB | L1 / R1 |
-| Rewind (D-pad down) | Z, Down | D-pad down | D-pad down |
-| Pause (Start) | Escape | Start | Options |
-| Select | Tab | Back | Share or Create |
+| Headshot mode, held; the handbrake in a vehicle (R) | Mouse 2, V | LT | L2 |
+| Shoot-dodge, jump, use, enter a vehicle, dive out of one; confirm (Cross) | Space, F, Enter, Left Shift; in menus also a left click | A, Y | Cross, Triangle |
+| Reload, the loco move (Triangle) | R, Left Ctrl | X | Square |
+| Weapon quick-select (held, then a face button), leave a vehicle; back and cancel in menus, skip a cutscene (Circle) | E, Backspace, Mouse 3; in menus also a right click | B | Circle |
+| Target objects; held in a vehicle, lean out (L) | Q, C | Left stick click | L3 |
+| Previous / next weapon | Wheel down / up, Left / Right | LB / RB | L1 / R1 |
+| Rewind; in a vehicle the forks down (D-pad down) | Tab, Down, Page Down | D-pad down | D-pad down |
+| Menu up; in a vehicle the forks up (D-pad up) | Up, Page Up | D-pad up | D-pad up |
+| Pause (Start) | Escape, P | Start | Options |
+| Select | ` (the key left of 1 on a US keyboard) | Back | Share or Create |
 | Free or capture the mouse | F1 | | |
 | Input test line in the title bar | F3 | | |
 | Full screen and back | F11, Alt+Enter | | |
 
-No default is Shift, Ctrl or Alt: Windows has shortcuts on them (five taps of Shift raise Sticky Keys).
-They can still be bound. F11 and Alt+Enter belong to the window (`RENDERING.md`) and cannot be bound.
+The game has several actions on one PSP button, so a key does everything its button does: Space, F, Enter
+and Left Shift each jump, dive and use (the game decides which); R and Left Ctrl each reload and do the loco
+move. The order of a line is the order the prompts picture: Space for Cross, E for Circle, R for Triangle,
+Q for L, Escape for Start (a D-pad target pictures its arrow key, so rewind shows the Down arrow). 1 to 8
+and H are free.
+
+Modern differs in ten lines: Cross `Space,E,Enter`, Circle `F,Backspace`, Triangle `R`, L `Q`, D-pad up
+`Up`, down `Down,Z`, left `Left,1`, right `Right,2`, Start `Escape`, Select `Tab`.
+
+**Total Overdose on PC and this game.** From Total Overdose's own control data (the `PC` > `Keyboard` and
+`Mouse` setups of `overdose.main`), its manual and an options file the game wrote:
+
+| Total Overdose PC | Here |
+|---|---|
+| W A S D move and strafe, mouse look and aim | the same |
+| Left button fire, right button headshot (held) | the same (Square, R) |
+| Space shoot-dodge, Left Shift jump, F use and enter a vehicle | Cross: Space, F, Left Shift (and Enter) |
+| R reload, Left Ctrl loco move | Triangle: R, Left Ctrl |
+| Wheel up / down cycle weapons | the same (D-pad right / left) |
+| Tab rewind | D-pad down: Tab |
+| Page Up / Page Down raise and lower the forks | D-pad up / down: Page Up, Page Down |
+| Escape the in-game menu, P pause | Start: Escape, P |
+| Enter and left click select in menus, arrow keys move | the same |
+| C prepare to exit a vehicle (keyboard data), V brake | L: C; R: V (the handbrake) |
+| 1 to 8 weapon classes | not matched: the game selects a class by holding Circle and pressing a face button, and a key presses one button; 1 to 8 are left free |
+| Escape back in menus | not matched: Escape on Start and Circle would pause and leave a vehicle at once; back is E, Backspace, a right click |
+| Space handbrake; F leave a vehicle; left button exit stunt | not matched: Space and F are Cross, leaving is Circle (E), the stunt is L held then Cross (Q or C, then Space) |
+| H horn; crouch; loco-move cycling (Q, E); freeze time | not in this game (the horn is on R3, which the PSP has not) |
+| The numpad and the arrows steer a vehicle | not bound: the arrows are the D-pad, the numpad would move the player on foot |
+| Mouse sensitivity 0 to 10 | not matched: the port's 0.08 degrees per count stays; no inversion, as Total Overdose's NORMAL |
+
+**Shift and Ctrl.** Modern and PSP original have no Shift, Ctrl or Alt. Total Overdose PC keeps Left Shift
+and Left Ctrl as Total Overdose had them, each beside a plain key of the same button (Space, F, Enter; R),
+so nothing needs them; no default is Alt, a Windows key, Caps Lock or Num Lock (`tools/pc_input_test.cpp`
+holds both rules). Windows has shortcuts on them: five taps of Shift with no other key between raise the
+Sticky Keys question, which takes the focus and frees the mouse (Total Overdose had the same; switch the
+shortcut off under Settings > Accessibility > Keyboard > Sticky keys, "Keyboard shortcut for Sticky keys"),
+Ctrl+Escape (the loco move held while pausing) opens the Start menu, and Ctrl+Shift switches the input
+language where Windows has two. F11 and Alt+Enter belong to the window (`RENDERING.md`) and cannot be bound.
+
+The game's Button Layout B (Profile Options) swaps shoot and headshot on the PSP buttons: with it the left
+button gives headshots and the right one shoots. Total Overdose PC, like the launcher's labels, is laid out
+for Layout A.
 
 **In the menus Circle is Back and Triangle is not.** Checked in Profile Options: Triangle did nothing for
-two seconds, Circle then left the screen. So what goes back in a menu is F, Backspace and the right mouse
-button, on a pad B (Circle on a PlayStation pad); R and the pad's X (Triangle) reload in play and do nothing
+two seconds, Circle then left the screen. So what goes back in a menu is E, Backspace and the right mouse
+button (F with Modern), on a pad B (Circle on a PlayStation pad); R and the pad's X (Triangle) reload in play and do nothing
 in a menu.
 
 ## The mouse
@@ -329,19 +414,19 @@ the game's memory changes, and the game's own Button Layout A/B still decides wh
   name when it is bound to it (the D-pad to the D-pad, Start to Start, Back to Select), otherwise the first
   button in the order of the ini. Nothing bound: a grey cap with a dash. A PlayStation pad with a section
   `[Input.Gamepad.PlayStation]` is pictured by that section.
-- With the default bindings:
+- With the default bindings (Total Overdose PC):
 
   | PSP button (what it does) | Keyboard and mouse | Xbox-style pad | PlayStation pad |
   |---|---|---|---|
   | Cross (jump, use, confirm) | Space, as a sign | A | Cross |
-  | Circle (weapon wheel; back in menus) | F | B | Circle |
+  | Circle (weapon wheel; back in menus) | E (F with Modern) | B | Circle |
   | Square (shoot) | a mouse with the left button red | RT | R2 |
   | Triangle (reload) | R | X | Square |
   | L (target objects) | Q | LS | L3 |
   | R (headshot mode) | a mouse with the right button red | LT | L2 |
-  | D-pad left, right, down | arrow key caps | the D-pad with that arm red | the same |
+  | D-pad left, right, down | arrow key caps (Tab rewinds too, but the arrow is pictured) | the D-pad with that arm red | the same |
   | Analog stick | W A S D as a cluster, or the one key | the left stick with an arrow | the same |
-  | Start, Select | Esc, Tab | Menu, View | Options, Share |
+  | Start, Select | Esc; ` as the layout in use prints that key (the key left of 1 on a US keyboard; Tab with Modern) | Menu, View | Options, Share |
 
   Space, Enter, Shift, Backspace and the arrow keys are drawn as signs; other long names are shortened
   (Esc, Tab, Ctrl, Ins, Del, PgUp, PgDn, Caps, N7). A letter key shows the letter the keyboard layout in use
@@ -409,9 +494,9 @@ line ended the program before.
 | | Keys (default) | Xbox-style pad | PlayStation pad | Mouse |
 |---|---|---|---|---|
 | Move the focus | Up, Down (W, S) | D-pad, left stick | D-pad, left stick | the row under the pointer; the wheel, a row per notch |
-| Open a section, flip a switch, the next value | Space, E, Enter | A | Cross | left click |
+| Open a section, flip a switch, the next value | Space, F, Enter (Modern: Space, E, Enter) | A | Cross | left click |
 | Change a value | Left, Right (A, D) | D-pad left, right; LB, RB | D-pad; L1, R1 | left click (the next value); a slider held and moved |
-| Back a page; Cancel | F, Backspace | B | Circle | right click, or a click on the legend |
+| Back a page; Cancel | E, Backspace (Modern: F, Backspace) | B | Circle | right click, or a click on the legend |
 | Close the page | Escape | Start | Options | |
 
 - A held direction acts again after 0.4 seconds and then ten times a second (counted in pad samples: 12 and 3

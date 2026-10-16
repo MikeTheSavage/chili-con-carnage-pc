@@ -1,7 +1,10 @@
 #pragma once
 #include "controller_runtime.hpp"
 #include "dual_analog_controls.hpp"
+#include "ini_document.hpp"
 #include "input_device.hpp"
+#include "input_layout.hpp"
+#include "settings_table.hpp"
 #include "pad_sample.hpp"
 #include "hid_pad.hpp"
 #ifndef NOMINMAX
@@ -66,9 +69,13 @@ inline const char *mouse_source_name(MouseSource source) noexcept {
     }
 }
 // Written into ChiliNative.ini as [Input] Version. A file the game wrote
-// without it, or with a lower number, comes from an older build.
-inline constexpr int input_ini_version = 2;
+// without it, or with a lower number, comes from an older build. 3: the
+// [Input] Layout line and the control style Total Overdose PC.
+inline constexpr int input_ini_version = 3;
 inline const char *scheme_name(InputScheme scheme) noexcept { return scheme == InputScheme::DualAnalog ? "dual_analog" : "psp"; }
+inline constexpr InputScheme layout_scheme(InputLayout layout) noexcept { return layout_is_psp(layout) ? InputScheme::Psp : InputScheme::DualAnalog; }
+// The control style a file means when it has no [Input] Layout line: the PSP's with Scheme=psp, else Total Overdose PC.
+inline constexpr InputLayout default_layout(InputScheme scheme) noexcept { return scheme == InputScheme::Psp ? InputLayout::Psp : InputLayout::TodPc; }
 inline std::optional<InputScheme> scheme_from_name(std::string_view name) noexcept {
     if (name == "psp") return InputScheme::Psp;
     if (name == "dual_analog") return InputScheme::DualAnalog;
@@ -82,9 +89,11 @@ inline constexpr float engine_stick_deadzone = DualAnalogControls::dead_zone;
 inline constexpr float engine_turn_degrees_per_second = DualAnalogControls::turn_degrees_per_second;
 inline constexpr float engine_pitch_degrees_per_second = DualAnalogControls::pitch_degrees_per_second;
 
-// The first-run file and built-in defaults for a scheme. No default key is
-// Shift, Ctrl or Alt: tapping Shift five times raises Sticky Keys, and those
-// keys together with each other, Escape, Tab or Space are Windows shortcuts.
+// The first-run file and built-in defaults of each control style (input_layout.hpp). Total Overdose PC
+// has Left Shift on Cross (jump) and Left Ctrl on Triangle (the loco move) as Total Overdose had them, each
+// beside a plain key of the same button (Space, F, Enter; R), so nothing needs a modifier key; no default
+// is Alt, a Windows key, Caps Lock or Num Lock. Five taps of Shift raise Sticky Keys, Ctrl+Escape opens the
+// Start menu (CONTROLS.md). Modern and PSP original have no modifier key at all.
 #define CHILI_INPUT_INI_HEAD \
     "; Chili Con Carnage PC input. Delete this file to get the defaults back.\n" \
     "; Key names: A-Z 0-9 F1-F12 Space Enter Escape Tab Backspace Up Down Left Right\n" \
@@ -94,10 +103,18 @@ inline constexpr float engine_pitch_degrees_per_second = DualAnalogControls::pit
     "; Shift, Ctrl and Alt can be bound, but Windows has shortcuts on them (Sticky Keys, language switch, Alt+Tab).\n" \
     "; Targets: Cross Circle Square Triangle L R Start Select DpadUp DpadDown DpadLeft DpadRight\n" \
     ";   MoveForward MoveBack MoveLeft MoveRight Walk LookLeft LookRight LookUp LookDown None\n"
+// The two comment lines above Version=; input_migration_comments() replaces an older build's two with them.
+#define CHILI_INPUT_INI_VERSION_COMMENT_1 "; Written by the game. A file of the game's with a lower number or none comes from an older build: once,"
+#define CHILI_INPUT_INI_VERSION_COMMENT_2 ";   its input settings are brought up to date, and the old file is kept as ChiliNative.ini.bak."
 #define CHILI_INPUT_INI_VERSION \
-    "; Written by the game. A file of the game's without it comes from an older build: its input sections are\n" \
-    ";   replaced by the current defaults once and the old file is kept as ChiliNative.ini.bak.\n" \
-    "Version=2\n"
+    CHILI_INPUT_INI_VERSION_COMMENT_1 "\n" \
+    CHILI_INPUT_INI_VERSION_COMMENT_2 "\n" \
+    "Version=3\n"
+#define CHILI_INPUT_INI_LAYOUT_COMMENT \
+    "; Control style: tod_pc (Total Overdose PC: its keys and mouse), modern (the port's own keys) or psp (the\n" \
+    ";   PSP's layout). A binding this file leaves out takes the style's default. The launcher's Controls page and\n" \
+    ";   the game's Settings page change it and give every binding that still has the old style's key the new one.\n"
+#define CHILI_INPUT_INI_SCHEME_FOLLOWS ";   The control style sets it: dual_analog with tod_pc and modern, psp with psp."
 #define CHILI_INPUT_INI_COMMON \
     "; Read input while another window has the focus.\n" \
     "BackgroundInput=false\n" \
@@ -108,11 +125,23 @@ inline constexpr float engine_pitch_degrees_per_second = DualAnalogControls::pit
     "; The buttons the game shows on screen (its hints and the legends of its menus). auto: keys and mouse or\n" \
     ";   the pad's buttons, whichever was used last. keyboard, gamepad: always those. psp: the game's own PSP pictures.\n" \
     "Prompts=auto\n"
+#define CHILI_INPUT_INI_EXACT_TURN \
+    "; true: the right stick and the look keys turn the player by each frame's angle, like the mouse, and\n" \
+    ";   mouse and stick go on turning him on the ground after a dive.\n" \
+    "; false: the stick goes through the game's own turn rate, which it takes about every 70 ms and holds,\n" \
+    ";   and on the ground after a dive nothing turns the player, as on the PSP.\n" \
+    "ExactTurn=true\n"
 #define CHILI_INPUT_INI_TOGGLES \
     "; Frees or captures the mouse.\n" \
     "ToggleMouseCapture=F1\n" \
     "; Switches the input test line in the title bar.\n" \
     "ToggleInputDisplay=F3\n"
+#define CHILI_INPUT_INI_KEYBOARD_TAIL \
+    "; Stick deflection while Walk is held (0.31 to 1).\n" \
+    "WalkScale=0.6\n" \
+    "; Look keys: 1 = the engine's own full rate, about 170 degrees per second of turn and 57 of pitch (0.05 to 1).\n" \
+    "LookKeySpeed=0.7\n" \
+    CHILI_INPUT_INI_TOGGLES
 #define CHILI_INPUT_INI_MOUSE_BUTTONS \
     "Mouse1=Square\n" \
     "Mouse2=R\n" \
@@ -121,6 +150,30 @@ inline constexpr float engine_pitch_degrees_per_second = DualAnalogControls::pit
     "Mouse5=None\n" \
     "WheelUp=DpadRight\n" \
     "WheelDown=DpadLeft\n"
+#define CHILI_INPUT_INI_DUAL_MOUSE \
+    "[Input.Mouse]\n" \
+    "Enabled=true\n" \
+    "; click: a click in the window captures the mouse (hidden and kept inside the window); it is freed in\n" \
+    ";   menus and cutscenes, with F1, with Alt+Tab and when another window takes the focus.\n" \
+    "; never: buttons work without capturing, no mouse look.\n" \
+    "Capture=click\n" \
+    "; In menus, movies and cutscenes a left click is Cross (confirm, skip) and a right click Circle (back),\n" \
+    ";   whatever Mouse1 and Mouse2 are bound to below; those bindings are for play.\n" \
+    "MenuClicks=true\n" \
+    CHILI_INPUT_INI_MOUSE_BUTTONS \
+    "; Degrees the player turns (X) and the view pitches (Y) per mouse count (0.001 to 5).\n" \
+    "SensitivityX=0.08\n" \
+    "SensitivityY=0.08\n" \
+    "InvertX=false\n" \
+    "InvertY=false\n" \
+    "; While the mouse is captured the view keeps the pitch it was given. false: the game levels the view\n" \
+    ";   again whenever the player moves, as it does for a thumb stick.\n" \
+    "HoldPitch=true\n" \
+    "; true: the player turns and the view pitches by exactly the angle the mouse moved, in the frame it moved.\n" \
+    ";   false: the mouse pushes the second stick, which the game reads about every 70 ms and holds.\n" \
+    "Exact=true\n" \
+    "; 0 = none. Up to 0.95 averages the movement over more frames.\n" \
+    "Smoothing=0\n"
 #define CHILI_INPUT_INI_PAD_TAIL \
     "Back=Select\n" \
     "Start=Start\n" \
@@ -148,17 +201,46 @@ inline constexpr float engine_pitch_degrees_per_second = DualAnalogControls::pit
     "; A section [Input.Gamepad.PlayStation] with any of the sixteen button lines above gives a PlayStation pad\n" \
     ";   targets of its own. Its buttons go by position: Cross is A, Circle B, Square X, Triangle Y, L1 LB, R1 RB,\n" \
     ";   L2 LT, R2 RT, L3 LS, R3 RS, Share or Create is Back, Options is Start.\n"
-inline const char *default_input_ini(InputScheme scheme = InputScheme::DualAnalog) {
-    if (scheme == InputScheme::Psp) return
+#define CHILI_INPUT_INI_DUAL_PAD \
+    "[Input.Gamepad]\n" \
+    CHILI_INPUT_INI_PAD_HEAD \
+    "A=Cross\n" \
+    "B=Circle\n" \
+    "X=Triangle\n" \
+    "Y=Cross\n" \
+    "LB=DpadLeft\n" \
+    "RB=DpadRight\n" \
+    "LT=R\n" \
+    "RT=Square\n" \
+    "LS=L\n" \
+    "RS=None\n" \
+    CHILI_INPUT_INI_PAD_TAIL \
+    "; Right stick at full deflection: 1 = the engine's own rate, about 170 degrees per second of turn (X) and\n" \
+    ";   57 of pitch (Y). 0 to 4.\n" \
+    "TurnSensitivity=1.0\n" \
+    "LookSensitivity=1.0\n" \
+    "InvertY=false\n" \
+    CHILI_INPUT_INI_PAD_END
+#define CHILI_INPUT_INI_GAME_LINES \
+    "; In the game: Cross jump/dive/use/confirm, Square shoot, Triangle reload, Circle weapon wheel and back in menus,\n" \
+    ";   L target objects/exit stunt, R headshot mode, DpadLeft/DpadRight change weapon, DpadDown rewind, Start pause.\n"
+// The comments above Cross and Triangle in Total Overdose PC's text (they name what the game does, so they
+// hold for every style); input_migration_comments() puts them where an older build's file has its own.
+#define CHILI_INPUT_INI_CROSS_COMMENT "; Jump, dive, use, enter a vehicle, confirm: the game has them all on Cross."
+#define CHILI_INPUT_INI_TRIANGLE_COMMENT "; Reload and the loco move: the game has both on Triangle."
+inline const char *default_input_ini(InputLayout layout) {
+    if (layout == InputLayout::Psp) return
         CHILI_INPUT_INI_HEAD
         "; In the game: Cross jump/dive/use/confirm, Square shoot, Triangle reload, Circle weapon wheel and back in menus,\n"
         ";   L strafe/target, R headshot mode, DpadLeft/DpadRight change weapon, DpadDown rewind, Start pause.\n"
         "\n"
         "[Input]\n"
         CHILI_INPUT_INI_VERSION
+        CHILI_INPUT_INI_LAYOUT_COMMENT
+        "Layout=psp\n"
         "; psp: left/right turns the player and holding L strafes, as on the PSP.\n"
         "; dual_analog: WASD or the left stick moves and strafes, the mouse or the right stick turns and looks.\n"
-        ";   Delete this file after changing the scheme to get that scheme's default bindings.\n"
+        CHILI_INPUT_INI_SCHEME_FOLLOWS "\n"
         "Scheme=psp\n"
         CHILI_INPUT_INI_COMMON
         "\n"
@@ -213,23 +295,20 @@ inline const char *default_input_ini(InputScheme scheme = InputScheme::DualAnalo
         "; Right stick X turns the player; 1 = the engine's full turn rate at full deflection (0 to 1).\n"
         "TurnSensitivity=1.0\n"
         CHILI_INPUT_INI_PAD_END;
-    return
+    if (layout == InputLayout::Modern) return
         CHILI_INPUT_INI_HEAD
-        "; In the game: Cross jump/dive/use/confirm, Square shoot, Triangle reload, Circle weapon wheel and back in menus,\n"
-        ";   L target objects/exit stunt, R headshot mode, DpadLeft/DpadRight change weapon, DpadDown rewind, Start pause.\n"
+        CHILI_INPUT_INI_GAME_LINES
         "\n"
         "[Input]\n"
         CHILI_INPUT_INI_VERSION
+        CHILI_INPUT_INI_LAYOUT_COMMENT
+        "Layout=modern\n"
         "; dual_analog: WASD or the left stick moves and strafes, the mouse or the right stick turns and looks.\n"
         "; psp: left/right turns the player and holding L strafes, as on the PSP; no looking up or down.\n"
-        ";   Delete this file after changing the scheme to get that scheme's default bindings.\n"
+        CHILI_INPUT_INI_SCHEME_FOLLOWS "\n"
         "Scheme=dual_analog\n"
         CHILI_INPUT_INI_COMMON
-        "; true: the right stick and the look keys turn the player by each frame's angle, like the mouse, and\n"
-        ";   mouse and stick go on turning him on the ground after a dive.\n"
-        "; false: the stick goes through the game's own turn rate, which it takes about every 70 ms and holds,\n"
-        ";   and on the ground after a dive nothing turns the player, as on the PSP.\n"
-        "ExactTurn=true\n"
+        CHILI_INPUT_INI_EXACT_TURN
         "\n"
         "[Input.Keyboard]\n"
         "; target=key[,key...]\n"
@@ -260,68 +339,107 @@ inline const char *default_input_ini(InputScheme scheme = InputScheme::DualAnalo
         "; Pause.\n"
         "Start=Escape\n"
         "Select=Tab\n"
-        "; Stick deflection while Walk is held (0.31 to 1).\n"
-        "WalkScale=0.6\n"
-        "; Look keys: 1 = the engine's own full rate, about 170 degrees per second of turn and 57 of pitch (0.05 to 1).\n"
-        "LookKeySpeed=0.7\n"
-        CHILI_INPUT_INI_TOGGLES
+        CHILI_INPUT_INI_KEYBOARD_TAIL
         "\n"
-        "[Input.Mouse]\n"
-        "Enabled=true\n"
-        "; click: a click in the window captures the mouse (hidden and kept inside the window); it is freed in\n"
-        ";   menus and cutscenes, with F1, with Alt+Tab and when another window takes the focus.\n"
-        "; never: buttons work without capturing, no mouse look.\n"
-        "Capture=click\n"
-        "; In menus, movies and cutscenes a left click is Cross (confirm, skip) and a right click Circle (back),\n"
-        ";   whatever Mouse1 and Mouse2 are bound to below; those bindings are for play.\n"
-        "MenuClicks=true\n"
-        CHILI_INPUT_INI_MOUSE_BUTTONS
-        "; Degrees the player turns (X) and the view pitches (Y) per mouse count (0.001 to 5).\n"
-        "SensitivityX=0.08\n"
-        "SensitivityY=0.08\n"
-        "InvertX=false\n"
-        "InvertY=false\n"
-        "; While the mouse is captured the view keeps the pitch it was given. false: the game levels the view\n"
-        ";   again whenever the player moves, as it does for a thumb stick.\n"
-        "HoldPitch=true\n"
-        "; true: the player turns and the view pitches by exactly the angle the mouse moved, in the frame it moved.\n"
-        ";   false: the mouse pushes the second stick, which the game reads about every 70 ms and holds.\n"
-        "Exact=true\n"
-        "; 0 = none. Up to 0.95 averages the movement over more frames.\n"
-        "Smoothing=0\n"
+        CHILI_INPUT_INI_DUAL_MOUSE
         "\n"
-        "[Input.Gamepad]\n"
-        CHILI_INPUT_INI_PAD_HEAD
-        "A=Cross\n"
-        "B=Circle\n"
-        "X=Triangle\n"
-        "Y=Cross\n"
-        "LB=DpadLeft\n"
-        "RB=DpadRight\n"
-        "LT=R\n"
-        "RT=Square\n"
-        "LS=L\n"
-        "RS=None\n"
-        CHILI_INPUT_INI_PAD_TAIL
-        "; Right stick at full deflection: 1 = the engine's own rate, about 170 degrees per second of turn (X) and\n"
-        ";   57 of pitch (Y). 0 to 4.\n"
-        "TurnSensitivity=1.0\n"
-        "LookSensitivity=1.0\n"
-        "InvertY=false\n"
-        CHILI_INPUT_INI_PAD_END;
+        CHILI_INPUT_INI_DUAL_PAD;
+    return
+        CHILI_INPUT_INI_HEAD
+        CHILI_INPUT_INI_GAME_LINES
+        "\n"
+        "[Input]\n"
+        CHILI_INPUT_INI_VERSION
+        CHILI_INPUT_INI_LAYOUT_COMMENT
+        "Layout=tod_pc\n"
+        "; dual_analog: WASD or the left stick moves and strafes, the mouse or the right stick turns and looks.\n"
+        "; psp: left/right turns the player and holding L strafes, as on the PSP; no looking up or down.\n"
+        CHILI_INPUT_INI_SCHEME_FOLLOWS "\n"
+        "Scheme=dual_analog\n"
+        CHILI_INPUT_INI_COMMON
+        CHILI_INPUT_INI_EXACT_TURN
+        "\n"
+        "[Input.Keyboard]\n"
+        "; target=key[,key...]\n"
+        "MoveForward=W\n"
+        "MoveBack=S\n"
+        "MoveLeft=A\n"
+        "MoveRight=D\n"
+        "; Turning and looking without a mouse.\n"
+        "LookLeft=J\n"
+        "LookRight=L\n"
+        "LookUp=I\n"
+        "LookDown=K\n"
+        "Walk=X\n"
+        CHILI_INPUT_INI_CROSS_COMMENT "\n"
+        "Cross=Space,F,Enter,LShift\n"
+        "; The weapon quick-select (hold, then a face button), leave a vehicle, back in menus, skip a cutscene.\n"
+        "Circle=E,Backspace\n"
+        "; Shoot without a mouse.\n"
+        "Square=G\n"
+        CHILI_INPUT_INI_TRIANGLE_COMMENT "\n"
+        "Triangle=R,LCtrl\n"
+        "; Target objects; held in a vehicle, lean out (then Cross dives out).\n"
+        "L=Q,C\n"
+        "; Headshot mode without a mouse; the handbrake in a vehicle.\n"
+        "R=V\n"
+        "; In a vehicle also the forks: up, and down with rewind.\n"
+        "DpadUp=Up,PageUp\n"
+        "DpadDown=Tab,Down,PageDown\n"
+        "; Previous and next weapon.\n"
+        "DpadLeft=Left\n"
+        "DpadRight=Right\n"
+        "; Pause.\n"
+        "Start=Escape,P\n"
+        "Select=Grave\n"
+        CHILI_INPUT_INI_KEYBOARD_TAIL
+        "\n"
+        CHILI_INPUT_INI_DUAL_MOUSE
+        "\n"
+        CHILI_INPUT_INI_DUAL_PAD;
 }
+// The defaults of a scheme: Total Overdose PC with dual_analog, the PSP's own layout with psp.
+inline const char *default_input_ini(InputScheme scheme = InputScheme::DualAnalog) { return default_input_ini(default_layout(scheme)); }
+
+// Comment lines of an older build's file that its migration replaces (section, the old line, the new one):
+// `always` ones in every file brought up to Version 3, the others only where the bindings take Total
+// Overdose PC's. A line is replaced only when it is exactly the old text; the launcher has the same list
+// (launcher/src/Model.cs, InputMigration; tools/settings_table_test.cpp holds the two alike).
+struct InputCommentChange { const char *section, *before, *after; bool always; };
+inline constexpr InputCommentChange input_migration_comments[]{
+    {"Input", "; Written by the game. A file of the game's without it comes from an older build: its input sections are", CHILI_INPUT_INI_VERSION_COMMENT_1, true},
+    {"Input", ";   replaced by the current defaults once and the old file is kept as ChiliNative.ini.bak.", CHILI_INPUT_INI_VERSION_COMMENT_2, true},
+    {"Input", ";   Delete this file after changing the scheme to get that scheme's default bindings.", CHILI_INPUT_INI_SCHEME_FOLLOWS, true},
+    {"Input.Keyboard", "; Space jumps and dives, E uses: the game has both on Cross.", CHILI_INPUT_INI_CROSS_COMMENT, false},
+    {"Input.Keyboard", "; Reload.", CHILI_INPUT_INI_TRIANGLE_COMMENT, false},
+};
 #undef CHILI_INPUT_INI_HEAD
+#undef CHILI_INPUT_INI_VERSION_COMMENT_1
+#undef CHILI_INPUT_INI_VERSION_COMMENT_2
 #undef CHILI_INPUT_INI_VERSION
+#undef CHILI_INPUT_INI_LAYOUT_COMMENT
+#undef CHILI_INPUT_INI_SCHEME_FOLLOWS
 #undef CHILI_INPUT_INI_COMMON
+#undef CHILI_INPUT_INI_EXACT_TURN
 #undef CHILI_INPUT_INI_TOGGLES
+#undef CHILI_INPUT_INI_KEYBOARD_TAIL
 #undef CHILI_INPUT_INI_MOUSE_BUTTONS
+#undef CHILI_INPUT_INI_DUAL_MOUSE
 #undef CHILI_INPUT_INI_PAD_TAIL
 #undef CHILI_INPUT_INI_PAD_HEAD
 #undef CHILI_INPUT_INI_PAD_END
+#undef CHILI_INPUT_INI_DUAL_PAD
+#undef CHILI_INPUT_INI_GAME_LINES
+#undef CHILI_INPUT_INI_CROSS_COMMENT
+#undef CHILI_INPUT_INI_TRIANGLE_COMMENT
 
 struct PcInputConfig {
     struct KeyBinding { int vk; PadTarget target; };
     InputScheme scheme{InputScheme::DualAnalog};
+    // [Input] Layout: the control style whose defaults a binding the file leaves out takes. `layout_named`:
+    // the text had the line (without it a file means default_layout(scheme)).
+    InputLayout layout{InputLayout::TodPc};
+    bool layout_named{};
     std::vector<KeyBinding> keys;
     int toggle_capture_vk{}, toggle_display_vk{};
     // [Input] Version of the file the settings came from; 0 when it has none.
@@ -394,7 +512,7 @@ struct PcInputConfig {
     }
     // Whether two configurations are the same in everything.
     bool same_as(const PcInputConfig &other) const noexcept {
-        return same_prompts(other) && toggle_capture_vk == other.toggle_capture_vk && toggle_display_vk == other.toggle_display_vk && version == other.version &&
+        return same_prompts(other) && layout == other.layout && toggle_capture_vk == other.toggle_capture_vk && toggle_display_vk == other.toggle_display_vk && version == other.version &&
             walk_scale == other.walk_scale && look_key_speed == other.look_key_speed && background_input == other.background_input && show_input == other.show_input &&
             mouse_capture_on_click == other.mouse_capture_on_click && mouse_invert_x == other.mouse_invert_x && mouse_invert_y == other.mouse_invert_y &&
             mouse_menu_clicks == other.mouse_menu_clicks && mouse_hold_pitch == other.mouse_hold_pitch && mouse_exact == other.mouse_exact && exact_turn == other.exact_turn &&
@@ -516,6 +634,10 @@ struct PcInputConfig {
                     else if (same_text(value, "dual_analog")) scheme = InputScheme::DualAnalog;
                     else problem("Scheme must be dual_analog or psp");
                 }
+                else if (same_text(name, "Layout")) {
+                    if (const auto named = layout_from_name(value)) { layout = *named; layout_named = true; }
+                    else problem("Layout must be tod_pc, modern or psp");
+                }
                 else if (same_text(name, "BackgroundInput")) flag(background_input);
                 else if (same_text(name, "ShowInput")) flag(show_input);
                 else if (same_text(name, "ExactTurn")) flag(exact_turn);
@@ -608,9 +730,13 @@ struct PcInputConfig {
         }
         return problems;
     }
-    static PcInputConfig defaults(InputScheme scheme = InputScheme::DualAnalog) {
-        PcInputConfig config; (void)config.apply(default_input_ini(scheme)); return config;
+    static PcInputConfig defaults(InputLayout layout) {
+        PcInputConfig config; (void)config.apply(default_input_ini(layout)); return config;
     }
+    // The defaults of a scheme: Total Overdose PC with dual_analog, PSP original with psp.
+    static PcInputConfig defaults(InputScheme scheme = InputScheme::DualAnalog) { return defaults(default_layout(scheme)); }
+    // The control style this text means: its Layout line, else the one its scheme goes with.
+    InputLayout layout_meant() const noexcept { return layout_named ? layout : default_layout(scheme); }
     // Whether the game wrote this file: its first-run text starts with this line.
     static bool written_by_game(std::string_view text) {
         constexpr std::string_view marker = "; Chili Con Carnage PC input.";
@@ -636,13 +762,95 @@ struct PcInputConfig {
         }
         return out;
     }
-    // The defaults of the scheme the file names, then `file` on top when it
-    // exists. A missing file is created with the defaults so there is something
-    // to edit; failing to write it is not an error. With `create`, a file the
-    // game itself wrote before input_ini_version gets the current input
-    // defaults (an early build wrote Scheme=psp, which would otherwise stay for
-    // good); the old file is kept beside it as <name>.bak and `notes` says so.
-    // A file somebody wrote by hand is never touched.
+
+    // ---- control styles in the file -------------------------------------------------------------------
+
+    // The changes that move a file's bindings from control style `from` to `to`: every binding line that
+    // holds `from`'s default (the same keys or target in any order, case and spelling) takes `to`'s; a line
+    // the player changed stays, and a binding the file leaves out follows the style by itself. [Input] Layout
+    // and Scheme are not among them. The bindings are the settings table's (settings_table.hpp), in its order,
+    // which is the launcher's (launcher/src/Model.cs, Model.SwitchLayout does the same).
+    static std::vector<IniChange> layout_binding_changes(const IniDocument &doc, InputLayout from, InputLayout to) {
+        std::vector<IniChange> out;
+        if (from == to) return out;
+        for (const auto &setting : settings::table) {
+            if (setting.kind != settings::Kind::Binding) continue;
+            const auto held = doc.get(setting.section, setting.key);
+            if (!held || !settings::binding_equivalent(setting, *held, setting.default_for(from))) continue;
+            const auto wanted = setting.default_for(to);
+            if (settings::binding_equivalent(setting, *held, wanted)) continue;
+            IniChange change;
+            change.section = setting.section; change.key = setting.key; change.value = wanted;
+            out.push_back(std::move(change));
+        }
+        return out;
+    }
+    // How many binding lines of the file differ from the defaults of `layout`, counting every line of an
+    // [Input.Gamepad.PlayStation] section (a table of the player's own).
+    static std::size_t bindings_changed(const IniDocument &doc, InputLayout layout) {
+        std::size_t changed = 0u;
+        for (const auto &setting : settings::table)
+            if (setting.kind == settings::Kind::Binding)
+                if (const auto held = doc.get(setting.section, setting.key); held && !settings::binding_equivalent(setting, *held, setting.default_for(layout))) ++changed;
+        for (const auto &line : doc.lines)
+            if (line.kind == IniDocument::Kind::KeyValue && IniDocument::same(line.section, "Input.Gamepad.PlayStation")) ++changed;
+        return changed;
+    }
+    // input_migration_comments: an older build's comment lines that are exactly the old text get the new one.
+    static void replace_migration_comments(IniDocument &doc, bool bindings_too) {
+        for (auto &line : doc.lines) {
+            if (line.kind != IniDocument::Kind::Comment || line.has_key) continue;
+            for (const auto &change : input_migration_comments)
+                if ((change.always || bindings_too) && IniDocument::same(line.section, change.section) && line.text == change.before) { line.text = change.after; break; }
+        }
+    }
+    struct Migration { std::string text, what; };
+    // A file the game wrote with an [Input] Version below input_ini_version, brought up to date; `what` says
+    // how, for the log. Below 2 (an early build wrote Scheme=psp, which would otherwise stay for good): every
+    // [Input...] section is replaced by the current defaults. 2 (the builds before the control styles, whose
+    // defaults were Modern with dual_analog and PSP original with psp): when every binding line holds that
+    // default and the scheme is dual_analog, the bindings take Total Overdose PC's; with psp they stay; a file
+    // with any binding of the player's own keeps every binding. Then [Input] Layout names the style and
+    // Version is 3; every other line stays as it is, but for three comment lines that described the older
+    // build and the two above Cross and Triangle when those take Total Overdose PC's keys
+    // (input_migration_comments). The launcher does the same to the same bytes (launcher/src/Model.cs,
+    // InputMigration), whichever of the two reads the file first.
+    static Migration brought_up_to_date(std::string_view text, int version) {
+        Migration out;
+        if (version < 2) {
+            PcInputConfig named;
+            (void)named.apply(text);
+            out.text = with_current_input_defaults(text);
+            out.what = std::string("was written by an older build (scheme ") + scheme_name(named.scheme) +
+                "): its input sections now hold the current defaults (control style Total Overdose PC)";
+            return out;
+        }
+        auto doc = IniDocument::parse(text);
+        const bool psp = settings::same_name(settings::trimmed(doc.get("Input", "Scheme").value_or(std::string())), "psp");
+        const auto was = psp ? InputLayout::Psp : InputLayout::Modern;
+        const auto changed = bindings_changed(doc, was);
+        const bool to_tod = changed == 0u && !psp;
+        replace_migration_comments(doc, to_tod);
+        if (to_tod)
+            for (const auto &change : layout_binding_changes(doc, was, InputLayout::TodPc)) doc.set(change.section, change.key, change.value);
+        const auto now = to_tod ? InputLayout::TodPc : was;
+        doc.set("Input", "Layout", layout_name(now));
+        doc.set("Input", "Version", std::to_string(input_ini_version));
+        out.text = doc.bytes();
+        out.what = std::string("was written by an older build (Version ") + std::to_string(version) + ", scheme " + (psp ? "psp" : "dual_analog") + "): " +
+            (to_tod ? std::string("every binding was that build's default, the bindings are now those of Total Overdose PC")
+                    : changed ? std::to_string(changed) + " binding" + (changed == 1u ? "" : "s") + " of the player's own, every binding kept"
+                              : std::string("every binding was that build's default and stays")) +
+            " (Layout=" + layout_name(now) + ", Version=" + std::to_string(input_ini_version) + ")";
+        return out;
+    }
+    // The defaults of the control style the file means, then `file` on top when
+    // it exists. A missing file is created with the defaults so there is
+    // something to edit; failing to write it is not an error. With `create`, a
+    // file the game itself wrote before input_ini_version is brought up to date
+    // (brought_up_to_date) under the gate the launcher shares; the file as it was
+    // is kept beside it as <name>.bak (over an older one) and `notes` says so. A
+    // file somebody wrote by hand is never touched.
     static PcInputConfig load(const std::filesystem::path &file, std::vector<std::string> &problems, bool create = true,
                               std::vector<std::string> *notes = nullptr) {
         auto config = defaults();
@@ -655,24 +863,28 @@ struct PcInputConfig {
             else {
                 stream.close();
                 auto text = buffer.str();
-                // A setting the file leaves out takes the default of the file's own scheme.
+                // A setting the file leaves out takes the default of the file's own control style.
                 PcInputConfig named;
                 (void)named.apply(text);
                 if (create && named.version < input_ini_version && written_by_game(text)) {
-                    auto backup = file;
-                    backup += ".bak";
-                    std::filesystem::copy_file(file, backup, std::filesystem::copy_options::skip_existing, status);
-                    text = with_current_input_defaults(text);
-                    std::ofstream replaced(file, std::ios::binary | std::ios::trunc);
-                    replaced << text;
-                    replaced.close();
-                    if (notes) notes->push_back(file.filename().string() + " was written by an older build (scheme " + scheme_name(named.scheme) +
-                        "): its input sections now hold the current defaults (scheme dual_analog)" +
-                        (replaced.fail() ? ", for this run only: the file could not be rewritten" : "; the old file is " + backup.filename().string()));
-                    named = {};
-                    (void)named.apply(text);
+                    ini_file::Gate gate;
+                    // Under the gate, the file as it is now (the launcher may have brought it up to date).
+                    if (auto now = ini_file::read(file)) { text = std::move(*now); named = {}; (void)named.apply(text); }
+                    if (named.version < input_ini_version && written_by_game(text)) {
+                        const auto updated = brought_up_to_date(text, named.version);
+                        auto backup = file;
+                        backup += ".bak";
+                        std::error_code copied;
+                        std::filesystem::copy_file(file, backup, std::filesystem::copy_options::overwrite_existing, copied);
+                        const bool written = ini_file::write_patiently(file, updated.text);
+                        if (notes) notes->push_back(file.filename().string() + " " + updated.what +
+                            (!written ? ", for this run only: the file could not be rewritten" : copied ? "; no copy of the old file could be made" : "; the old file is " + backup.filename().string()));
+                        text = updated.text;
+                        named = {};
+                        (void)named.apply(text);
+                    }
                 }
-                config = defaults(named.scheme);
+                config = defaults(named.layout_meant());
                 problems = config.apply(text);
             }
         } else if (create) {

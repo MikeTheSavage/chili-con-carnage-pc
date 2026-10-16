@@ -30,8 +30,8 @@ for this PC version.
 - Picture: internal resolution up to 8x the PSP's (automatic by monitor), FXAA or MSAA, anisotropic
   filtering, optional ambient occlusion, a smooth version of the game's full-screen glow, borderless full
   screen (F11).
-- Controls: two-stick controls with mouse look and exact mouse aim, or the PSP's own layout; on-screen button
-  prompts that follow the device you used last (keys, Xbox buttons or PlayStation shapes).
+- Controls: the keys and mouse Total Overdose (same engine) had on PC by default, with mouse look and exact
+  mouse aim; a "Modern" layout, or the PSP's own; on-screen button prompts that follow the device you used last (keys, Xbox buttons or PlayStation shapes).
 - Settings inside the game's own menus (main menu and pause menu), and in the launcher.
 - Texture packs: a folder of PNG files replaces the game's textures; the pictures the game shows first are
   loaded first.
@@ -115,14 +115,16 @@ See [MODDING.md](MODDING.md).
 | Look | Mouse | Right stick | Right stick |
 | Shoot | Left mouse button | RT | R2 |
 | Headshot mode | Right mouse button | LT | L2 |
-| Jump, dive, use | Space | A | Cross |
-| Reload | R | X | Square |
-| Weapon wheel, back | F | B | Circle |
-| Pause | Escape | Start | Options |
+| Shoot-dodge, jump, use | Space, Left Shift, F | A | Cross |
+| Reload, loco move | R, Left Ctrl | X | Square |
+| Weapon quick-select, back | E | B | Circle |
+| Rewind | Tab | D-pad down | D-pad down |
+| Pause | Escape, P | Start | Options |
 | Free the mouse | F1 | | |
 | Full screen | F11 | | |
 
-All of them in [CONTROLS.md](CONTROLS.md).
+The default keys are those of Total Overdose on PC. The launcher's Controls page also offers "Modern" and
+"PSP original", and every key can be changed. All of them in [CONTROLS.md](CONTROLS.md).
 
 ## Credits
 

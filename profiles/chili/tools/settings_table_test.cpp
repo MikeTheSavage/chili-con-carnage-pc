@@ -98,7 +98,7 @@ void keys(const std::string &model) {
     const std::regex add(R"re(Setting\s+(\w+)\s*=\s*Add\("([^"]*)",\s*"([^"]*)",\s*(null|"([^"]*)"))re");
     for (std::sregex_iterator it(model.begin(), model.end(), add), end; it != end; ++it)
         named.push_back({(*it)[1].str(), (*it)[2].str(), (*it)[3].str(), (*it)[4].str() == "null" ? std::string() : (*it)[5].str()});
-    require(named.size() == 52u, "Model.cs names 52 settings with Add (found " + std::to_string(named.size()) + ")");
+    require(named.size() == 53u, "Model.cs names 53 settings with Add (found " + std::to_string(named.size()) + ")");
     for (std::size_t i = 0; i < named.size(); ++i) {
         const auto &theirs = named[i];
         const auto &ours = st::table[i];
@@ -112,11 +112,22 @@ void keys(const std::string &model) {
     // game build are the newer build's here.
     require(model.find(R"(Camera.DefaultFn = m => m.Scheme == "psp" ? "original" : "tight";)") != std::string::npos, "the launcher's camera default follows the control style");
     const auto &camera = st::get("Game", "Camera");
-    require(camera.default_for(false) == "tight" && camera.default_for(true) == "original", "the table's camera default follows the control style");
+    require(camera.default_for(chili::InputLayout::TodPc) == "tight" && camera.default_for(chili::InputLayout::Modern) == "tight" && camera.default_for(chili::InputLayout::Psp) == "original", "the table's camera default follows the control style");
+    // A file without a Layout line means the style its scheme goes with: PSP original with psp, else Total Overdose PC.
+    require(model.find(R"(Layout.DefaultFn = m => m.Scheme == "psp" ? "psp" : "tod_pc";)") != std::string::npos, "the launcher's control style without a Layout line follows the scheme");
+    const auto &layout = st::get("Input", "Layout");
+    require(layout.fallback == "tod_pc" && layout.values.size() == 3u && layout.values[0].ini == "tod_pc" && layout.values[0].word == "Total Overdose PC" &&
+            layout.values[1].ini == "modern" && layout.values[2].ini == "psp" && layout.cls == st::Class::Restart && layout.page == st::Page::Controls,
+        "the control style: Total Overdose PC (the default), Modern, PSP original; from the next start, on Controls");
+    for (const auto style : chili::input_layouts)
+        require(chili::layout_from_name(chili::layout_name(style)) == style && st::value_index(layout, chili::layout_name(style)) && layout.values[*st::value_index(layout, chili::layout_name(style))].word == chili::layout_word(style),
+            std::string(chili::layout_name(style)) + ": the table's value and word are input_layout.hpp's");
+    require(!chili::layout_from_name("dual_analog") && chili::layout_from_name("TOD_PC") == chili::InputLayout::TodPc, "the style's names, without case"); 
     require(model.find(R"(AntiAliasing.DefaultFn = m => m.Game.Knows(AntiAliasing.Probe) ? "fxaa" : "off";)") != std::string::npos &&
             model.find(R"(Anisotropy.DefaultFn = m => m.Game.Knows(Anisotropy.Probe) ? "16" : "1";)") != std::string::npos, "the launcher's defaults for a game that knows the newer keys");
     for (const auto &setting : st::table)
-        require(!setting.fallback_psp || setting.kind == st::Kind::Binding || &setting == &camera, setting.id() + ": only the camera and bindings have a default of their own with Scheme=psp");
+        require((!setting.fallback_psp || setting.kind == st::Kind::Binding || &setting == &camera) && (!setting.fallback_modern || setting.kind == st::Kind::Binding),
+            setting.id() + ": only the camera and bindings have a default of their own with a control style");
     require(model.find("DiscPath.Raw = true;") != std::string::npos, "the disc path is the launcher's one raw value");
 
     // The bindings: the actions' keys, the mouse's inputs, a pad's buttons, in the launcher's order.
@@ -127,29 +138,48 @@ void keys(const std::string &model) {
     }
     require(actions.size() == 23u, "the launcher has 23 actions");
     const std::regex pair(R"re(\{\s*"([^"]*)",\s*"([^"]*)"\s*\})re"), word(R"re("()([^"]*)")re");
-    const Pairs keyboard = all_pairs(block_after(model, "> keyboard = new", "};"), pair), mouse = all_pairs(block_after(model, "> mouse = new", "};"), pair),
+    const Pairs keyboard = all_pairs(block_after(model, "> keyboardTodPc = new", "};"), pair), keyboard_modern = all_pairs(block_after(model, "> keyboardModern = new", "};"), pair),
+        mouse = all_pairs(block_after(model, "> mouse = new", "};"), pair),
         pad_dual = all_pairs(block_after(model, "> padDual = new", "};"), pair), pad_psp = all_pairs(block_after(model, "> padPsp = new", "};"), pair);
     const Pairs mouse_inputs = all_pairs(block_after(model, "string[] MouseInputs", "};"), word), pad_buttons = all_pairs(block_after(model, "string[] PadButtons", "};"), word);
-    require(keyboard.size() == 23u && mouse.size() == 7u && pad_dual.size() == 16u && pad_psp.size() == 16u && mouse_inputs.size() == 7u && pad_buttons.size() == 16u,
+    require(keyboard.size() == 23u && keyboard_modern.size() == 23u && mouse.size() == 7u && pad_dual.size() == 16u && pad_psp.size() == 16u && mouse_inputs.size() == 7u && pad_buttons.size() == 16u,
         "the launcher's default tables: 23 keys, 7 mouse inputs, 16 pad buttons for each control style");
-    require(model.find(R"(if (scheme == "psp" && target.StartsWith("Look", StringComparison.OrdinalIgnoreCase)) return "";)") != std::string::npos, "the launcher gives the look keys no key with Scheme=psp");
+    require(model.find(R"(if (layout == "psp" && target.StartsWith("Look", StringComparison.OrdinalIgnoreCase)) return "";)") != std::string::npos &&
+            model.find(R"(return (layout == "modern" || layout == "psp" ? keyboardModern : keyboardTodPc).TryGetValue(target, out v) ? v : "";)") != std::string::npos &&
+            model.find(R"(return (layout == "psp" ? padPsp : padDual).TryGetValue(button, out v) ? v : "None";)") != std::string::npos,
+        "the launcher's keys: Total Overdose PC's, Modern's for Modern and PSP original (without the look keys there); the PSP's pad table for PSP original");
     std::size_t at = named.size();
-    const auto binding = [&](const std::string &section, const std::string &key, const std::string &fallback, const std::string &fallback_psp) {
+    const auto binding = [&](const std::string &section, const std::string &key, const std::string &fallback, const std::string &fallback_modern, const std::string &fallback_psp) {
         require(at < st::table.size(), "the table has an entry for the launcher's [" + section + "] " + key);
         const auto &ours = st::table[at++];
         const std::string where = "[" + section + "] " + key;
         require(ours.section == section && ours.key == key && ours.kind == st::Kind::Binding, "entry " + std::to_string(at) + " of the table is the binding " + where + " (it is " + ours.id() + ")");
-        require(ours.default_for(false) == fallback, where + ": default '" + fallback + "' in the launcher, '" + std::string(ours.default_for(false)) + "' in the table");
-        require(ours.default_for(true) == fallback_psp, where + " with Scheme=psp: '" + fallback_psp + "' in the launcher, '" + std::string(ours.default_for(true)) + "' in the table");
+        require(ours.default_for(chili::InputLayout::TodPc) == fallback, where + ": default '" + fallback + "' in the launcher, '" + std::string(ours.default_for(chili::InputLayout::TodPc)) + "' in the table");
+        require(ours.default_for(chili::InputLayout::Modern) == fallback_modern, where + " with Layout=modern: '" + fallback_modern + "' in the launcher, '" + std::string(ours.default_for(chili::InputLayout::Modern)) + "' in the table");
+        require(ours.default_for(chili::InputLayout::Psp) == fallback_psp, where + " with Layout=psp: '" + fallback_psp + "' in the launcher, '" + std::string(ours.default_for(chili::InputLayout::Psp)) + "' in the table");
         require(!ours.shown() && ours.cls == st::Class::Live, where + ": a binding is live and not a row of the game's page");
     };
     for (const auto &action : actions) {
         const auto &target = action.first;
-        const auto fallback = lookup(keyboard, target, "");
-        binding("Input.Keyboard", target, fallback, target.rfind("Look", 0u) == 0u ? std::string() : fallback);
+        const auto fallback = lookup(keyboard, target, ""), modern = lookup(keyboard_modern, target, "");
+        binding("Input.Keyboard", target, fallback, modern, target.rfind("Look", 0u) == 0u ? std::string() : modern);
     }
-    for (const auto &input : mouse_inputs) { const auto target = lookup(mouse, input.second, "None"); binding("Input.Mouse", input.second, target, target); }
-    for (const auto &button : pad_buttons) binding("Input.Gamepad", button.second, lookup(pad_dual, button.second, "None"), lookup(pad_psp, button.second, "None"));
+    for (const auto &input : mouse_inputs) { const auto target = lookup(mouse, input.second, "None"); binding("Input.Mouse", input.second, target, target, target); }
+    for (const auto &button : pad_buttons) binding("Input.Gamepad", button.second, lookup(pad_dual, button.second, "None"), lookup(pad_dual, button.second, "None"), lookup(pad_psp, button.second, "None"));
+    // The comment lines an older build's file gets anew when it is brought up to date: the launcher's list is the game's.
+    {
+        const std::regex comment(R"re(new InputComment\("([^"]*)", "([^"]*)", "([^"]*)", (true|false)\))re");
+        const auto block = block_after(model, "public static readonly InputComment[] Comments", "};");
+        std::size_t n = 0u;
+        for (std::sregex_iterator it(block.begin(), block.end(), comment), end; it != end; ++it, ++n) {
+            require(n < std::size(chili::input_migration_comments), "the launcher has no more migration comments than the game");
+            if (n >= std::size(chili::input_migration_comments)) break;
+            const auto &ours = chili::input_migration_comments[n];
+            require((*it)[1].str() == ours.section && (*it)[2].str() == ours.before && (*it)[3].str() == ours.after && ((*it)[4].str() == "true") == ours.always,
+                "migration comment " + std::to_string(n + 1u) + " is the same in the launcher and in the game: " + ours.before);
+        }
+        require(n == std::size(chili::input_migration_comments), "the launcher has the game's " + std::to_string(std::size(chili::input_migration_comments)) + " migration comments (found " + std::to_string(n) + ")");
+    }
     require(at == st::table.size(), "the table has no entry the launcher lacks (" + std::to_string(st::table.size()) + " entries, " + std::to_string(at) + " in the launcher)");
     // No key twice, none empty.
     std::set<std::string> seen;
@@ -169,7 +199,7 @@ const std::map<std::string, std::string> renamed{
     {"Sharp textures at an angle", "Sharp textures"}, {"Keep the aim where you put it", "Hold the aim"}, {"Clicks work in menus", "Clicks in menus"},
     {"Precise turning for stick and keys", "Precise turning"}, {"Left stick dead zone", "Left dead zone"}, {"Right stick dead zone", "Right dead zone"},
     {"Start moving at the dead zone's edge", "Move at the edge"}, {"Use PlayStation controllers", "PlayStation pads"}, {"On screen", "Prompts"},
-    {"Dump textures while playing", "Dump textures"}};
+    {"Dump textures while playing", "Dump textures"}, {"Control style", "Style"}};
 
 std::set<const st::Setting *> launcher_rows;
 const st::Setting &of_ident(const std::string &ident) {
@@ -303,7 +333,11 @@ void table() {
         if (setting.shown()) {
             require(!setting.name.empty() && setting.name.size() <= 18u && writable(setting.name), setting.id() + ": a name of at most 18 characters the game's font can write ('" + std::string(setting.name) + "')");
             require(setting.cls != st::Class::Off, setting.id() + ": a row of the page is not class Off");
-            for (const auto &value : setting.values) require(!value.word.empty() && value.word.size() <= 12u && writable(value.word), setting.id() + "=" + std::string(value.ini) + ": a word of at most 12 characters ('" + std::string(value.word) + "')");
+            // A value's word: at most 12 characters, or more where the row's name is short enough that the two
+            // together are no longer than the longest pair of the design (Button pictures, PlayStation: 26).
+            for (const auto &value : setting.values)
+                require(!value.word.empty() && (value.word.size() <= 12u || setting.name.size() + value.word.size() <= 26u) && writable(value.word),
+                    setting.id() + "=" + std::string(value.ini) + ": a word of at most 12 characters, or one that fits beside a short name ('" + std::string(value.word) + "')");
         } else require(setting.name.empty(), setting.id() + " is not shown and has no name");
         if (setting.kind == st::Kind::Slider) {
             require(setting.max > setting.min && setting.step > 0.0 && std::fabs(st::slider_steps(setting) * setting.step - (setting.max - setting.min)) < 1e-9, setting.id() + ": the steps fill the range");
@@ -312,14 +346,15 @@ void table() {
         if (setting.kind == st::Kind::Choice || setting.kind == st::Kind::Switch) require(st::value_index(setting, setting.fallback).has_value(), setting.id() + ": the default is one of the values");
     }
     // 97 keys, 79 live, 3 moderate, 2 split by value, 7 restart, 6 not for a page;
-    // and [Rendering] Glow, a live one.
-    require(classes[st::Class::Live] == 80u && classes[st::Class::Moderate] == 3u && classes[st::Class::Split] == 2u && classes[st::Class::Restart] == 7u && classes[st::Class::Off] == 6u,
-        "the classes: 80 live, 3 moderate, 2 split, 7 restart, 6 off (" + std::to_string(classes[st::Class::Live]) + ", " + std::to_string(classes[st::Class::Moderate]) + ", " +
+    // and [Rendering] Glow, a live one; and [Input] Layout, the control style (restart), with [Input] Scheme
+    // beside it, now a key for no page.
+    require(classes[st::Class::Live] == 80u && classes[st::Class::Moderate] == 3u && classes[st::Class::Split] == 2u && classes[st::Class::Restart] == 7u && classes[st::Class::Off] == 7u,
+        "the classes: 80 live, 3 moderate, 2 split, 7 restart, 7 off (" + std::to_string(classes[st::Class::Live]) + ", " + std::to_string(classes[st::Class::Moderate]) + ", " +
         std::to_string(classes[st::Class::Split]) + ", " + std::to_string(classes[st::Class::Restart]) + ", " + std::to_string(classes[st::Class::Off]) + ")");
     // What stays in the launcher (design 2.9), beside the bindings; [Mods] Enabled is shown through Textures and HD pack.
     const std::set<std::string> expected{"Rendering/WindowSize", "Rendering/MSAA", "Rendering/Backend", "Rendering/GeThread", "Game/Priority", "Mods/Folder", "Mods/Enabled",
-        "Mods/LogFiles", "Disc/Path", "Input/BackgroundInput", "Input/ShowInput", "Input/Version"};
-    require(hidden == expected, "the keys the game's page does not show are the twelve of the design");
+        "Mods/LogFiles", "Disc/Path", "Input/BackgroundInput", "Input/ShowInput", "Input/Version", "Input/Scheme"};
+    require(hidden == expected, "the keys the game's page does not show are the twelve of the design and Input/Scheme");
 
     // The rows: every shown key once, on its page; a section's page ends with Defaults; the counts of the design.
     std::map<const st::Setting *, unsigned> placed;
@@ -352,7 +387,18 @@ void table() {
     const auto &scale = st::get("Rendering", "InternalScale"), &aa = st::get("Rendering", "AntiAliasing"), &turn = st::get("Input.Mouse", "SensitivityX"),
                &walk = st::get("Input.Keyboard", "WalkScale"), &buffer = st::get("Audio", "BufferMs"), &hold = st::get("Input.Mouse", "HoldPitch"), &rumble = st::get("Input.Gamepad", "Rumble");
     require(st::equivalent("TRUE", "1") && st::equivalent(" false ", "0") && st::equivalent("0.60", "0.6") && st::equivalent("Auto", "auto") && !st::equivalent("1", "2") && !st::equivalent("true", "false") && !st::equivalent("fxaa", "off"), "values that say the same");
-    require(st::number_text(0.08) == "0.08" && st::number_text(1.0) == "1" && st::number_text(0.6000000001) == "0.6" && st::number_text(70.0) == "70" && st::number_text(0.0) == "0" && st::number_text(0.125) == "0.125" && st::number_text(3.95) == "3.95", "a number as the launcher writes it");
+    // Two values of a binding that name the same inputs (the rule of a control style's switch and of an older file's update).
+    {
+        const auto &cross = st::get("Input.Keyboard", "Cross"), &look = st::get("Input.Keyboard", "LookLeft"), &a = st::get("Input.Gamepad", "A"), &wheel = st::get("Input.Mouse", "WheelUp");
+        require(st::binding_equivalent(cross, "Space,E,Enter", "enter, space ,E") && st::binding_equivalent(cross, "Return,Esc", "Escape,Enter") && st::binding_equivalent(cross, "Space,Space", "Space") &&
+                !st::binding_equivalent(cross, "Space,E", "Space,E,Enter") && !st::binding_equivalent(cross, "Space,E,Enter", "Space,F,Enter,LShift") && st::binding_equivalent(look, "", " , ") &&
+                !st::binding_equivalent(look, "", "J"), "the keys of an action: the same names in any order, case and spelling");
+        require(st::binding_equivalent(a, "", "None") && st::binding_equivalent(a, "cross", " Cross ") && !st::binding_equivalent(a, "Cross", "Circle") && st::binding_equivalent(wheel, "dpadright", "DpadRight"),
+            "a mouse input or a pad button: the same target, nothing is None");
+        for (const auto &setting : st::table)
+            if (setting.kind == st::Kind::Binding)
+                for (const auto style : chili::input_layouts) require(st::binding_equivalent(setting, setting.default_for(style), setting.default_for(style)), setting.id() + ": a default is its own equal");
+    }    require(st::number_text(0.08) == "0.08" && st::number_text(1.0) == "1" && st::number_text(0.6000000001) == "0.6" && st::number_text(70.0) == "70" && st::number_text(0.0) == "0" && st::number_text(0.125) == "0.125" && st::number_text(3.95) == "3.95", "a number as the launcher writes it");
     require(st::shown(scale, "auto") == "Auto" && st::shown(scale, "4") == "1920 x 1088" && st::shown(scale, "5") == "2400 x 1360" && st::shown(scale, "nonsense") == "nonsense", "a resolution is shown as its size");
     require(st::shown(aa, "FXAA") == "Light" && st::shown(aa, "none") == "Off" && st::shown(st::get("Rendering", "Preset"), "custom") == "No limit" && st::shown(st::get("Rendering", "SSAO"), "0") == "Off", "the spellings the game's reader takes are shown as their value");
     const auto &glow = st::get("Rendering", "Glow");
@@ -406,8 +452,7 @@ void readers() {
     for (const auto &setting : st::table) {
         // The game has no reader for a window size yet; the launcher shows that row only for a build that has.
         if (&setting == &st::get("Rendering", "WindowSize") || &setting == &st::get("Disc", "Path")) continue;
-        taken(setting, setting.default_for(false));
-        taken(setting, setting.default_for(true));
+        for (const auto style : chili::input_layouts) taken(setting, setting.default_for(style));
         for (const auto &value : setting.values) taken(setting, value.ini);
         if (setting.kind == st::Kind::Slider) for (long step = 0; step <= st::slider_steps(setting); ++step) taken(setting, st::slider_value(setting, step));
     }

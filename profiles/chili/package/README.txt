@@ -63,7 +63,7 @@ SETTINGS INSIDE THE GAME
   Move                        Up, Down          D-pad or stick      point at a row; the wheel
   Open, switch, next value    Space, Enter      A / Cross           left click
   Change a value              Left, Right       D-pad left, right   click; hold and move a number
-  Back                        Backspace, F      B / Circle          right click
+  Back                        Backspace, E      B / Circle          right click
   Close the page              Escape            Start / Options
 
   The buttons shown at the bottom are those of whatever you touched last. The last row of each
@@ -73,7 +73,7 @@ SETTINGS INSIDE THE GAME
   under Controls for the mouse, the keys and the controller (turn and look speed, invert, dead
   zones, rumble and the rest), "Prompts" and "Button pictures".
 
-  From the next start of the game: the rest of Display, Graphics, "Control style", "Camera",
+  From the next start of the game: the rest of Display, Graphics, "Style", "Camera",
   Textures & mods and Sound. The value is saved the moment you change it, turns orange with a
   chili after it until it runs, and the page says "After a restart." for three seconds. In a
   mission these rows are dimmed with a padlock, and say why only when you try one.
@@ -115,24 +115,35 @@ SAVES
   folders in it may refuse to load or to save.
 
 
-KEYS
+KEYS (the control style "Total Overdose PC": the keys and the mouse Total Overdose had on PC)
 
   Move and strafe             W A S D   (hold X to walk)
   Turn and look               mouse     (J L I K without a mouse)
   Shoot                       left mouse button, G
-  Headshot mode               right mouse button, V
-  Jump, dive, use, confirm    Space, E, Enter
-  Reload                      R
-  Weapon wheel                F, Backspace, middle mouse button
-  Target objects, exit stunt  Q
-  Previous / next weapon      mouse wheel, 1 / 2, Left / Right
-  Rewind                      Z, Down
-  Pause                       Escape
+  Headshot mode               right mouse button (hold), V
+  Shoot-dodge, jump, use      Space, Left Shift, F, Enter
+  Reload, loco move           R, Left Ctrl
+  Weapon quick-select, back   E, Backspace, middle mouse button
+  Target objects, exit stunt  Q, C
+  Previous / next weapon      mouse wheel, Left / Right
+  Rewind                      Tab, Down
+  Forks up / down (vehicle)   Page Up / Page Down
+  Pause                       Escape, P
   Free or capture the mouse   F1   (Alt+Tab frees it too)
   Full screen and back        F11, Alt+Enter
 
   The first click in the window captures the mouse for looking. In menus the arrow keys move, Enter
-  or a left click confirms, Backspace, F or a right click goes back.
+  or a left click confirms, Backspace, E or a right click goes back.
+
+  Total Overdose's 1 to 8 (weapon classes) have no match: this game picks a weapon class with its
+  quick-select (E held, then a face button's key). Five taps of Shift raise Windows' Sticky Keys
+  question; it can be switched off in Settings > Accessibility > Keyboard.
+
+  The launcher's Controls page ("Control style") and the game's Settings (Controls, "Style") also
+  offer "Modern" (Space, E, Enter jump and use; F weapon wheel; 1 / 2 weapons; Z rewind) and "PSP
+  original". A settings file of an earlier build in which no key was ever changed takes the Total
+  Overdose PC keys at its first start; one with a key of your own keeps all its keys (as "Modern").
+  The old file is kept as ChiliNative.ini.bak.
 
 
 CONTROLLERS

@@ -95,7 +95,7 @@ namespace ChiliLauncher
             parts.Add(m.Get(S.FrameLock).Trim() == "2" ? "30 fps" : "60 fps");
             string aa = AaNow();
             parts.Add(aa == "off" ? "No anti-aliasing" : aa == "fxaa" ? "Light anti-aliasing" : aa.Replace("msaa", "") + "x anti-aliasing");
-            parts.Add(m.Scheme == "psp" ? "PSP controls" : "Keyboard & mouse or gamepad");
+            parts.Add(Defaults.LayoutName(m.Layout) + " controls");
             int mods = m.EnabledModCount;
             bool hd = m.TexturePacks.Any(p => p.Enabled);
             if (hd) parts.Add("HD textures");
@@ -506,21 +506,17 @@ namespace ChiliLauncher
             // Which device the rows below are for: two tabs at the left, not a setting.
             list.Add(new TabsRow("device", new Segmented(() => padView ? "pad" : "keys", v => { padView = v == "pad"; scrollTarget = 0; Rebuild(); },
                 O("Keyboard & mouse", "keys"), O("Gamepad", "pad")) { SegHeight = 36 }));
+            // The control style: its bindings with it, where they are still the old style's (Model.SwitchLayout).
             var style = new Row
             {
-                Id = S.Scheme.Id, Label = "Control style", Settings = new[] { S.Scheme },
-                Control = new Segmented(() => m.Scheme, v =>
+                Id = S.Layout.Id, Label = "Control style", Settings = new[] { S.Layout },
+                ChangedFn = () => m.IsChanged(S.Layout) || m.IsChanged(S.Scheme),
+                Control = new Segmented(() => m.Layout, v =>
                 {
-                    if (v == m.Scheme) return;
-                    m.Set(S.Scheme, v);
+                    if (v == m.Layout) return;
+                    m.SwitchLayout(v);
                     Rebuild();
-                    Ask("Control style", "Load the default bindings for " + (v == "psp" ? "PSP original" : "Modern") + " too?", "Yes", "No", choice =>
-                    {
-                        if (choice != 0) return;
-                        m.ResetKeyboardMouse();
-                        m.ResetPadBindings();
-                    });
-                }, O("Modern", "dual_analog"), O("PSP original", "psp"))
+                }, O("Total Overdose PC", "tod_pc"), O("Modern", "modern"), O("PSP original", "psp"))
             };
             list.Add(style);
             // With a controller connected the live sticks further down show it; without one, that is a problem to act on.

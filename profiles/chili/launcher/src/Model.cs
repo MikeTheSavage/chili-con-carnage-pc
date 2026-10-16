@@ -64,11 +64,13 @@ namespace ChiliLauncher
         // [Disc]
         public static readonly Setting DiscPath = Add("Disc", "Path", "", "[Disc]");
         // [Input]
+        // The control style: tod_pc (Total Overdose PC) | modern | psp (PSP original). Scheme goes with it.
+        public static readonly Setting Layout = Add("Input", "Layout", "tod_pc", "Layout must be");
         public static readonly Setting Scheme = Add("Input", "Scheme", "dual_analog");
         public static readonly Setting ExactTurn = Add("Input", "ExactTurn", "true", "ExactTurn");
         public static readonly Setting BackgroundInput = Add("Input", "BackgroundInput", "false", "BackgroundInput");
         public static readonly Setting ShowInput = Add("Input", "ShowInput", "false", "ShowInput");
-        public static readonly Setting InputVersion = Add("Input", "Version", "2");
+        public static readonly Setting InputVersion = Add("Input", "Version", "3");
         // What the game draws for its buttons on screen: auto | keyboard | gamepad | psp (CONTROLS.md, "On-screen prompts").
         public static readonly Setting Prompts = Add("Input", "Prompts", "auto", "Prompts must be");
         // [Input.Keyboard]
@@ -119,15 +121,23 @@ namespace ChiliLauncher
             return s;
         }
         /// <summary>[Input.Keyboard] Target=key[,key]</summary>
-        public static Setting Keys(string target) { return Binding("Input.Keyboard", target, m => Defaults.Keyboard(m.Scheme, target)); }
+        public static Setting Keys(string target) { return Binding("Input.Keyboard", target, m => Defaults.Keyboard(m.Layout, target)); }
         /// <summary>[Input.Mouse] Mouse1..5, WheelUp, WheelDown = Target</summary>
         public static Setting Mouse(string input) { return Binding("Input.Mouse", input, m => Defaults.Mouse(input)); }
         /// <summary>[Input.Gamepad] Button=Target</summary>
-        public static Setting Pad(string button) { return Binding("Input.Gamepad", button, m => Defaults.Pad(m.Scheme, button)); }
+        public static Setting Pad(string button) { return Binding("Input.Gamepad", button, m => Defaults.Pad(m.Layout, button)); }
+        /// <summary>Every binding key, in the order of S.All (the game's settings table has them in this order too).</summary>
+        public static IEnumerable<Setting> Bindings()
+        {
+            foreach (var a in Actions.All) yield return Keys(a.Target);
+            foreach (var i in MouseInputs) yield return Mouse(i);
+            foreach (var b in PadButtons) yield return Pad(b);
+        }
 
         static S()
         {
             Camera.DefaultFn = m => m.Scheme == "psp" ? "original" : "tight";
+            Layout.DefaultFn = m => m.Scheme == "psp" ? "psp" : "tod_pc";
             AntiAliasing.DefaultFn = m => m.Game.Knows(AntiAliasing.Probe) ? "fxaa" : "off";
             Anisotropy.DefaultFn = m => m.Game.Knows(Anisotropy.Probe) ? "16" : "1";
             DiscPath.Raw = true;
@@ -181,10 +191,28 @@ namespace ChiliLauncher
         }
     }
 
-    /// <summary>The game's own first-run bindings (host/pc_input.hpp, default_input_ini).</summary>
+    /// <summary>
+    /// The game's own first-run bindings of each control style (host/pc_input.hpp, default_input_ini;
+    /// host/input_layout.hpp): tod_pc (Total Overdose PC, the default), modern (the port's own before
+    /// tod_pc), psp (PSP original: Modern's keys without the look keys, the PSP's pad table).
+    /// </summary>
     public static class Defaults
     {
-        static readonly Dictionary<string, string> keyboard = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        public static readonly string[] Layouts = { "tod_pc", "modern", "psp" };
+        /// <summary>What the launcher and the game's page call a style.</summary>
+        public static string LayoutName(string layout) { return layout == "modern" ? "Modern" : layout == "psp" ? "PSP original" : "Total Overdose PC"; }
+        // Total Overdose PC: W A S D, the mouse, Space dive, Left Shift jump, F use, R reload, Left Ctrl the
+        // loco move, Tab rewind, Escape menu, P pause, Page Up and Down the forks, as Total Overdose had them.
+        static readonly Dictionary<string, string> keyboardTodPc = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "MoveForward", "W" }, { "MoveBack", "S" }, { "MoveLeft", "A" }, { "MoveRight", "D" },
+            { "LookLeft", "J" }, { "LookRight", "L" }, { "LookUp", "I" }, { "LookDown", "K" },
+            { "Walk", "X" }, { "Cross", "Space,F,Enter,LShift" }, { "Circle", "E,Backspace" }, { "Square", "G" },
+            { "Triangle", "R,LCtrl" }, { "L", "Q,C" }, { "R", "V" }, { "DpadUp", "Up,PageUp" }, { "DpadDown", "Tab,Down,PageDown" },
+            { "DpadLeft", "Left" }, { "DpadRight", "Right" }, { "Start", "Escape,P" }, { "Select", "Grave" },
+            { "ToggleMouseCapture", "F1" }, { "ToggleInputDisplay", "F3" },
+        };
+        static readonly Dictionary<string, string> keyboardModern = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "MoveForward", "W" }, { "MoveBack", "S" }, { "MoveLeft", "A" }, { "MoveRight", "D" },
             { "LookLeft", "J" }, { "LookRight", "L" }, { "LookUp", "I" }, { "LookDown", "K" },
@@ -210,17 +238,132 @@ namespace ChiliLauncher
             { "LT", "R" }, { "RT", "Square" }, { "LS", "None" }, { "RS", "None" }, { "Back", "Select" }, { "Start", "Start" },
             { "DpadUp", "DpadUp" }, { "DpadDown", "DpadDown" }, { "DpadLeft", "DpadLeft" }, { "DpadRight", "DpadRight" },
         };
-        public static string Keyboard(string scheme, string target)
+        public static string Keyboard(string layout, string target)
         {
-            if (scheme == "psp" && target.StartsWith("Look", StringComparison.OrdinalIgnoreCase)) return "";
+            if (layout == "psp" && target.StartsWith("Look", StringComparison.OrdinalIgnoreCase)) return "";
             string v;
-            return keyboard.TryGetValue(target, out v) ? v : "";
+            return (layout == "modern" || layout == "psp" ? keyboardModern : keyboardTodPc).TryGetValue(target, out v) ? v : "";
         }
         public static string Mouse(string input) { string v; return mouse.TryGetValue(input, out v) ? v : "None"; }
-        public static string Pad(string scheme, string button)
+        public static string Pad(string layout, string button)
         {
             string v;
-            return (scheme == "psp" ? padPsp : padDual).TryGetValue(button, out v) ? v : "None";
+            return (layout == "psp" ? padPsp : padDual).TryGetValue(button, out v) ? v : "None";
+        }
+        /// <summary>The default of a binding key with a control style.</summary>
+        public static string Of(Setting binding, string layout)
+        {
+            if (binding.Section == "Input.Keyboard") return Keyboard(layout, binding.Key);
+            if (binding.Section == "Input.Mouse") return Mouse(binding.Key);
+            return Pad(layout, binding.Key);
+        }
+        /// <summary>
+        /// Whether two values of a binding key name the same inputs: for the keys of an action the same key
+        /// names (Return is Enter, Esc is Escape; without case, in any order, a name twice counts once), for a
+        /// mouse input or a pad button the same target (nothing is None). host/settings_table.hpp,
+        /// binding_equivalent.
+        /// </summary>
+        public static bool SameBinding(Setting binding, string a, string b)
+        {
+            if (binding.Section == "Input.Keyboard")
+            {
+                Func<string, List<string>> names = text => (text ?? "").Split(',').Select(k => KeyNames.Canon(k).ToLowerInvariant())
+                    .Where(k => k.Length > 0).Distinct().OrderBy(k => k, StringComparer.Ordinal).ToList();
+                return names(a).SequenceEqual(names(b));
+            }
+            Func<string, string> target = text => { string t = (text ?? "").Trim().ToLowerInvariant(); return t.Length == 0 ? "none" : t; };
+            return target(a) == target(b);
+        }
+        /// <summary>
+        /// The binding lines of a file that move from control style `from` to `to`: those that hold `from`'s
+        /// default take `to`'s; a line the player changed stays, and a binding the file leaves out follows the
+        /// style by itself. host/pc_input.hpp, PcInputConfig::layout_binding_changes.
+        /// </summary>
+        public static List<KeyValuePair<Setting, string>> BindingChanges(Func<Setting, string> held, string from, string to)
+        {
+            var changes = new List<KeyValuePair<Setting, string>>();
+            if (from == to) return changes;
+            foreach (var s in S.Bindings())
+            {
+                string value = held(s);
+                if (value == null || !SameBinding(s, value, Of(s, from))) continue;
+                string wanted = Of(s, to);
+                if (!SameBinding(s, value, wanted)) changes.Add(new KeyValuePair<Setting, string>(s, wanted));
+            }
+            return changes;
+        }
+    }
+
+    /// <summary>
+    /// A settings file the game wrote with [Input] Version 2 (the builds before the control styles, whose defaults were
+    /// Modern with dual_analog and PSP original with psp), brought up to date as the game does at its start
+    /// (host/pc_input.hpp, PcInputConfig::brought_up_to_date), to the same bytes: when every binding line holds
+    /// that default and the scheme is dual_analog, the bindings take Total Overdose PC's; with psp they stay; a
+    /// file with any binding of the player's own keeps every binding. Then [Input] Layout names the style and
+    /// Version is 3. Every other line stays, but for the comment lines below. An older file (no Version, or 1)
+    /// is left to the game, which gives it the current defaults.
+    /// </summary>
+    public static class InputMigration
+    {
+        public sealed class InputComment
+        {
+            public readonly string Section, Before, After;
+            public readonly bool Always;      // in every file brought up to date; else only where the bindings take Total Overdose PC's
+            public InputComment(string section, string before, string after, bool always) { Section = section; Before = before; After = after; Always = always; }
+        }
+        /// <summary>host/pc_input.hpp, input_migration_comments (tools/settings_table_test.cpp holds the two alike).</summary>
+        public static readonly InputComment[] Comments =
+        {
+            new InputComment("Input", "; Written by the game. A file of the game's without it comes from an older build: its input sections are", "; Written by the game. A file of the game's with a lower number or none comes from an older build: once,", true),
+            new InputComment("Input", ";   replaced by the current defaults once and the old file is kept as ChiliNative.ini.bak.", ";   its input settings are brought up to date, and the old file is kept as ChiliNative.ini.bak.", true),
+            new InputComment("Input", ";   Delete this file after changing the scheme to get that scheme's default bindings.", ";   The control style sets it: dual_analog with tod_pc and modern, psp with psp.", true),
+            new InputComment("Input.Keyboard", "; Space jumps and dives, E uses: the game has both on Cross.", "; Jump, dive, use, enter a vehicle, confirm: the game has them all on Cross.", false),
+            new InputComment("Input.Keyboard", "; Reload.", "; Reload and the loco move: the game has both on Triangle.", false),
+        };
+        public const int Version = 3;
+
+        /// <summary>Whether the game wrote the file: it starts with the game's first line.</summary>
+        public static bool WrittenByGame(byte[] bytes)
+        {
+            var marker = System.Text.Encoding.ASCII.GetBytes("; Chili Con Carnage PC input.");
+            int at = bytes.Length >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF ? 3 : 0;
+            if (bytes.Length - at < marker.Length) return false;
+            for (int i = 0; i < marker.Length; i++) if (bytes[at + i] != marker[i]) return false;
+            return true;
+        }
+        /// <summary>Whether this is a file the launcher brings up to date: the game's, with [Input] Version=2.</summary>
+        public static bool Wanted(byte[] bytes, IniDocument doc)
+        {
+            return WrittenByGame(bytes) && (doc.Get("Input", "Version") ?? "").Trim() == "2";
+        }
+        /// <summary>
+        /// Brings the document up to date (Wanted must hold). Returns the style it now names; `changed` is how
+        /// many binding lines (and lines of an [Input.Gamepad.PlayStation] section) are the player's own.
+        /// </summary>
+        public static string Apply(IniDocument doc, out int changed)
+        {
+            bool psp = (doc.Get("Input", "Scheme") ?? "").Trim().Equals("psp", StringComparison.OrdinalIgnoreCase);
+            string was = psp ? "psp" : "modern";
+            changed = 0;
+            foreach (var s in S.Bindings())
+            {
+                string held = doc.Get(s.Section, s.Key);
+                if (held != null && !Defaults.SameBinding(s, held, Defaults.Of(s, was))) changed++;
+            }
+            foreach (var line in doc.LiveLines()) if (string.Equals(line.Section, "Input.Gamepad.PlayStation", StringComparison.OrdinalIgnoreCase)) changed++;
+            bool toTod = changed == 0 && !psp;
+            foreach (var line in doc.Lines)
+            {
+                if (line.Kind != IniLineKind.Comment || line.Key != null) continue;
+                foreach (var c in Comments)
+                    if ((c.Always || toTod) && string.Equals(line.Section, c.Section, StringComparison.OrdinalIgnoreCase) && line.Text == c.Before) { line.Text = c.After; break; }
+            }
+            if (toTod)
+                foreach (var change in Defaults.BindingChanges(s => doc.Get(s.Section, s.Key), was, "tod_pc")) doc.Set(change.Key.Section, change.Key.Key, change.Value);
+            string now = toTod ? "tod_pc" : was;
+            doc.Set("Input", "Layout", now);
+            doc.Set("Input", "Version", Version.ToString(CultureInfo.InvariantCulture));
+            return now;
         }
     }
 
@@ -745,6 +888,15 @@ namespace ChiliLauncher
             return TryNum(Get(s), out v) ? v : fallback;
         }
         public string Scheme { get { return Get(S.Scheme).Trim().ToLowerInvariant() == "psp" ? "psp" : "dual_analog"; } }
+        /// <summary>The control style: the file's Layout when it names one, else the one its scheme goes with.</summary>
+        public string Layout
+        {
+            get
+            {
+                string v = (Get(S.Layout) ?? "").Trim().ToLowerInvariant();
+                return Defaults.Layouts.Contains(v) ? v : Scheme == "psp" ? "psp" : "tod_pc";
+            }
+        }
 
         public static bool Equivalent(string a, string b)
         {
@@ -847,37 +999,7 @@ namespace ChiliLauncher
                 }
                 byte[] after = doc.ToBytes();
                 if (made != null) SaveObserver(before, made, after);
-                if (remade || !after.SequenceEqual(before))
-                {
-                    Directory.CreateDirectory(IniDir);
-                    string temp = IniPath + ".launcher.tmp";
-                    File.WriteAllBytes(temp, after);
-                    if (SaveBetween != null) SaveBetween();
-                    // Written beside the file first, then swapped in, so a crash cannot leave half a settings file.
-                    bool swapped = false;
-                    // A program that holds the file for a moment makes the swap fail: tried again before anything else.
-                    for (int turn = 0; turn < 4 && !swapped && File.Exists(IniPath); turn++)
-                    {
-                        if (turn > 0) System.Threading.Thread.Sleep(IniPatienceStep);
-                        try { File.Replace(temp, IniPath, null); swapped = true; }
-                        catch (IOException) { }
-                        catch (UnauthorizedAccessException) { }
-                    }
-                    // No file under the name (there was none, or a swap failed after it had moved the old one
-                    // away): the new text is moved into its place.
-                    if (!swapped && !File.Exists(IniPath) && File.Exists(temp))
-                    {
-                        try { File.Move(temp, IniPath); swapped = true; }
-                        catch (IOException) { }
-                        catch (UnauthorizedAccessException) { }
-                    }
-                    if (!swapped)
-                    {
-                        // Some folders (network shares, synced drives) refuse the swap: in place. `after` is the whole file.
-                        WriteIniInPlace(after);
-                        try { File.Delete(temp); } catch { }
-                    }
-                }
+                if (remade || !after.SequenceEqual(before)) SwapIn(after, SaveBetween);
                 Doc = doc;
                 known = after;
                 IniExists = true;
@@ -901,6 +1023,84 @@ namespace ChiliLauncher
             }
         }
 
+        // Writes `after` beside the file and swaps it in, so a crash cannot leave half a settings file; in place
+        // where the folder refuses the swap. `between` runs once the new text is beside the file (checks).
+        void SwapIn(byte[] after, Action between)
+        {
+            Directory.CreateDirectory(IniDir);
+            string temp = IniPath + ".launcher.tmp";
+            File.WriteAllBytes(temp, after);
+            if (between != null) between();
+            bool swapped = false;
+            // A program that holds the file for a moment makes the swap fail: tried again before anything else.
+            for (int turn = 0; turn < 4 && !swapped && File.Exists(IniPath); turn++)
+            {
+                if (turn > 0) System.Threading.Thread.Sleep(IniPatienceStep);
+                try { File.Replace(temp, IniPath, null); swapped = true; }
+                catch (IOException) { }
+                catch (UnauthorizedAccessException) { }
+            }
+            // No file under the name (there was none, or a swap failed after it had moved the old one
+            // away): the new text is moved into its place.
+            if (!swapped && !File.Exists(IniPath) && File.Exists(temp))
+            {
+                try { File.Move(temp, IniPath); swapped = true; }
+                catch (IOException) { }
+                catch (UnauthorizedAccessException) { }
+            }
+            if (!swapped)
+            {
+                // Some folders (network shares, synced drives) refuse the swap: in place. `after` is the whole file.
+                WriteIniInPlace(after);
+                try { File.Delete(temp); } catch { }
+            }
+        }
+
+        /// <summary>
+        /// A settings file the game wrote with [Input] Version 2 is brought up to date as the game would at its next
+        /// start (InputMigration), so that the Controls page shows what the game will run with: under the mutex the
+        /// two share, with the file as it was kept as ChiliNative.ini.bak (over an older one), as the game keeps it.
+        /// Any other file is left alone. Returns the control style the file now names, or null when nothing was done.
+        /// </summary>
+        public string MigrateInput()
+        {
+            if (!IniExists || pending.Count > 0) return null;
+            System.Threading.Mutex gate = null;
+            bool held = false;
+            try
+            {
+                try
+                {
+                    gate = new System.Threading.Mutex(false, IniGateName);
+                    try { held = gate.WaitOne(2000); } catch (System.Threading.AbandonedMutexException) { held = true; }
+                }
+                catch { }
+                bool missing;
+                byte[] before = ReadIni(out missing);
+                if (before == null) return null;
+                var doc = IniDocument.Parse(before);
+                if (!InputMigration.Wanted(before, doc)) return null;
+                int changed;
+                string now = InputMigration.Apply(doc, out changed);
+                byte[] after = doc.ToBytes();
+                File.WriteAllBytes(IniPath + ".bak", before);
+                SwapIn(after, null);
+                Doc = doc;
+                known = after;
+                IniExists = true;
+                Raise();
+                return now;
+            }
+            catch { return null; }
+            finally
+            {
+                if (gate != null)
+                {
+                    if (held) try { gate.ReleaseMutex(); } catch { }
+                    gate.Dispose();
+                }
+            }
+        }
         /// <summary>Live lines of the file the launcher has no control for.</summary>
         public int UnknownLines()
         {
@@ -1119,12 +1319,26 @@ namespace ChiliLauncher
 
         public void ResetKeyboardMouse()
         {
-            foreach (var a in Actions.All) Set(S.Keys(a.Target), Defaults.Keyboard(Scheme, a.Target));
+            foreach (var a in Actions.All) Set(S.Keys(a.Target), Defaults.Keyboard(Layout, a.Target));
             foreach (var i in S.MouseInputs) Set(S.Mouse(i), Defaults.Mouse(i));
         }
         public void ResetPadBindings()
         {
-            foreach (var b in S.PadButtons) Set(S.Pad(b), Defaults.Pad(Scheme, b));
+            foreach (var b in S.PadButtons) Set(S.Pad(b), Defaults.Pad(Layout, b));
+        }
+        /// <summary>
+        /// Another control style: [Input] Layout and the Scheme that goes with it, and every binding that still
+        /// holds the old style's default takes the new style's (the bindings the player changed stay). The
+        /// game's Settings page does the same (host/settings_apply.hpp).
+        /// </summary>
+        public void SwitchLayout(string to)
+        {
+            string from = Layout;
+            if (to == from || Array.IndexOf(Defaults.Layouts, to) < 0) return;
+            var moved = Defaults.BindingChanges(s => IsSet(s) ? Get(s) : null, from, to);
+            Set(S.Layout, to);
+            Set(S.Scheme, to == "psp" ? "psp" : "dual_analog");
+            foreach (var change in moved) Set(change.Key, change.Value);
         }
         public void ResetTo(params Setting[] settings) { foreach (var s in settings) Set(s, DefaultOf(s)); }
     }

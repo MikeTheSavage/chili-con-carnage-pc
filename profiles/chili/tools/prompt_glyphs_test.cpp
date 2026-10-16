@@ -625,19 +625,25 @@ void styles() {
         key_glyph(VK_LEFT).keys[0].sign == KeySign::Left && key_glyph(VK_UP).keys[0].sign == KeySign::Up, "signs for keys whose names do not fit");
     require(cap_text(0xE8) == "?", "an unknown key");
 
-    // The default bindings (dual_analog), keyboard and mouse.
+    // The default bindings (Total Overdose PC, dual_analog), keyboard and mouse.
     const auto dual = PcInputConfig::defaults(InputScheme::DualAnalog);
     const auto keyboard = [&](PadTarget target) { return prompt_glyph(dual, S::Keyboard, target); };
     const auto is_mouse = [](const Glyph &g, MousePart part) { return g.kind == GlyphKind::Mouse && g.index == static_cast<std::uint8_t>(part); };
-    require(keyboard(PadTarget::Cross) == key_glyph(VK_SPACE), "Cross: Space, the first of Space, E, Enter");
-    require(keyboard(PadTarget::Circle) == key_glyph(PcInputConfig::key_from_name("F")), "Circle: F before Backspace and the middle button");
+    require(keyboard(PadTarget::Cross) == key_glyph(VK_SPACE), "Cross: Space, the first of Space, F, Enter, Left Shift");
+    require(keyboard(PadTarget::Circle) == key_glyph(PcInputConfig::key_from_name("E")), "Circle: E before Backspace and the middle button");
     require(is_mouse(keyboard(PadTarget::Square), MousePart::Left), "Square: the left mouse button before G");
-    require(keyboard(PadTarget::Triangle) == key_glyph(PcInputConfig::key_from_name("R")), "Triangle: R");
+    require(keyboard(PadTarget::Triangle) == key_glyph(PcInputConfig::key_from_name("R")), "Triangle: R, before Left Ctrl");
     require(keyboard(PadTarget::L) == key_glyph(PcInputConfig::key_from_name("Q")), "L: Q");
     require(is_mouse(keyboard(PadTarget::R), MousePart::Right), "R: the right mouse button before V");
-    require(keyboard(PadTarget::DpadLeft) == key_glyph(VK_LEFT) && keyboard(PadTarget::DpadRight) == key_glyph(VK_RIGHT), "D-pad left and right: the arrow keys before 1, 2 and the wheel");
-    require(keyboard(PadTarget::DpadDown) == key_glyph(VK_DOWN) && keyboard(PadTarget::DpadUp) == key_glyph(VK_UP), "D-pad down and up: the arrow keys");
-    require(keyboard(PadTarget::Start) == key_glyph(VK_ESCAPE) && keyboard(PadTarget::Select) == key_glyph(VK_TAB), "Start and Select");
+    require(keyboard(PadTarget::DpadLeft) == key_glyph(VK_LEFT) && keyboard(PadTarget::DpadRight) == key_glyph(VK_RIGHT), "D-pad left and right: the arrow keys before the wheel");
+    require(keyboard(PadTarget::DpadDown) == key_glyph(VK_DOWN) && keyboard(PadTarget::DpadUp) == key_glyph(VK_UP), "D-pad down and up: the arrow keys, before Tab and Page Down, Page Up");
+    require(keyboard(PadTarget::Start) == key_glyph(VK_ESCAPE) && keyboard(PadTarget::Select) == key_glyph(VK_OEM_3), "Start: Escape before P; Select: the key left of 1");
+    {
+        // Modern, as the defaults were before tod_pc.
+        const auto modern = PcInputConfig::defaults(chili::InputLayout::Modern);
+        require(prompt_glyph(modern, S::Keyboard, PadTarget::Cross) == key_glyph(VK_SPACE) && prompt_glyph(modern, S::Keyboard, PadTarget::Circle) == key_glyph(PcInputConfig::key_from_name("F")) &&
+            prompt_glyph(modern, S::Keyboard, PadTarget::Select) == key_glyph(VK_TAB), "Modern: Space, F, Tab");
+    }
     require(keyboard(PadTarget::None).kind == GlyphKind::Unbound, "no target, no picture");
     require(prompt_move_glyph(dual, S::Keyboard, glyph_all_directions) == cluster(PcInputConfig::key_from_name("W"), PcInputConfig::key_from_name("A"),
         PcInputConfig::key_from_name("S"), PcInputConfig::key_from_name("D")), "the analog stick: the four move keys");

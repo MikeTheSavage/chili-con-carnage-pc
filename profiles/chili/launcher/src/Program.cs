@@ -151,6 +151,8 @@ namespace ChiliLauncher
             if (!created) { signal.Set(); return 0; }
 
             var model = new Model(baseDir, ini);
+            // A file of an older game build: brought up to date as the game would at its next start.
+            model.MigrateInput();
             bool direct = model.Config.GetBool("StartGameDirectly", false) && !settings && !Win32.ShiftHeld() && page == null;
             var app = new Application { ShutdownMode = ShutdownMode.OnMainWindowClose };
             var window = new MainWindow(model, new ArtFolder(baseDir, !noArt), page, direct);
@@ -307,6 +309,8 @@ namespace ChiliLauncher
             {
                 if (!string.IsNullOrEmpty(only) && !name.StartsWith(only, StringComparison.OrdinalIgnoreCase)) return;
                 var m = new Model(baseDir, ini);
+                // As the launcher starts for a player: a settings file of an older game build brought up to date.
+                m.MigrateInput();
                 m.InspectGame();
                 m.Reload();
                 if (prepare != null) prepare(m);
@@ -385,7 +389,12 @@ namespace ChiliLauncher
             shot("17b_gamepad_capture_keyboard_used_last", null, ui => { ui.ShowPage("Controls"); ui.SetPadView(true); ui.FocusRow("bind:Triangle", 0); ui.SetDevice(InputDevice.Keyboard); ui.BeginCaptureFor("bind:Triangle", 0); }, true);
             shot("18_controls_gamepad_sticks", null, ui => { ui.ShowPage("Controls"); ui.SetPadView(true); ui.ScrollToRow("group:Sticks and triggers"); }, true);
             shot("19_controls_no_controller", null, ui => { ui.ShowPage("Controls"); ui.SetPadView(true); }, false);
-            shot("20_controls_psp_style", m => m.Set(S.Scheme, "psp"), ui => { ui.ShowPage("Controls"); ui.ScrollToRow("bind:Select"); }, false);
+            shot("20_controls_psp_style", m => m.SwitchLayout("psp"), ui => { ui.ShowPage("Controls"); ui.ScrollToRow("bind:Select"); }, false);
+            shot("20b_controls_modern_style", m => m.SwitchLayout("modern"), ui => { ui.ShowPage("Controls"); ui.ScrollToRow("group:Actions"); }, false);
+            shot("20c_controls_tod_pc_actions", null, ui => { ui.ShowPage("Controls"); ui.ScrollToRow("group:Actions"); }, false);
+            shot("20d_controls_tod_pc_buttons", null, ui => { ui.ShowPage("Controls"); ui.ScrollToRow("bind:Square"); }, false);
+            shot("20e_controls_tod_pc_dpad", null, ui => { ui.ShowPage("Controls"); ui.ScrollToRow("bind:L"); }, false);
+            shot("20f_controls_tod_pc_start", null, ui => { ui.ShowPage("Controls"); ui.ScrollToRow("bind:DpadUp"); }, false);
             shot("21_textures_mods", null, ui => ui.ShowPage("Textures & mods"), false);
             shot("21a_textures_wheel_2", null, ui => { ui.ShowPage("Textures & mods"); ui.PointerWheel(over, -120); ui.PointerWheel(over, -120); }, false);
             shot("21b_textures_one_pack_chosen", m => { foreach (var p in m.TexturePacks) p.Enabled = p.Name == "hd_textures"; m.CommitMods(); }, ui => ui.ShowPage("Textures & mods"), false);
@@ -596,6 +605,60 @@ namespace ChiliLauncher
                     m.Save();
                     after = File.ReadAllBytes(path);
                     Check("all mods on again: the Enabled line is switched off, so the game loads every folder", !IniDocument.Parse(after).Has("Mods", "Enabled"));
+
+                    // The control styles. The sample is a file the game wrote with [Input] Version 2: no Layout line.
+                    File.WriteAllBytes(path, real);
+                    m = new Model(temp, null);
+                    Check("a Version 2 file without a Layout line: Total Overdose PC by its scheme, the keys as the file has them",
+                        m.Layout == "tod_pc" && m.Get(S.Keys("Cross")) == "Space,E,Enter" && !m.AnyChanged);
+                    // Brought up to date as the game does (host/pc_input.hpp, brought_up_to_date), to the bytes the game makes:
+                    // sample_ChiliNative.migrated.ini beside the sample, which tools/pc_input_test.cpp holds the game to as well.
+                    string bak = path + ".bak";
+                    File.WriteAllText(bak, "an older backup");
+                    string done = m.MigrateInput();
+                    byte[] migrated = File.ReadAllBytes(path);
+                    string expectedFile = Path.Combine(Path.GetDirectoryName(realIni), Path.GetFileNameWithoutExtension(realIni) + ".migrated.ini");
+                    Check("every binding the older build's default: Total Overdose PC's now, Layout=tod_pc, Version=3",
+                        done == "tod_pc" && m.Layout == "tod_pc" && m.Doc.Get("Input", "Layout") == "tod_pc" && m.Doc.Get("Input", "Version") == "3" &&
+                        m.Get(S.Keys("Cross")) == "Space,F,Enter,LShift" && m.Get(S.Keys("Circle")) == "E,Backspace" && m.Get(S.Keys("Select")) == "Grave" && !m.AnyChanged);
+                    Check("the same bytes as the game makes of the file", File.Exists(expectedFile) && File.ReadAllBytes(expectedFile).SequenceEqual(migrated), expectedFile);
+                    Check("the file as it was is the .bak, over an older one", File.ReadAllBytes(bak).SequenceEqual(real));
+                    Check("its comments about the older build and about Cross say the new thing",
+                        !Text(migrated).Contains("E uses") && Text(migrated).Contains("; Jump, dive, use, enter a vehicle, confirm: the game has them all on Cross.") &&
+                        !Text(migrated).Contains("Delete this file after changing the scheme"));
+                    Check("a file brought up to date is not brought up to date again", m.MigrateInput() == null && File.ReadAllBytes(path).SequenceEqual(migrated));
+                    // Switching the style: the bindings that still hold the old style's default, and only those.
+                    m.SetKeys("Square", new[] { "G", "H" });
+                    m.SwitchLayout("modern");
+                    Check("Total Overdose PC to Modern: Modern's keys, the player's own Square kept, the scheme stays",
+                        m.Layout == "modern" && m.Get(S.Keys("Cross")) == "Space,E,Enter" && m.Get(S.Keys("Circle")) == "F,Backspace" && m.Get(S.Keys("DpadLeft")) == "Left,1" &&
+                        m.Get(S.Keys("Square")) == "G,H" && m.Scheme == "dual_analog" && m.Get(S.Pad("X")) == "Triangle");
+                    m.SwitchLayout("psp");
+                    Check("to PSP original: the PSP's scheme and pad table, no look keys",
+                        m.Layout == "psp" && m.Scheme == "psp" && m.Get(S.Keys("LookLeft")) == "" && m.Get(S.Pad("X")) == "Square" && m.Get(S.Pad("LS")) == "None" &&
+                        m.Get(S.Keys("Cross")) == "Space,E,Enter" && m.Get(S.Keys("Square")) == "G,H" && m.Get(S.Camera) == "original");
+                    m.SwitchLayout("tod_pc");
+                    Check("and back to Total Overdose PC", m.Layout == "tod_pc" && m.Scheme == "dual_analog" && m.Get(S.Keys("Cross")) == "Space,F,Enter,LShift" &&
+                        m.Get(S.Keys("LookLeft")) == "J" && m.Get(S.Pad("X")) == "Triangle" && m.Get(S.Keys("Square")) == "G,H");
+                    m.Save();
+                    var saved = IniDocument.Parse(File.ReadAllBytes(path));
+                    Check("saved: the file holds the style and the player's own key", saved.Get("Input", "Layout") == "tod_pc" && saved.Get("Input", "Scheme") == "dual_analog" &&
+                        saved.Get("Input.Keyboard", "Square") == "G,H" && saved.Get("Input.Keyboard", "Cross") == "Space,F,Enter,LShift");
+                    m.ResetKeyboardMouse();
+                    Check("Defaults gives the style's keys", m.Get(S.Keys("Square")) == "G" && m.Get(S.Keys("Triangle")) == "R,LCtrl");
+                    // A binding of the player's own in an older file: every binding kept, the style it was made with.
+                    File.WriteAllBytes(path, System.Text.Encoding.UTF8.GetBytes(Text(real).Replace("Square=G", "Square=G,H")));
+                    m = new Model(temp, null);
+                    done = m.MigrateInput();
+                    Check("a binding of the player's own: every binding kept, Modern", done == "modern" && m.Layout == "modern" && m.Get(S.Keys("Cross")) == "Space,E,Enter" &&
+                        m.Get(S.Keys("Square")) == "G,H" && m.Doc.Get("Input", "Version") == "3" && Text(File.ReadAllBytes(path)).Contains("; Space jumps and dives, E uses: the game has both on Cross."));
+                    // A hand-written file (not the game's first line) is never touched.
+                    string handWritten = "[Input]\r\nVersion=2\r\nScheme=dual_analog\r\n";
+                    File.WriteAllText(path, handWritten);
+                    m = new Model(temp, null);
+                    Check("a hand-written file is not touched", m.MigrateInput() == null && File.ReadAllText(path) == handWritten && m.Layout == "tod_pc");
+                    File.WriteAllBytes(path, real);
+                    try { File.Delete(bak); } catch { }
                 }
                 else Console.WriteLine("(no real ini given: only the made-up files are tested)");
 

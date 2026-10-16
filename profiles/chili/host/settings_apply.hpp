@@ -20,7 +20,9 @@
 // [Input.Keyboard], [Input.Mouse] and [Input.Gamepad], and of [Input] Prompts, ExactTurn, BackgroundInput and
 // ShowInput. ExactTurn switches the two-stick layer through Host::exact_turn. Everything else is written and
 // waits for the next start (its appliers are work item 8 and later); such a row is locked in a mission.
-// [Input] Scheme never changes while the game runs: its host functions are put in place at the start.
+// [Input] Scheme never changes while the game runs: its host functions are put in place at the start. The
+// control style ([Input] Layout, the row Style) is written with the scheme that goes with it and with every
+// binding that still holds the old style's default, and waits for the next start like the scheme.
 //
 // Test variable, for a scripted run (it also switches the feature on, like CHILI_PAGE=1):
 //   CHILI_SETTINGS_AT=<frame>:<Section>/<Key>=<value>[;...]
@@ -110,6 +112,7 @@ inline std::optional<std::string> input_value(const PcInputConfig &c, const Sett
     const auto is = [&](std::string_view name) { return same_name(key, name); };
     if (same_name(setting.section, "Input")) {
         if (is("Scheme")) return std::string(scheme_name(c.scheme));
+        if (is("Layout")) return std::string(layout_name(c.layout));
         if (is("ExactTurn")) return flag(c.exact_turn);
         if (is("BackgroundInput")) return flag(c.background_input);
         if (is("ShowInput")) return flag(c.show_input);
@@ -222,10 +225,10 @@ public:
         // As the game reads the file at its start (PcInputConfig::load): the defaults, then the file. The
         // control style in force stays, and with it the defaults a key the file leaves out falls back to.
         const auto &now = host_.input->config();
-        auto fresh = PcInputConfig::defaults(now.scheme);
+        auto fresh = PcInputConfig::defaults(now.layout);
         (void)fresh.apply(text);
         for (const auto &change : unsaved_) if (!change.unset) (void)fresh.apply("[" + change.section + "]\n" + change.key + "=" + change.value + "\n");
-        fresh.scheme = now.scheme; fresh.version = now.version;
+        fresh.scheme = now.scheme; fresh.layout = now.layout; fresh.layout_named = now.layout_named; fresh.version = now.version;
         if (fresh.exact_turn != now.exact_turn && host_.exact_turn && !host_.exact_turn(fresh.exact_turn)) fresh.exact_turn = now.exact_turn;
         if (!fresh.same_as(now)) {
             const auto done = host_.input->reconfigure(std::move(fresh));
@@ -241,7 +244,9 @@ public:
         // Screen is what the window is now: F11 changes it as well as the row.
         if (&setting == &screen() && screen_live()) return host_.fullscreen() ? "true" : "false";
         const auto held = setting.kind == Kind::Text && same_name(setting.section, "Disc") ? work_.get_raw(setting.section, setting.key) : work_.get(setting.section, setting.key);
-        return held ? *held : std::string(setting.default_for(psp_chosen()));
+        // A file without a Layout line means the style its scheme goes with.
+        if (!held && &setting == &layout_setting()) return layout_name(layout_chosen());
+        return held ? *held : std::string(setting.default_for(layout_chosen()));
     }
     std::string shown(const Setting &setting) const { return settings::shown(setting, value(setting)); }
     // What the game runs with now, spelled as the file spells it. For a key whose running value is not known
@@ -299,12 +304,26 @@ public:
         } else if (applies_live(setting)) {
             if (!apply_input(setting, text, out.error) && !out.error.empty()) return refused(out, id, wanted, out.error);
         }
+        // The control style: every binding that still holds the old style's default takes the new one's, and
+        // the scheme goes with the style (PcInputConfig::layout_binding_changes; the launcher does the same).
+        std::size_t bindings = 0u;
+        if (&setting == &layout_setting()) {
+            const auto from = layout_chosen();
+            const auto to = layout_from_name(text).value_or(from);
+            if (to != from) {
+                for (const auto &change : PcInputConfig::layout_binding_changes(work_, from, to)) {
+                    remember(get(change.section, change.key), change.value, false, true);
+                    ++bindings;
+                }
+                remember(get("Input", "Scheme"), std::string(layout_is_psp(to) ? "psp" : "dual_analog"));
+            }
+        }
         remember(setting, text);
         // An older MSAA line in the file must not contradict the choice (the launcher's SetAa).
         if (&setting == &anti_aliasing() && doc_.has("Rendering", "MSAA")) remember(get("Rendering", "MSAA"), text.rfind("msaa", 0u) == 0u ? text.substr(4u) : std::string("1"));
         out.ok = true;
         const bool waits = pending(setting);
-        finish(out, id + "=" + text, waits, !waits && applies_live(setting), write);
+        finish(out, id + "=" + text + (bindings ? " with " + std::to_string(bindings) + " bindings" : std::string()), waits, !waits && applies_live(setting), write);
         return out;
     }
     Outcome step(const Setting &setting, int direction, PageFrame frame, bool write = true) {
@@ -527,11 +546,11 @@ public:
         unsigned locked_rows = 0u;
         const auto one = [&](const Setting &setting) {
             if (locked(setting, frame) != Lock::None) { ++locked_rows; return; }
-            (void)set(setting, setting.default_for(psp_chosen()), frame, false);
+            (void)set(setting, setting.default_for(layout_chosen()), frame, false);
         };
         const auto page_rows = [&](Page which) {
             for (const auto &row : rows_of(which)) {
-                if (row.kind == RowKind::Setting && !same_name(row.setting->key, "Scheme")) one(*row.setting);
+                if (row.kind == RowKind::Setting && !same_name(row.setting->key, "Layout")) one(*row.setting);
                 else if (row.kind == RowKind::Quality) { if (quality_lock(frame) == Lock::None) (void)set_quality(quality_default, frame, false); else ++locked_rows; }
                 else if (row.kind == RowKind::Textures) {
                     if (locked(mods_enabled(), frame) != Lock::None) { ++locked_rows; continue; }
@@ -580,6 +599,7 @@ public:
 private:
     static const Setting &anti_aliasing() { return get("Rendering", "AntiAliasing"); }
     static const Setting &screen() { return get("Rendering", "Fullscreen"); }
+    static const Setting &layout_setting() { return get("Input", "Layout"); }
     static const Setting &mods_enabled() { return get("Mods", "Enabled"); }
     static std::array<const Setting *, 5> quality_parts() { return {&anti_aliasing(), &get("Rendering", "Anisotropy"), &get("Rendering", "TextureFilter"), &get("Rendering", "SSAO"), &get("Rendering", "Glow")}; }
     // By name without case, as the launcher sorts its list.
@@ -635,6 +655,11 @@ private:
         else remember(mods_enabled(), names, false, true);
     }
     bool psp_chosen() const { return same_name(trimmed(work_.get("Input", "Scheme").value_or(std::string())), "psp"); }
+    // The control style the file names (with the changes not yet written), else the one its scheme goes with.
+    InputLayout layout_chosen() const {
+        if (const auto named = layout_from_name(trimmed(work_.get("Input", "Layout").value_or(std::string())))) return *named;
+        return psp_chosen() ? InputLayout::Psp : InputLayout::TodPc;
+    }
     std::optional<std::string> started(std::string_view id) const {
         for (const auto &[key, value] : host_.started) if (same_name(key, id)) return value;
         return std::nullopt;
@@ -710,7 +735,7 @@ private:
         bool write = !forget;
         if (write && value && !always) {
             const auto ran = held ? std::nullopt : running_known(setting);
-            write = !equivalent(held ? *held : std::string(setting.default_for(psp_chosen())), *value) ||
+            write = !equivalent(held ? *held : std::string(setting.default_for(layout_chosen())), *value) ||
                     (ran && !equivalent(canonical(setting, *ran), canonical(setting, *value)));
         }
         if (write && !value) write = held.has_value();
@@ -728,7 +753,7 @@ private:
             error = colon == std::string::npos ? problems.front() : problems.front().substr(colon + 2u);
             return false;
         }
-        config.scheme = now.scheme; config.version = now.version;
+        config.scheme = now.scheme; config.layout = now.layout; config.layout_named = now.layout_named; config.version = now.version;
         // The two-stick layer's switch; where it cannot move while the game runs the value waits for a restart.
         if (config.exact_turn != now.exact_turn && host_.exact_turn && !host_.exact_turn(config.exact_turn)) return false;
         if (!config.same_as(now)) (void)host_.input->reconfigure(std::move(config));

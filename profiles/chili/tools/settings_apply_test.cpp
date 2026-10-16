@@ -351,19 +351,40 @@ void input_rows(const std::filesystem::path &scratch) {
     (void)live.set(exact_turn, "true", PageFrame::MainMenu);
     require(exact && f.input.config().exact_turn, "and back");
 
-    // The control style takes a restart: the bindings in force keep theirs, the rows that go with the other
-    // style are locked at once (the launcher's rule), and Camera's default follows the chosen style.
-    const auto &scheme = st::get("Input", "Scheme"), &camera = st::get("Game", "Camera");
-    require(!live.applies_live(scheme) && live.value(camera) == "tight" && !live.pending(camera), "Camera: tight with the modern style");
-    out = live.set(scheme, "psp", PageFrame::MainMenu);
-    require(out.ok && !out.applied && out.pending && out.written && f.input.config().scheme == chili::InputScheme::DualAnalog && has_line(ini, "Scheme=psp"), "Scheme=psp: written, pending, the game's style as it was");
+    // The control style takes a restart: the bindings in force keep theirs; the file gets the style, the scheme
+    // that goes with it and every binding that still holds the old style's default (the launcher's rule); the
+    // rows that go with the other style are locked at once, and Camera's default follows the chosen style.
+    const auto &layout = st::get("Input", "Layout"), &scheme = st::get("Input", "Scheme"), &camera = st::get("Game", "Camera");
+    require(!live.applies_live(layout) && !live.applies_live(scheme) && live.value(layout) == "tod_pc" && live.value(camera) == "tight" && !live.pending(camera), "Camera: tight with Total Overdose PC");
+    out = live.set(layout, "psp", PageFrame::MainMenu);
+    require(out.ok && !out.applied && out.pending && out.written && f.input.config().scheme == chili::InputScheme::DualAnalog && f.input.config().layout == chili::InputLayout::TodPc &&
+            has_line(ini, "Layout=psp") && has_line(ini, "Scheme=psp") && has_line(ini, "Cross=Space,E,Enter") && has_line(ini, "LookLeft=") && has_line(ini, "X=Square"),
+        "Layout=psp: written with its scheme and PSP original's keys, pending, the game's style as it was (" + out.line + ")");
+    require(out.line == "Input/Layout=psp with 19 bindings waits for a restart, written" && live.value(scheme) == "psp", out.line);
     require(live.locked(st::get("Input.Mouse", "SensitivityY"), PageFrame::MainMenu) == st::Lock::PspCannotLook && live.locked(st::get("Input.Gamepad", "LookSensitivity"), PageFrame::MainMenu) == st::Lock::PspCannotLook &&
             live.locked(st::get("Input.Keyboard", "LookKeySpeed"), PageFrame::MainMenu) == st::Lock::NotWithPsp, "the look rows are locked with PSP original");
     out = live.step(st::get("Input.Mouse", "SensitivityY"), 1, PageFrame::MainMenu);
     require(!out.ok && out.lock == st::Lock::PspCannotLook && out.error == "Not used with PSP original." && out.line == "Input.Mouse/SensitivityY=0.09 refused: Not used with PSP original.", out.line);
     require(live.value(camera) == "original" && live.pending(camera), "Camera's default is original with PSP original: it waits for the restart too");
-    (void)live.set(scheme, "dual_analog", PageFrame::MainMenu);
-    require(!live.pending(scheme) && !live.pending(camera) && live.locked(st::get("Input.Mouse", "SensitivityY"), PageFrame::MainMenu) == st::Lock::None, "the modern style again: nothing pending, nothing locked");
+    (void)live.set(layout, "tod_pc", PageFrame::MainMenu);
+    require(!live.pending(layout) && !live.pending(camera) && live.locked(st::get("Input.Mouse", "SensitivityY"), PageFrame::MainMenu) == st::Lock::None &&
+            has_line(ini, "Scheme=dual_analog") && has_line(ini, "Cross=Space,F,Enter,LShift") && has_line(ini, "LookLeft=J") && has_line(ini, "X=Triangle"),
+        "Total Overdose PC again: its keys back, nothing pending, nothing locked");
+    out = live.set(layout, "modern", PageFrame::MainMenu);
+    require(out.ok && out.pending && has_line(ini, "Layout=modern") && has_line(ini, "Scheme=dual_analog") && has_line(ini, "Circle=F,Backspace") && has_line(ini, "Select=Tab") &&
+            out.line == "Input/Layout=modern with 10 bindings waits for a restart, written", out.line);
+    out = live.reset(st::Page::Controls, PageFrame::MainMenu);
+    require(out.ok && live.value(layout) == "modern" && has_line(ini, "Circle=F,Backspace"), "Defaults on Controls keeps the control style and the bindings");
+    (void)live.set(layout, "tod_pc", PageFrame::MainMenu);
+    require(!live.pending(layout) && has_line(ini, "Layout=tod_pc") && has_line(ini, "Circle=E,Backspace"), "and back to Total Overdose PC");
+    {
+        // A file without a Layout line (written by hand) means the style its scheme goes with.
+        const auto bare_folder = fresh_folder(scratch, "no_layout", false);
+        require(chili::ini_file::write(bare_folder / "ChiliNative.ini", "[Input]\nScheme=psp\n"), "the test writes a file without a Layout line");
+        st::Live bare(host_for(bare_folder, nullptr));
+        require(bare.value(layout) == "psp" && bare.value(st::get("Input.Keyboard", "Cross")) == "Space,E,Enter" && bare.value(st::get("Input.Keyboard", "LookLeft")).empty() &&
+                bare.value(camera) == "original", "Scheme=psp without a Layout line: PSP original, its keys and camera");
+    }
 
     // "Use the gamepad" is locked while the pad is what the player has in hand.
     const auto &pad_on = st::get("Input.Gamepad", "Enabled");
@@ -440,7 +461,7 @@ void other_rows(const std::filesystem::path &scratch) {
     out = live.set(scale, "auto", PageFrame::MainMenu);
     require(out.ok && !out.pending && !out.applied && out.line == "Rendering/InternalScale=auto as the game runs it, written" && has_line(ini, "InternalScale=auto"), "back to the running value: nothing pending (" + out.line + ")");
     require(live.locked(preset, PageFrame::MainMenu) == st::Lock::None && live.set(preset, "medium", PageFrame::MainMenu).pending && live.shown(preset) == "1920 x 1088", "Auto limit with Auto");
-    for (const auto *setting : {&scale, &preset, &aa, &aniso, &ssao, &buffer, &frames, &st::get("Rendering", "Fullscreen"), &st::get("Game", "Camera"), &st::get("Input", "Scheme"), &st::get("Mods", "DumpTextures")})
+    for (const auto *setting : {&scale, &preset, &aa, &aniso, &ssao, &buffer, &frames, &st::get("Rendering", "Fullscreen"), &st::get("Game", "Camera"), &st::get("Input", "Layout"), &st::get("Mods", "DumpTextures")})
         require(live.locked(*setting, PageFrame::Pause) == st::Lock::NeedsRestart, setting->id() + " is locked in a mission");
     out = live.step(frames, 1, PageFrame::Pause);
     require(!out.ok && out.lock == st::Lock::NeedsRestart && out.line == "Game/FrameLock=2 refused: Change it in the main menu." && !has_line(ini, "FrameLock=2"), out.line);
@@ -632,18 +653,36 @@ void steps_and_names(const std::filesystem::path &scratch) {
 
     // The table's defaults are the game's own: what the bindings hold after the game's first-run text is
     // what the table says, for both control styles, for every input key the game can name.
-    unsigned compared = 0u;
-    for (const bool psp : {false, true}) {
-        const auto defaults = chili::PcInputConfig::defaults(psp ? chili::InputScheme::Psp : chili::InputScheme::DualAnalog);
+    unsigned compared = 0u, keys = 0u;
+    for (const auto style : chili::input_layouts) {
+        const auto defaults = chili::PcInputConfig::defaults(style);
+        const std::string named = std::string(" with Layout=") + chili::layout_name(style);
+        require(defaults.layout == style && defaults.scheme == chili::layout_scheme(style), "the style's first-run text names it and its scheme" + named);
         for (const auto &setting : st::table) {
-            if (setting.section.substr(0u, 5u) != "Input" || &setting == &st::get("Input", "Scheme")) continue;
+            if (setting.section.substr(0u, 5u) != "Input" || &setting == &st::get("Input", "Scheme") || &setting == &st::get("Input", "Layout")) continue;
             const auto held = st::input_value(defaults, setting);
-            if (setting.kind == st::Kind::Binding && setting.section == "Input.Keyboard") { require(!held, setting.id() + ": the keys of an action have no running value"); continue; }
-            require(held && st::equivalent(*held, setting.default_for(psp)), setting.id() + (psp ? " with Scheme=psp" : "") + ": the game's default is " + (held ? *held : std::string("unknown")) + ", the table's " + std::string(setting.default_for(psp)));
+            if (setting.kind == st::Kind::Binding && setting.section == "Input.Keyboard") {
+                require(!held, setting.id() + ": the keys of an action have no running value");
+                // The keys the game binds (or the toggle's key) are the ones the table names.
+                std::multiset<int> wanted, bound;
+                for (std::string_view rest = setting.default_for(style); !rest.empty();) {
+                    const auto comma = std::min(rest.find(','), rest.size());
+                    if (comma) wanted.insert(chili::PcInputConfig::key_from_name(rest.substr(0u, comma)));
+                    rest.remove_prefix(std::min(comma + 1u, rest.size()));
+                }
+                if (setting.key == "ToggleMouseCapture") bound.insert(defaults.toggle_capture_vk);
+                else if (setting.key == "ToggleInputDisplay") bound.insert(defaults.toggle_display_vk);
+                else if (const auto target = chili::PcInputConfig::target_from_name(setting.key))
+                    for (const auto &binding : defaults.keys) if (binding.target == *target) bound.insert(binding.vk);
+                require(bound == wanted && !wanted.count(0), setting.id() + named + ": the game binds the keys the table names (" + std::string(setting.default_for(style)) + ")");
+                ++keys;
+                continue;
+            }
+            require(held && st::equivalent(*held, setting.default_for(style)), setting.id() + named + ": the game's default is " + (held ? *held : std::string("unknown")) + ", the table's " + std::string(setting.default_for(style)));
             ++compared;
         }
     }
-    require(compared == 2u * (5u + 2u + 17u + 28u), "every input key but the keys of an action was compared with the game's defaults (" + std::to_string(compared) + ")");
+    require(compared == 3u * (5u + 2u + 17u + 28u) && keys == 3u * 23u, "every input key was compared with the game's defaults (" + std::to_string(compared) + ", " + std::to_string(keys) + " keys of an action)");
 }
 }
 

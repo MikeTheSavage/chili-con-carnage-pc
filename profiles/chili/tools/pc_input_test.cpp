@@ -150,14 +150,45 @@ int main() {
             require(config.pad_buttons[chili::PcInputConfig::pad_right_trigger] == PadTarget::Square, "default trigger");
             require(key("w") == key("W") && key("Esc") == VK_ESCAPE && key("F12") == VK_F12 && key("Numpad7") == VK_NUMPAD7 && key("Nope") == 0 && key("F13") == 0, "key names");
 
+            // The default: Total Overdose PC (input_layout.hpp), on the dual_analog scheme.
             chili::PcInputConfig dual;
             require(dual.apply(chili::default_input_ini()).empty(), "dual_analog default ini has problems");
-            require(dual.scheme == chili::InputScheme::DualAnalog && dual.keys.size() == 27u && dual.toggle_capture_vk == VK_F1, "dual_analog key count");
-            // WASD move, Space jumps, E uses, R reloads, Q is the PSP L, the number keys and the wheel change weapon, Escape pauses.
+            require(dual.scheme == chili::InputScheme::DualAnalog && dual.layout == chili::InputLayout::TodPc && dual.layout_named && dual.keys.size() == 31u &&
+                    dual.toggle_capture_vk == VK_F1, "the default is Total Overdose PC: 31 keys");
+            require(std::string_view(chili::default_input_ini()) == chili::default_input_ini(chili::InputLayout::TodPc) &&
+                    std::string_view(chili::default_input_ini(chili::InputScheme::Psp)) == chili::default_input_ini(chili::InputLayout::Psp), "a scheme's defaults are its style's");
+            // Total Overdose on PC: W A S D move and strafe, Space shoot-dodges, Left Shift jumps, F uses and enters a vehicle, R
+            // reloads, Left Ctrl the loco move, Tab rewinds, Escape the menu, P pauses, Page Up and Down the forks; the
+            // chili's own on the free keys beside: E the quick-select and back, Q and C target objects and lean out of a
+            // vehicle, V headshot without a mouse, Grave Select. 1 and 2 (weapon classes in Total Overdose) are free.
             require(binds(dual, "W", PadTarget::MoveForward) && binds(dual, "S", PadTarget::MoveBack) && binds(dual, "A", PadTarget::MoveLeft) &&
-                    binds(dual, "D", PadTarget::MoveRight) && binds(dual, "Space", PadTarget::Cross) && binds(dual, "E", PadTarget::Cross) &&
-                    binds(dual, "R", PadTarget::Triangle) && binds(dual, "Q", PadTarget::L) && binds(dual, "1", PadTarget::DpadLeft) &&
-                    binds(dual, "2", PadTarget::DpadRight) && binds(dual, "Escape", PadTarget::Start), "dual_analog keys");
+                    binds(dual, "D", PadTarget::MoveRight) && binds(dual, "Space", PadTarget::Cross) && binds(dual, "LShift", PadTarget::Cross) &&
+                    binds(dual, "F", PadTarget::Cross) && binds(dual, "Enter", PadTarget::Cross) && binds(dual, "E", PadTarget::Circle) &&
+                    binds(dual, "Backspace", PadTarget::Circle) && binds(dual, "R", PadTarget::Triangle) && binds(dual, "LCtrl", PadTarget::Triangle) &&
+                    binds(dual, "Q", PadTarget::L) && binds(dual, "C", PadTarget::L) && binds(dual, "V", PadTarget::R) && binds(dual, "G", PadTarget::Square) &&
+                    binds(dual, "Tab", PadTarget::DpadDown) && binds(dual, "Down", PadTarget::DpadDown) && binds(dual, "PageDown", PadTarget::DpadDown) &&
+                    binds(dual, "Up", PadTarget::DpadUp) && binds(dual, "PageUp", PadTarget::DpadUp) && binds(dual, "Left", PadTarget::DpadLeft) &&
+                    binds(dual, "Right", PadTarget::DpadRight) && binds(dual, "Escape", PadTarget::Start) && binds(dual, "P", PadTarget::Start) &&
+                    binds(dual, "Grave", PadTarget::Select) && binds(dual, "X", PadTarget::Walk) && binds(dual, "J", PadTarget::LookLeft) &&
+                    binds(dual, "K", PadTarget::LookDown) && dual.toggle_display_vk == VK_F3, "Total Overdose PC's keys");
+            for (const char *free : {"1", "2", "3", "4", "5", "6", "7", "8", "Z", "H"})
+                require(std::none_of(dual.keys.begin(), dual.keys.end(), [&](const auto &binding) { return binding.vk == key(free); }), "1 to 8, Z and H are free in Total Overdose PC");
+            // The order of a line is the order the prompts picture: Space for Cross, E for Circle, R for Triangle, Q for L, Escape for Start.
+            const auto first = [&](PadTarget target) { for (const auto &binding : dual.keys) if (binding.target == target) return binding.vk; return 0; };
+            require(first(PadTarget::Cross) == VK_SPACE && first(PadTarget::Circle) == key("E") && first(PadTarget::Triangle) == key("R") &&
+                    first(PadTarget::L) == key("Q") && first(PadTarget::Start) == VK_ESCAPE && first(PadTarget::DpadDown) == VK_TAB, "the first key of each line");
+            // Modern: the port's own layout before tod_pc, as it was.
+            const auto modern = chili::PcInputConfig::defaults(chili::InputLayout::Modern);
+            require(modern.scheme == chili::InputScheme::DualAnalog && modern.layout == chili::InputLayout::Modern && modern.keys.size() == 27u, "Modern: 27 keys");
+            require(binds(modern, "W", PadTarget::MoveForward) && binds(modern, "S", PadTarget::MoveBack) && binds(modern, "A", PadTarget::MoveLeft) &&
+                    binds(modern, "D", PadTarget::MoveRight) && binds(modern, "Space", PadTarget::Cross) && binds(modern, "E", PadTarget::Cross) &&
+                    binds(modern, "F", PadTarget::Circle) && binds(modern, "R", PadTarget::Triangle) && binds(modern, "Q", PadTarget::L) && binds(modern, "1", PadTarget::DpadLeft) &&
+                    binds(modern, "2", PadTarget::DpadRight) && binds(modern, "Z", PadTarget::DpadDown) && binds(modern, "Tab", PadTarget::Select) &&
+                    binds(modern, "Escape", PadTarget::Start), "Modern's keys");
+            require(modern.mouse_buttons == dual.mouse_buttons && modern.wheel_up == dual.wheel_up && modern.wheel_down == dual.wheel_down && modern.pad_buttons == dual.pad_buttons &&
+                    modern.mouse_degrees_per_count == dual.mouse_degrees_per_count && modern.mouse_exact == dual.mouse_exact && modern.exact_turn == dual.exact_turn,
+                "Total Overdose PC has Modern's mouse, pad and settings: only keys differ");
+            require(config.layout == chili::InputLayout::Psp && chili::PcInputConfig::defaults(chili::InputLayout::Psp).keys.size() == 23u, "PSP original as it was: 23 keys");
             const auto pad_button = [&](const char *name) {
                 for (std::size_t i = 0; i < chili::PcInputConfig::pad_button_names.size(); ++i)
                     if (std::string_view(chili::PcInputConfig::pad_button_names[i].first) == name) return dual.pad_buttons[i];
@@ -176,15 +207,26 @@ int main() {
                     dual.toggle_display_vk == VK_F3 && config.toggle_display_vk == VK_F3 && dual.mouse_menu_clicks && dual.mouse_capture_on_click &&
                     dual.mouse_hold_pitch,
                 "the defaults carry the file version, the input test off, its key, menu clicks and the held pitch");
-            // No default is a key Windows has a shortcut on: Shift (Sticky Keys), Ctrl and Alt (language switch,
-            // Ctrl+Escape, Alt+Tab, Alt+Space), the Windows keys, Caps Lock.
-            for (const auto *defaults : {&config, &dual}) {
+            // Modern and PSP original have no key Windows has a shortcut on: Shift (Sticky Keys), Ctrl and Alt (language
+            // switch, Ctrl+Escape, Alt+Tab, Alt+Space), the Windows keys, Caps Lock, Num Lock.
+            static constexpr int modifiers[]{VK_SHIFT, VK_LSHIFT, VK_RSHIFT, VK_CONTROL, VK_LCONTROL, VK_RCONTROL, VK_MENU, VK_LMENU, VK_RMENU, VK_LWIN, VK_RWIN, VK_CAPITAL, VK_NUMLOCK};
+            const auto is_modifier = [](int vk) { return std::find(std::begin(modifiers), std::end(modifiers), vk) != std::end(modifiers); };
+            for (const auto *defaults : std::initializer_list<const chili::PcInputConfig *>{&config, &modern}) {
                 bool clean = defaults->toggle_capture_vk == VK_F1;
-                for (const auto &binding : defaults->keys)
-                    for (const int modifier : {VK_SHIFT, VK_LSHIFT, VK_RSHIFT, VK_CONTROL, VK_LCONTROL, VK_RCONTROL, VK_MENU, VK_LMENU, VK_RMENU,
-                             VK_LWIN, VK_RWIN, VK_CAPITAL, VK_NUMLOCK})
-                        clean = clean && binding.vk != modifier;
+                for (const auto &binding : defaults->keys) clean = clean && !is_modifier(binding.vk);
                 require(clean, "a default key collides with a Windows shortcut");
+            }
+            // Total Overdose PC keeps Left Shift (jump) and Left Ctrl (the loco move) as Total Overdose had them, but only
+            // beside a plain key of the same target: nothing needs a modifier, and no Alt, Windows key, Caps or Num Lock.
+            {
+                bool only_beside = true, others = true;
+                for (const auto &binding : dual.keys) {
+                    if (!is_modifier(binding.vk)) continue;
+                    others = others && (binding.vk == VK_LSHIFT || binding.vk == VK_LCONTROL);
+                    only_beside = only_beside && std::any_of(dual.keys.begin(), dual.keys.end(), [&](const auto &plain) { return plain.target == binding.target && !is_modifier(plain.vk); });
+                }
+                require(others && only_beside && binds(dual, "LShift", PadTarget::Cross) && binds(dual, "LCtrl", PadTarget::Triangle),
+                    "Total Overdose PC: Left Shift and Left Ctrl only as further keys of a target that has a plain key");
             }
         }
         // Keyboard: buttons, stick directions, opposite keys cancel, walk modifier.
@@ -491,18 +533,33 @@ int main() {
             std::filesystem::remove(file);
             std::vector<std::string> problems;
             auto config = chili::PcInputConfig::load(file, problems);
-            require(problems.empty() && std::filesystem::exists(file) && config.keys.size() == 27u &&
-                    config.scheme == chili::InputScheme::DualAnalog, "first run creates the file with the dual_analog defaults");
+            require(problems.empty() && std::filesystem::exists(file) && config.keys.size() == 31u && config.layout == chili::InputLayout::TodPc &&
+                    config.scheme == chili::InputScheme::DualAnalog, "first run creates the file with the defaults of Total Overdose PC");
             { std::ofstream edit(file, std::ios::binary | std::ios::trunc); edit << "[Input.Keyboard]\r\nCross=J\r\nwhat\r\n"; }
             config = chili::PcInputConfig::load(file, problems);
-            require(problems.size() == 1u && config.keys.size() == 25u, "edited file is read, CRLF accepted");
+            require(problems.size() == 1u && config.keys.size() == 28u, "edited file is read, CRLF accepted");
             // A file that names psp and nothing else gets the psp bindings, not the dual_analog ones.
             { std::ofstream edit(file, std::ios::binary | std::ios::trunc); edit << "[Input]\nScheme=psp\n"; }
             config = chili::PcInputConfig::load(file, problems);
             std::filesystem::remove(file);
             const auto psp = chili::PcInputConfig::defaults(chili::InputScheme::Psp);
-            require(problems.empty() && config.scheme == chili::InputScheme::Psp && config.keys.size() == 23u &&
+            require(problems.empty() && config.scheme == chili::InputScheme::Psp && config.layout == chili::InputLayout::Psp && config.keys.size() == 23u &&
                     config.pad_buttons == psp.pad_buttons, "unlisted settings follow the file's scheme");
+            // A Layout line names the style whose defaults the lines a file leaves out take.
+            { std::ofstream edit(file, std::ios::binary | std::ios::trunc); edit << "[Input]\nLayout=modern\n[Input.Keyboard]\nWalk=H\n"; }
+            config = chili::PcInputConfig::load(file, problems);
+            require(problems.empty() && config.layout == chili::InputLayout::Modern && config.scheme == chili::InputScheme::DualAnalog && config.keys.size() == 27u &&
+                    binds(config, "F", PadTarget::Circle) && binds(config, "H", PadTarget::Walk) && !binds(config, "X", PadTarget::Walk), "Layout=modern: Modern's keys where the file has none");
+            { std::ofstream edit(file, std::ios::binary | std::ios::trunc); edit << "[Input]\nScheme=dual_analog\n"; }
+            config = chili::PcInputConfig::load(file, problems);
+            require(problems.empty() && config.layout == chili::InputLayout::TodPc && config.keys.size() == 31u, "no Layout line with dual_analog: Total Overdose PC");
+            { std::ofstream edit(file, std::ios::binary | std::ios::trunc); edit << "[Input]\nLayout=tod_pc\nScheme=psp\n"; }
+            config = chili::PcInputConfig::load(file, problems);
+            require(problems.empty() && config.layout == chili::InputLayout::TodPc && config.scheme == chili::InputScheme::Psp && binds(config, "LShift", PadTarget::Cross),
+                "the Layout line and the scheme are two lines: a file may pair them otherwise");
+            require(chili::PcInputConfig().apply("[Input]\nLayout=dual_analog\n").size() == 1u && chili::PcInputConfig().apply("[Input]\nLayout=TOD_PC\n").empty(),
+                "an unknown style is reported; names without case");
+            std::filesystem::remove(file);
             require(!std::filesystem::exists(file) && chili::PcInputConfig::load(file, problems, false).scheme == chili::InputScheme::DualAnalog &&
                     !std::filesystem::exists(file), "a missing file is not created when asked not to");
         }
@@ -515,10 +572,24 @@ int main() {
             f.keys = {key("A"), key("W")};
             s = f.sample();
             require(s.x == 0u && s.y == 0u && s.rx == 128u && s.ry == 128u, "A and W push the left stick only");
-            f.keys = {key("E"), key("Q"), key("G"), key("R"), key("F")};
-            require(f.sample().buttons == (cross | l_button | square | triangle | circle), "E uses, Q is L, G shoots, R reloads, F is Circle");
-            f.keys = {key("V"), key("1"), key("2")};
-            require(f.sample().buttons == (r_button | left | right), "V is R, 1 and 2 change weapon");
+            f.keys = {key("F"), key("Q"), key("G"), key("R"), key("E")};
+            require(f.sample().buttons == (cross | l_button | square | triangle | circle), "F uses (Cross), Q is L, G shoots, R reloads, E is Circle");
+            f.keys = {key("V"), key("C"), key("P")};
+            require(f.sample().buttons == (r_button | l_button | start_button), "V is R, C is L, P pauses");
+            f.keys = {VK_LSHIFT};
+            require(f.sample().buttons == cross, "Left Shift jumps (Cross), as in Total Overdose");
+            f.keys = {VK_LCONTROL};
+            require(f.sample().buttons == triangle, "Left Ctrl is the loco move (Triangle), as in Total Overdose");
+            f.keys = {VK_TAB, VK_PRIOR, VK_OEM_3};
+            require(f.sample().buttons == (down | up | select_button), "Tab rewinds, Page Up raises the forks, Grave is Select");
+            f.keys = {key("1"), key("2"), key("Z"), key("H"), VK_RSHIFT, VK_RCONTROL, VK_LMENU};
+            s = f.sample();
+            require(s.buttons == 0u && s.x == 128u && s.y == 128u, "1, 2, Z, H, the right Shift and Ctrl and Alt do nothing in Total Overdose PC");
+            Fixture modern(chili::PcInputConfig::defaults(chili::InputLayout::Modern));
+            modern.keys = {key("V"), key("1"), key("2")};
+            require(modern.sample().buttons == (r_button | left | right), "Modern: V is R, 1 and 2 change weapon");
+            modern.keys = {key("E"), key("F"), VK_LSHIFT, VK_LCONTROL};
+            require(modern.sample().buttons == (cross | circle), "Modern: E uses, F is Circle, Shift and Ctrl do nothing");
             // LookKeySpeed 0.7: the engine's own response to 70% pressure, 0.49 of its turn rate and 0.343 of its pitch rate.
             f.keys = {key("L")};
             s = f.sample();
@@ -1067,6 +1138,141 @@ int main() {
             config = chili::PcInputConfig::load(file, problems, true, &notes);
             require(notes.empty() && config.scheme == chili::InputScheme::Psp && read_text(file) == "[Input]\nScheme=psp\n\n[Mods]\n", "a hand-written file is not touched");
             std::filesystem::remove(file); std::filesystem::remove(backup);
+        }
+        // A file the game wrote with [Input] Version 2 (the builds before Total Overdose PC): every binding still the
+        // old default with dual_analog -> Total Overdose PC's; psp untouched -> PSP original; any binding of the
+        // player's own -> every binding kept, the style it was made with. Everything else stays.
+        {
+            wchar_t temp[MAX_PATH]{};
+            GetTempPathW(MAX_PATH, temp);
+            const auto file = std::filesystem::path(temp) / ("chili-input-v2-" + std::to_string(GetCurrentProcessId()) + ".ini");
+            auto backup = file; backup += ".bak";
+            const auto read_text = [](const std::filesystem::path &path) { std::ifstream in(path, std::ios::binary); std::ostringstream text; text << in.rdbuf(); return text.str(); };
+            const auto write_text = [](const std::filesystem::path &path, const std::string &text) { std::ofstream out(path, std::ios::binary | std::ios::trunc); out << text; };
+            // The launcher's sample: a file as the builds before the control styles wrote it (Version 2, Modern's bindings).
+            const auto profile = std::filesystem::path(__FILE__).parent_path().parent_path();
+            const std::string v2 = read_text(profile / "launcher" / "test" / "sample_ChiliNative.ini");
+            require(v2.find("\nVersion=2\r\n") != std::string::npos || v2.find("\nVersion=2\n") != std::string::npos, "the launcher's sample is a Version 2 file");
+            const std::string nl = v2.find("\r\n") != std::string::npos ? "\r\n" : "\n";
+            // The sample as the game brings it up to date: the bytes of sample_ChiliNative.migrated.ini beside it, which
+            // the launcher's tests hold its own update to as well (launcher/src/Program.cs, IniTests).
+            {
+                const auto expected_file = profile / "launcher" / "test" / "sample_ChiliNative.migrated.ini";
+                const std::string made = chili::PcInputConfig::brought_up_to_date(v2, 2).text;
+                if (!std::filesystem::exists(expected_file)) {
+                    const auto written = std::filesystem::path(temp) / "sample_ChiliNative.migrated.ini";
+                    std::ofstream(written, std::ios::binary | std::ios::trunc) << made;
+                    std::cerr << "no " << expected_file.string() << ": the game's update of the sample is in " << written.string() << '\n';
+                }
+                require(read_text(expected_file) == made, "the launcher's sample brought up to date: the bytes of sample_ChiliNative.migrated.ini");
+            }
+            const auto replaced = [&](std::string text, const std::string &from, const std::string &to) {
+                const auto at = text.find(from);
+                require(at != std::string::npos, "the sample has the line to change");
+                if (at != std::string::npos) text.replace(at, from.size(), to);
+                return text;
+            };
+            // A player who changed one setting that is no binding: the file goes over to Total Overdose PC.
+            const std::string untouched = replaced(v2, "SensitivityX=0.08", "SensitivityX=0.13");
+            write_text(file, untouched);
+            write_text(backup, "an older backup\n");
+            std::vector<std::string> problems, notes;
+            auto config = chili::PcInputConfig::load(file, problems, false, &notes);
+            require(notes.empty() && read_text(file) == untouched && config.layout == chili::InputLayout::TodPc, "a run that must not write leaves a Version 2 file alone");
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            const auto tod = chili::PcInputConfig::defaults(chili::InputLayout::TodPc);
+            const std::string after = read_text(file);
+            require(problems.empty() && config.layout == chili::InputLayout::TodPc && config.version == chili::input_ini_version && config.keys.size() == 31u &&
+                    binds(config, "LShift", PadTarget::Cross) && binds(config, "E", PadTarget::Circle) && binds(config, "Tab", PadTarget::DpadDown) &&
+                    config.pad_buttons == tod.pad_buttons && config.mouse_buttons == tod.mouse_buttons && config.mouse_degrees_per_count == 0.13f,
+                "every binding an older build's default: Total Overdose PC's now, the player's mouse speed kept");
+            require(notes.size() == 1u && notes[0].find("Total Overdose PC") != std::string::npos && notes[0].find("Layout=tod_pc") != std::string::npos && notes[0].find(".bak") != std::string::npos,
+                "and the log line says so");
+            require(read_text(backup) == untouched, "the file as it was is the .bak, over the older backup");
+            require(after.find("Cross=Space,F,Enter,LShift" + nl) != std::string::npos && after.find("Circle=E,Backspace" + nl) != std::string::npos &&
+                    after.find("DpadDown=Tab,Down,PageDown" + nl) != std::string::npos && after.find("Select=Grave" + nl) != std::string::npos &&
+                    after.find("Version=3" + nl) != std::string::npos && after.find("Layout=tod_pc" + nl) != std::string::npos &&
+                    after.find("SensitivityX=0.13" + nl) != std::string::npos && after.find("Space jumps and dives, E uses") == std::string::npos &&
+                    after.find("; Jump, dive, use, enter a vehicle, confirm: the game has them all on Cross." + nl) != std::string::npos &&
+                    after.find("Delete this file after changing the scheme") == std::string::npos && after.find("Version=2") == std::string::npos,
+                "the binding lines, Layout, Version and three comment lines changed in place");
+            // Line by line: only the lines the update names are other ones, and one line more (Layout).
+            {
+                const auto lines = [](const std::string &text) { std::vector<std::string> out; std::istringstream in(text); for (std::string line; std::getline(in, line);) out.push_back(line); return out; };
+                const auto a = lines(untouched), b = lines(after);
+                std::size_t differ = 0u;
+                for (std::size_t i = 0, j = 0; i < a.size() && j < b.size(); ++i, ++j) {
+                    if (b[j].rfind("Layout=", 0u) == 0u && a[i].rfind("Layout=", 0u) != 0u) { --i; continue; }
+                    if (a[i] != b[j]) ++differ;
+                }
+                require(b.size() == a.size() + 1u && differ == 10u + 5u + 1u, "ten binding lines, five comment lines and Version differ; nothing else");
+            }
+            notes.clear();
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            require(notes.empty() && read_text(file) == after && config.layout == chili::InputLayout::TodPc, "the next start changes nothing");
+            // The same text as the launcher makes: the launcher's sample brought up to date by the game, line for line what
+            // launcher/src/Model.cs InputMigration does (the C# side is checked by the launcher's own tests).
+            const auto by_text = chili::PcInputConfig::brought_up_to_date(untouched, 2);
+            require(by_text.text == after, "the update is a function of the text alone");
+
+            // One binding of the player's own: every binding kept, the style it was made with.
+            const std::string changed = replaced(v2, "Square=G", "Square=G,H");
+            write_text(file, changed);
+            notes.clear();
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            const auto modern = chili::PcInputConfig::defaults(chili::InputLayout::Modern);
+            require(problems.empty() && config.layout == chili::InputLayout::Modern && config.keys.size() == modern.keys.size() + 1u && binds(config, "H", PadTarget::Square) &&
+                    binds(config, "E", PadTarget::Cross) && binds(config, "F", PadTarget::Circle) && !binds(config, "LShift", PadTarget::Cross), "a binding of the player's own: every binding kept, Modern");
+            require(notes.size() == 1u && notes[0].find("1 binding of the player's own") != std::string::npos && notes[0].find("Layout=modern") != std::string::npos, "and the log line says so");
+            {
+                const std::string text = read_text(file);
+                require(text.find("Layout=modern") != std::string::npos && text.find("Version=3") != std::string::npos && text.find("Cross=Space,E,Enter") != std::string::npos &&
+                        text.find("; Space jumps and dives, E uses: the game has both on Cross.") != std::string::npos && text.find("Delete this file after changing the scheme") == std::string::npos,
+                    "its key lines and their comments stay; the three lines about the older build change");
+            }
+            // A table of a PlayStation pad's own counts as the player's.
+            write_text(file, v2 + "[Input.Gamepad.PlayStation]" + nl + "X=Circle" + nl);
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            require(config.layout == chili::InputLayout::Modern && binds(config, "E", PadTarget::Cross), "a PlayStation pad's own table: every binding kept");
+            // The PSP layout as that build had it: it stays, and the file names it.
+            std::string psp_file = replaced(v2, "Scheme=dual_analog", "Scheme=psp");
+            for (const char *look : {"LookLeft=J", "LookRight=L", "LookUp=I", "LookDown=K"}) psp_file = replaced(psp_file, look, std::string(look).substr(0u, std::string(look).find('=') + 1u));
+            psp_file = replaced(replaced(replaced(replaced(psp_file, "X=Triangle", "X=Square"), "Y=Cross", "Y=Triangle"), "LB=DpadLeft", "LB=L"), "RB=DpadRight", "RB=R");
+            psp_file = replaced(psp_file, "LS=L", "LS=None");
+            write_text(file, psp_file);
+            notes.clear();
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            require(config.layout == chili::InputLayout::Psp && config.scheme == chili::InputScheme::Psp && config.keys.size() == 23u && notes.size() == 1u &&
+                    notes[0].find("stays") != std::string::npos && read_text(file).find("Layout=psp") != std::string::npos && read_text(file).find("Cross=Space,E,Enter") != std::string::npos,
+                "PSP original as an older build wrote it: kept, and named");
+            // A hand-written Version 2 file (no first line of the game's) is nobody's old default.
+            write_text(file, "[Input]\nVersion=2\nScheme=dual_analog\n[Input.Keyboard]\nCross=Space,E,Enter\n");
+            notes.clear();
+            config = chili::PcInputConfig::load(file, problems, true, &notes);
+            require(notes.empty() && read_text(file) == "[Input]\nVersion=2\nScheme=dual_analog\n[Input.Keyboard]\nCross=Space,E,Enter\n" && config.layout == chili::InputLayout::TodPc &&
+                    binds(config, "E", PadTarget::Cross) && binds(config, "E", PadTarget::Circle), "a hand-written file is not touched");
+            std::filesystem::remove(file); std::filesystem::remove(backup);
+        }
+        // A switch of control style moves the bindings that still hold the old style's default, and only those.
+        {
+            auto doc = chili::IniDocument::parse(chili::default_input_ini(chili::InputLayout::TodPc));
+            doc.set("Input.Keyboard", "Square", "G,H");             // the player's own
+            doc.set("Input.Keyboard", "Cross", "f, space, LSHIFT, Return");   // Total Overdose PC's in another spelling
+            const auto to_modern = chili::PcInputConfig::layout_binding_changes(doc, chili::InputLayout::TodPc, chili::InputLayout::Modern);
+            const auto names = [](const std::vector<chili::IniChange> &changes) { std::string out; for (const auto &c : changes) out += c.key + "=" + c.value + ";"; return out; };
+            require(names(to_modern) == "Cross=Space,E,Enter;Triangle=R;Circle=F,Backspace;L=Q;DpadLeft=Left,1;DpadRight=Right,2;DpadDown=Down,Z;DpadUp=Up;Start=Escape;Select=Tab;",
+                "Total Overdose PC to Modern: the ten keys that differ, not the player's Square, not the mouse or the pad");
+            const auto to_psp = chili::PcInputConfig::layout_binding_changes(doc, chili::InputLayout::TodPc, chili::InputLayout::Psp);
+            require(to_psp.size() == 10u + 4u + 5u && names(to_psp).find("LookLeft=;") != std::string::npos && names(to_psp).find("X=Square;") != std::string::npos &&
+                    names(to_psp).find("LS=None;") != std::string::npos, "to PSP original: the look keys go, the PSP's pad table");
+            require(chili::PcInputConfig::layout_binding_changes(doc, chili::InputLayout::TodPc, chili::InputLayout::TodPc).empty(), "the same style: nothing");
+            for (const auto &change : to_modern) doc.set(change.section, change.key, change.value);
+            doc.set("Input", "Layout", "modern");
+            chili::PcInputConfig switched;
+            require(switched.apply(doc.bytes()).empty() && switched.layout == chili::InputLayout::Modern && switched.keys.size() == 28u && binds(switched, "H", PadTarget::Square),
+                "the file then holds Modern's keys and the player's own");
+            const auto back = chili::PcInputConfig::layout_binding_changes(doc, chili::InputLayout::Modern, chili::InputLayout::TodPc);
+            require(back.size() == 10u, "and back again the same ten");
         }
         // The controls the dual-analog layer answers for the game.
         {

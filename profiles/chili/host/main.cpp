@@ -86,8 +86,10 @@ std::filesystem::path executable_directory() {
 // The settings file with every section's defaults. A file that is there keeps what it has; a section
 // it lacks is added commented out.
 void write_default_settings(const std::filesystem::path &ini) {
-    std::vector<std::string> problems;
-    (void)chili::PcInputConfig::load(ini, problems, true);
+    std::vector<std::string> problems, notes;
+    (void)chili::PcInputConfig::load(ini, problems, true, &notes);
+    // An older build's file brought up to date (pc_input.hpp, brought_up_to_date): said once, here.
+    for (const auto &note : notes) std::cout << "[input] " << note << '\n';
     chili::add_default_mod_settings(ini);
     chili::add_default_render_settings(ini);
     chili::add_default_audio_settings(ini);
@@ -368,7 +370,7 @@ int run(chili::launcher::Start &start) {
             if (!named) throw psprecomp::Error("Input replay names an unknown control scheme: " + input_replay.scheme());
             input_config.scheme = *named;
         }
-        std::cout << "[input] scheme " << chili::scheme_name(input_config.scheme) << '\n';
+        std::cout << "[input] scheme " << chili::scheme_name(input_config.scheme) << ", control style " << chili::layout_name(input_config.layout) << " (" << chili::layout_word(input_config.layout) << ")" << '\n';
         // Whether this run has the game's own settings page and what is put in place for it (settings_apply.hpp):
         // a player's run has; a deterministic, replay or script run only when a test variable asks (CHILI_PAGE=1,
         // CHILI_SETTINGS_AT), so such a run is otherwise exactly what it was before the page existed.

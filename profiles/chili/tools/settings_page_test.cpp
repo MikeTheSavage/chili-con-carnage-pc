@@ -248,7 +248,7 @@ void pages_and_pad(const std::filesystem::path &scratch) {
     b.tap(cross);
     require(b.page.page() == st::Page::Controls, "Cross on a section opens it");
     {
-        const char *names[]{"Control style", "Camera", "Keyboard & mouse", "Gamepad", "Prompts", "Button pictures", "Defaults"};
+        const char *names[]{"Style", "Camera", "Keyboard & mouse", "Gamepad", "Prompts", "Button pictures", "Defaults"};
         is(b.page.rows().size(), std::size_t{7}, "the rows of Controls");
         for (std::size_t i = 0; i < 7u; ++i) require(b.page.rows()[i].name == names[i], std::string("Controls row ") + names[i]);
         is(st::main_layout.visible, std::size_t{7}, "seven rows are shown in the menu frame");
@@ -257,7 +257,13 @@ void pages_and_pad(const std::filesystem::path &scratch) {
         for (int i = 0; i < 6; ++i) b.tap(down);
         require(b.name() == "Defaults" && b.page.first_visible() == 0u, "the focus on the seventh row: Controls and its Defaults are all on the page, nothing moves");
         b.tap(down);
-        require(b.name() == "Control style" && b.page.first_visible() == 0u, "and it wraps to the first");
+        require(b.name() == "Style" && b.page.first_visible() == 0u && b.value() == "Total Overdose PC", "and it wraps to the first: the control style, Total Overdose PC");
+        // The control style from the main menu: written with its keys, from the next start.
+        b.tap(right);
+        require(b.value() == "Modern" && b.row().pending && has_line(b.ini, "Layout=modern") && has_line(b.ini, "Circle=F,Backspace") && has_line(b.ini, "Scheme=dual_analog"),
+            "Right on Style: Modern, written with its keys, after a restart");
+        b.tap(left);
+        require(b.value() == "Total Overdose PC" && !b.row().pending && has_line(b.ini, "Layout=tod_pc") && has_line(b.ini, "Circle=E,Backspace"), "Left: Total Overdose PC again, as the game runs");
     }
     b.go("Keyboard & mouse");
     b.tap(cross);
@@ -407,7 +413,7 @@ void locks_and_defaults(const std::filesystem::path &scratch) {
     require(!b.page.asking() && b.page.reason() == "Change it in the main menu.", "and says why instead of asking");
     // Controls in a mission: the input rows are free, the two that take a restart are not.
     b.page.back(); b.go("Controls"); b.page.ok();
-    require(b.page.rows()[0].lock == st::Lock::NeedsRestart && b.page.rows()[1].lock == st::Lock::NeedsRestart, "Control style and Camera are locked in a mission");
+    require(b.page.rows()[0].lock == st::Lock::NeedsRestart && b.page.rows()[1].lock == st::Lock::NeedsRestart, "Style and Camera are locked in a mission");
     b.go("Prompts");
     require(b.row().lock == st::Lock::None, "Prompts is not");
     b.tap(right);

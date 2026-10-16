@@ -21,5 +21,6 @@ LogFiles must be true or false
 ExactTurn BackgroundInput ShowInput WalkScale LookKeySpeed MenuClicks SensitivityY HoldPitch Exact Smoothing
 CompensateEngineDeadzone TurnSensitivity LookSensitivity
 Prompts must be auto, keyboard, gamepad or psp
+Layout must be tod_pc, modern or psp
 Glyphs must be auto, xbox or playstation
 PlayStationPads Rumble

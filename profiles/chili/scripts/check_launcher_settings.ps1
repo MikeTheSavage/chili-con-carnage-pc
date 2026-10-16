@@ -176,6 +176,7 @@ for ($from = 0; $from -lt $cases.Count; $from += $Parallel) {
                 'Game/FrameLock' { $expect = $(if ($value -eq '2') { '30' } else { '60' }); $have = [regex]::Match([string]($log | Where-Object { $_ -like '[[]game[]] frame rate:*' } | Select-Object -First 1), 'frame rate: (\d+)').Groups[1].Value }
                 'Game/Camera' { $expect = $value; $have = $(if ($log | Where-Object { $_ -like '[[]game[]] camera: tight*' }) { 'tight' } else { 'original' }) }
                 'Input/Scheme' { $expect = $value; $have = [regex]::Match([string]($log | Where-Object { $_ -like '[[]input[]] scheme *' } | Select-Object -First 1), 'scheme (\w+)').Groups[1].Value }
+                'Input/Layout' { $expect = $value; $have = [regex]::Match([string]($log | Where-Object { $_ -like '[[]input[]] scheme *' } | Select-Object -First 1), 'control style (\w+)').Groups[1].Value }
             }
             if ($null -ne $expect) {
                 $compared = 1
