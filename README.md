@@ -140,7 +140,7 @@ MIT: see [LICENSE](LICENSE). Third-party components: [THIRD_PARTY_NOTICES.md](TH
 
 ## Legal note
 
-This repository contains no game data: no code generated from the game's executable, no art, no sound, no
+This repository contains no game data apart from the program icon: no code generated from the game's executable, no art, no sound, no
 text of the game. The prebuilt program on the Releases page contains the game's code translated to run on a
 PC; it is offered to people who own the game and does nothing without their own copy. Chili Con Carnage, its
 names, art and music belong to their rights holders. This project is not affiliated with them.
