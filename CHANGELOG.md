@@ -1,5 +1,37 @@
 # Changelog
 
+## 0.9.2
+
+- **HUD layout.** Classic (the game's own) or Modern, under Settings > Graphics, right after HUD size.
+  Modern puts health at the lower left, the weapon and the combo at the lower right and the objective small
+  at the upper left, so the middle of the screen stays clear. It follows HUD size.
+- **HUD size fixes.** A long health bar stays in one piece, the sun's lens flare keeps its size, and the lines
+  of one subtitle stay together.
+
+Known limits of this version:
+
+- Some HUD pieces have not been seen in the Modern layout yet: the boss bar, the overheat bar, the countdown,
+  and the driving and helicopter HUD.
+
+## 0.9.1
+
+- **Sound.** If the music, effects and voices all go silent in a mission, the sound comes back by itself after
+  two seconds. A sound device that stops taking sound is opened again after one second.
+- **Running.** W with A or D runs diagonally, as a stick does. W alone still sprints.
+- **Mouse aim.** The mouse aims mounted guns (turrets) up, down, left and right, as on foot, and aims while
+  hanging from Marco's helicopter chain.
+- **HUD size.** 100, 90, 80 or 70 % (Settings > Graphics).
+- **Camera distance.** Original, Far or Farther (Settings > Controls), from the next start.
+- **Field of view.** Original, Total Overdose or Wide (Settings > Controls; "View angle" inside the game).
+
+All new settings start at the game's own values.
+
+Known limits of this version:
+
+- The mouse on a mounted gun was tried on the truck gun of Story 3-3; the meat hooks of Story 3-2 were not
+  reached in a test.
+- Whether shots land exactly on the aim dot with a wider field of view has not been checked.
+
 ## 0.9.0
 
 The first public version.
